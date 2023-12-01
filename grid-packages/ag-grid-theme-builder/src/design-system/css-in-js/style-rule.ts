@@ -96,6 +96,11 @@ export const $nthChild = selectorWithArg(true, ':nth-child');
 export const not = ({ selectors }: Selector) => _selector(false, [`:not(${selectors.join(', ')})`]);
 export const $not = ({ selectors }: Selector) => _selector(true, [`:not(${selectors.join(', ')})`]);
 
+export const is = (...selectors: Selector[]) =>
+  _selector(false, selectors.map((s) => s.selectors).flat());
+export const $is = (...selectors: Selector[]) =>
+  _selector(true, selectors.map((s) => s.selectors).flat());
+
 const selectorProxy = <T extends string>(
   tightJoin: boolean,
   mapper?: (s: string) => string,

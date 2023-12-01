@@ -1,6 +1,6 @@
-import { keyframes } from '@emotion/react';
 import { expect, test } from 'vitest';
-import { literal, px, solid } from '.';
+import { ColorExpression, literal, px, solid } from '.';
+import { fontFace, keyframes, media } from './at-rules';
 import { renderRules } from './render';
 import * as dsl from './style-rule';
 
@@ -60,6 +60,39 @@ test(`Render nested rules with tight and loose joining`, () => {
     }
     root.ag-d.ag-f {
     	content: tight tight;
+    }
+    "
+  `);
+});
+
+test(`Render nested rules with selector product`, () => {
+  const rules = dsl.is(el.a, el.b)(
+    {
+      content: literal('ab content'),
+    },
+
+    dsl.is(el.c, el.d)(
+      {
+        content: literal('cd content'),
+      },
+
+      dsl.is(
+        el.e,
+        el.f,
+      )({
+        content: literal('ef content'),
+      }),
+    ),
+  );
+  expect(renderRules(rules)).toMatchInlineSnapshot(`
+    "a, b {
+    	content: ab content;
+    }
+    a c, a d, b c, b d {
+    	content: cd content;
+    }
+    a c e, a c f, a d e, a d f, b c e, b c f, b d e, b d f {
+    	content: ef content;
     }
     "
   `);
@@ -177,7 +210,6 @@ test(`Convert browser prefixed property names`, () => {
 });
 
 test(`Render @keyframes blocks`, () => {
-  Next up: make this bit work too
   const rule = keyframes({
     id: 'my-id',
     from: {
@@ -204,74 +236,74 @@ test(`Render @keyframes blocks`, () => {
   `);
 });
 
-// test(`@keyframes block throws error with RTL styles`, () => {
-//   const rule = keyframes({
-//     id: 'my-id',
-//     from: {
-//       color: red,
-//       paddingLeading: px(1),
-//     },
-//     to: {
-//       color: green,
-//       paddingTrailing: px(2),
-//     },
-//   });
-//   expect(() => renderRules([rule])).toThrowErrorMatchingInlineSnapshot(
-//     '"RTL styles (paddingLeading: 1px) not allowed inside @keyframes my-id"',
-//   );
-// });
+test(`@keyframes block throws error with RTL styles`, () => {
+  const rule = keyframes({
+    id: 'my-id',
+    from: {
+      color: red,
+      paddingLeading: px(1),
+    },
+    to: {
+      color: green,
+      paddingTrailing: px(2),
+    },
+  });
+  expect(() => renderRules([rule])).toThrowErrorMatchingInlineSnapshot(
+    '"RTL styles (paddingLeading: 1px) not allowed inside @keyframes my-id"',
+  );
+});
 
-// test(`Render @font-face blocks`, () => {
-//   const rule = fontFace({
-//     fontFamily: literal('monospace'),
-//     src: literal('url(./some-url)'),
-//     fontWeight: literal('bold'),
-//   });
-//   expect(renderRules([rule])).toMatchInlineSnapshot(`
-//     "@font-face {
-//     	font-family: monospace;
-//     	src: url(./some-url);
-//     	font-weight: bold;
-//     }
-//     "
-//   `);
-// });
+test(`Render @font-face blocks`, () => {
+  const rule = fontFace({
+    fontFamily: literal('monospace'),
+    src: literal('url(./some-url)'),
+    fontWeight: literal('bold'),
+  });
+  expect(renderRules([rule])).toMatchInlineSnapshot(`
+    "@font-face {
+    	font-family: monospace;
+    	src: url(./some-url);
+    	font-weight: bold;
+    }
+    "
+  `);
+});
 
-// test(`Render @media blocks`, () => {
-//   const rule = media({
-//     query: 'print',
-//     rules: [
-//       el.one(
-//         {
-//           color: red,
-//           paddingAlwaysLeft: px(1),
-//         },
-//         el.two({
-//           color: blue,
-//           paddingLeading: px(2),
-//         }),
-//       ),
-//     ],
-//   });
-//   expect(renderRules([rule])).toMatchInlineSnapshot(`
-//     "@media print {
-//     	.ag-one {
-//     		color: red;
-//     		padding-left: 1px;
-//     	}
-//     	.ag-one .ag-two {
-//     		color: blue;
-//     	}
-//     	.ag-ltr .ag-one .ag-two {
-//     		padding-left: 2px;
-//     	}
-//     	.ag-rtl .ag-one .ag-two {
-//     		padding-right: 2px;
-//     	}
-//     }
-//     "
-//   `);
-// });
+test(`Render @media blocks`, () => {
+  const rule = media({
+    query: 'print',
+    rules: [
+      el.one(
+        {
+          color: red,
+          paddingAlwaysLeft: px(1),
+        },
+        el.two({
+          color: blue,
+          paddingLeading: px(2),
+        }),
+      ),
+    ],
+  });
+  expect(renderRules([rule])).toMatchInlineSnapshot(`
+    "@media print {
+    	one {
+    		color: red;
+    		padding-left: 1px;
+    	}
+    	one two {
+    		color: blue;
+    	}
+    	.ag-ltr one two {
+    		padding-left: 2px;
+    	}
+    	.ag-rtl one two {
+    		padding-right: 2px;
+    	}
+    }
+    "
+  `);
+});
 
 const red = literal('red') as unknown as ColorExpression;
 const green = literal('green') as unknown as ColorExpression;

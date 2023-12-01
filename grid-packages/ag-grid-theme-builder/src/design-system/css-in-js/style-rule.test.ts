@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { $not, ag, el, firstChild, focus, not, nthChild, selector } from './style-rule';
+import { $not, ag, el, firstChild, focus, is, not, nthChild, selector } from './style-rule';
 
 test('selector', () => {
   expectSelector(selector('.foo')).toBe('.foo');
@@ -25,9 +25,18 @@ test('selector is', () => {
   expectSelector(selector('.foo').is(selector('[la]', 'la'))).toBe('.foo:is([la], la)');
 });
 
+test('top level is', () => {
+  expectSelector(is(el.a)).toBe('a');
+  expectSelector(is(el.a, el.b)).toBe('a, b');
+});
+
 test('not', () => {
   expectSelector(not(selector('.foo'))).toBe(':not(.foo)');
   expectSelector($not(selector('.foo'))).toBe(':not(.foo)');
+});
+
+test('top level not', () => {
+  expectSelector(not(el.a)).toBe(':not(a)');
 });
 
 test('selector not', () => {
