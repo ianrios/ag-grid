@@ -174,7 +174,7 @@ const literalProperties = new Set([
   'direction',
   'backgroundRepeat',
   'writingMode',
-  'webkitOverflowScrolling',
+  'WebkitOverflowScrolling',
 ]);
 const literalValuePatterns = [/^[\w-]+\(/, /^default/];
 const propertyValueImportMap: Record<string, string> = {

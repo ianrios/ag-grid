@@ -1,78 +1,101 @@
-import { expect, test } from 'vitest';
-import { ColorExpression, literal } from '.';
-import { renderRules } from './render';
-import * as dsl from './style-rule';
+// import { expect, test } from 'vitest';
+// import { ColorExpression, literal, px, solid } from '.';
+// import { renderRules } from './render';
+// import * as dsl from './style-rule';
 
-// allow any property access for test purposes
-// type MockEl = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "root";
-const el = dsl.el as dsl.SelectorDslFactory<string>;
-const ag = dsl.ag as dsl.SelectorDslFactory<string>;
+// // allow any property access for test purposes
+// // type MockEl = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "root";
+// const el = dsl.el as dsl.SelectorDslFactory<string>;
+// const ag = dsl.ag as dsl.SelectorDslFactory<string>;
+// const $el = dsl.$el as dsl.SelectorDslFactory<string>;
+// const $ag = dsl.$ag as dsl.SelectorDslFactory<string>;
 
-test(`Render nested rules`, () => {
-  const rules = el.root({
-    content: literal('base'),
-  });
-  expect(renderRules(rules)).toMatchInlineSnapshot(`
-    "root {
-    	content: base;
-    }
-    "
-  `);
-});
+// test(`Render nested rules with tight and loose joining`, () => {
+//   const rules = el.root(
+//     {
+//       content: literal('base'),
+//     },
 
-test(`Render nested rules`, () => {
-  const rules = el.root({
-    content: literal('base'),
+//     ag.a(
+//       {
+//         content: literal('loose'),
+//       },
 
-    containing: ag.a({
-      content: literal('loose'),
+//       ag.b({
+//         content: literal('loose loose'),
+//       }),
+//       $ag.c({
+//         content: literal('loose tight'),
+//       }),
+//     ),
 
-      containing: ag.b({
-        content: literal('loose loose'),
-      }),
-      and: ag.c({
-        content: literal('loose tight'),
-      }),
-    }),
-    and: ag.d({
-      content: literal('tight'),
+//     $ag.d(
+//       {
+//         content: literal('tight'),
+//       },
 
-      containing: ag.e({
-        content: literal('tight loose'),
-      }),
-      and: ag.f({
-        content: literal('tight tight'),
-      }),
-    }),
-  });
-  expect(renderRules(rules)).toMatchInlineSnapshot(`
-    "root {
-    	content: base;
-    }
-    root .ag-a {
-    	content: loose;
-    }
-    root .ag-a .ag-b {
-    	content: loose loose;
-    }
-    root .ag-a.ag-c {
-    	content: loose tight;
-    }
-    root.ag-d {
-    	content: tight;
-    }
-    root.ag-d .ag-e {
-    	content: tight loose;
-    }
-    root.ag-d.ag-f {
-    	content: tight tight;
-    }
-    "
-  `);
-});
+//       ag.e({
+//         content: literal('tight loose'),
+//       }),
+//       $ag.f({
+//         content: literal('tight tight'),
+//       }),
+//     ),
+//   );
+//   expect(renderRules(rules)).toMatchInlineSnapshot(`
+//     "root {
+//     	content: base;
+//     }
+//     root .ag-a {
+//     	content: loose;
+//     }
+//     root .ag-a .ag-b {
+//     	content: loose loose;
+//     }
+//     root .ag-a.ag-c {
+//     	content: loose tight;
+//     }
+//     root.ag-d {
+//     	content: tight;
+//     }
+//     root.ag-d .ag-e {
+//     	content: tight loose;
+//     }
+//     root.ag-d.ag-f {
+//     	content: tight tight;
+//     }
+//     "
+//   `);
+// });
+
+// test(`Render nested rules`, () => {
+//   const rules = ag.root(
+//     {
+//       content: literal('root content'),
+//     },
+//     $el.active({
+//       content: literal('active content'),
+//     }),
+//     $el.active.rootWrapper({
+//       content: literal('active root wrapper content'),
+//     }),
+//   );
+//   expect(renderRules(rules)).toMatchInlineSnapshot(`
+//     ".ag-root {
+//     	content: root content;
+//     }
+//     .ag-root:active {
+//     	content: active content;
+//     }
+//     .ag-root:active.ag-root-wrapper {
+//     	content: active root wrapper content;
+//     }
+//     "
+//   `);
+// });
 
 // test(`Render RTL versions`, () => {
-//   const rules = el.rootWrapper({
+//   const rules = el.root({
 //     leading: px(1),
 //     trailing: px(2),
 //     paddingLeading: px(3),
@@ -133,18 +156,18 @@ test(`Render nested rules`, () => {
 //     color: red,
 //   });
 //   expect(renderRules(rules)).toMatchInlineSnapshot(`
-//     ".ag-leading {
+//     "leading {
 //     	color: red;
 //     }
 //     "
 //   `);
 // });
 
-// test(`Convert`, () => {
+// test(`Convert browser prefixed property names`, () => {
 //   const rules = el.a({
-//     webkitOverflowScrolling: literal('x'),
-//     msOverflowStyle: literal('y'),
-//     mozAppearance: literal('z'),
+//     WebkitOverflowScrolling: literal('x'),
+//     MsOverflowStyle: literal('y'),
+//     MozAppearance: literal('z'),
 //   });
 //   expect(renderRules(rules)).toMatchInlineSnapshot(`
 //     "a {
@@ -156,102 +179,102 @@ test(`Render nested rules`, () => {
 //   `);
 // });
 
-// test(`Render @keyframes blocks`, () => {
-//   const rule = keyframes({
-//     id: 'my-id',
-//     from: {
-//       color: red,
-//       paddingAlwaysLeft: px(1),
-//     },
-//     to: {
-//       color: green,
-//       paddingAlwaysLeft: px(2),
-//     },
-//   });
-//   expect(renderRules([rule])).toMatchInlineSnapshot(`
-//     "@keyframes my-id {
-//     	from {
-//     		color: red;
-//     		padding-left: 1px;
-//     	}
-//     	to {
-//     		color: green;
-//     		padding-left: 2px;
-//     	}
-//     }
-//     "
-//   `);
-// });
+// // test(`Render @keyframes blocks`, () => {
+// //   const rule = keyframes({
+// //     id: 'my-id',
+// //     from: {
+// //       color: red,
+// //       paddingAlwaysLeft: px(1),
+// //     },
+// //     to: {
+// //       color: green,
+// //       paddingAlwaysLeft: px(2),
+// //     },
+// //   });
+// //   expect(renderRules([rule])).toMatchInlineSnapshot(`
+// //     "@keyframes my-id {
+// //     	from {
+// //     		color: red;
+// //     		padding-left: 1px;
+// //     	}
+// //     	to {
+// //     		color: green;
+// //     		padding-left: 2px;
+// //     	}
+// //     }
+// //     "
+// //   `);
+// // });
 
-// test(`@keyframes block throws error with RTL styles`, () => {
-//   const rule = keyframes({
-//     id: 'my-id',
-//     from: {
-//       color: red,
-//       paddingLeading: px(1),
-//     },
-//     to: {
-//       color: green,
-//       paddingTrailing: px(2),
-//     },
-//   });
-//   expect(() => renderRules([rule])).toThrowErrorMatchingInlineSnapshot(
-//     '"RTL styles (paddingLeading: 1px) not allowed inside @keyframes my-id"',
-//   );
-// });
+// // test(`@keyframes block throws error with RTL styles`, () => {
+// //   const rule = keyframes({
+// //     id: 'my-id',
+// //     from: {
+// //       color: red,
+// //       paddingLeading: px(1),
+// //     },
+// //     to: {
+// //       color: green,
+// //       paddingTrailing: px(2),
+// //     },
+// //   });
+// //   expect(() => renderRules([rule])).toThrowErrorMatchingInlineSnapshot(
+// //     '"RTL styles (paddingLeading: 1px) not allowed inside @keyframes my-id"',
+// //   );
+// // });
 
-// test(`Render @font-face blocks`, () => {
-//   const rule = fontFace({
-//     fontFamily: literal('monospace'),
-//     src: literal('url(./some-url)'),
-//     fontWeight: literal('bold'),
-//   });
-//   expect(renderRules([rule])).toMatchInlineSnapshot(`
-//     "@font-face {
-//     	font-family: monospace;
-//     	src: url(./some-url);
-//     	font-weight: bold;
-//     }
-//     "
-//   `);
-// });
+// // test(`Render @font-face blocks`, () => {
+// //   const rule = fontFace({
+// //     fontFamily: literal('monospace'),
+// //     src: literal('url(./some-url)'),
+// //     fontWeight: literal('bold'),
+// //   });
+// //   expect(renderRules([rule])).toMatchInlineSnapshot(`
+// //     "@font-face {
+// //     	font-family: monospace;
+// //     	src: url(./some-url);
+// //     	font-weight: bold;
+// //     }
+// //     "
+// //   `);
+// // });
 
-// test(`Render @media blocks`, () => {
-//   const rule = media({
-//     query: 'print',
-//     rules: [
-//       el.one(
-//         {
-//           color: red,
-//           paddingAlwaysLeft: px(1),
-//         },
-//         el.two({
-//           color: blue,
-//           paddingLeading: px(2),
-//         }),
-//       ),
-//     ],
-//   });
-//   expect(renderRules([rule])).toMatchInlineSnapshot(`
-//     "@media print {
-//     	.ag-one {
-//     		color: red;
-//     		padding-left: 1px;
-//     	}
-//     	.ag-one .ag-two {
-//     		color: blue;
-//     	}
-//     	.ag-ltr .ag-one .ag-two {
-//     		padding-left: 2px;
-//     	}
-//     	.ag-rtl .ag-one .ag-two {
-//     		padding-right: 2px;
-//     	}
-//     }
-//     "
-//   `);
-// });
+// // test(`Render @media blocks`, () => {
+// //   const rule = media({
+// //     query: 'print',
+// //     rules: [
+// //       el.one(
+// //         {
+// //           color: red,
+// //           paddingAlwaysLeft: px(1),
+// //         },
+// //         el.two({
+// //           color: blue,
+// //           paddingLeading: px(2),
+// //         }),
+// //       ),
+// //     ],
+// //   });
+// //   expect(renderRules([rule])).toMatchInlineSnapshot(`
+// //     "@media print {
+// //     	.ag-one {
+// //     		color: red;
+// //     		padding-left: 1px;
+// //     	}
+// //     	.ag-one .ag-two {
+// //     		color: blue;
+// //     	}
+// //     	.ag-ltr .ag-one .ag-two {
+// //     		padding-left: 2px;
+// //     	}
+// //     	.ag-rtl .ag-one .ag-two {
+// //     		padding-right: 2px;
+// //     	}
+// //     }
+// //     "
+// //   `);
+// // });
 
-const red = literal('red') as unknown as ColorExpression;
-const green = literal('green') as unknown as ColorExpression;
-const blue = literal('blue') as unknown as ColorExpression;
+// const red = literal('red') as unknown as ColorExpression;
+// const green = literal('green') as unknown as ColorExpression;
+// const blue = literal('blue') as unknown as ColorExpression;

@@ -1,21 +1,48 @@
 import { expect, test } from 'vitest';
-import { ag, any, el, pseudo } from './style-rule';
+import { el, firstChild, focus, nthChild, selector } from './style-rule';
 
-test(`Build selectors`, () => {
-  expect(el.input.toString()).toBe('input');
-  expect(el.input.not(el.div).toString()).toBe('input:not(div)');
-  expect(el.input.firstChild.toString()).toBe('input:first-child');
-  expect(el.input.notFirstChild.toString()).toBe('input:not(:first-child)');
-  expect(el.input.nthChild(3).hover.toString()).toBe('input:nth-child(3):hover');
+Next up:
+
+el and ag proxies
+
+test('selector', () => {
+  expectSelector(selector('.foo')).toBe('.foo');
+  expectSelector(selector('.foo', 'bar')).toBe('.foo, bar');
 });
 
-test(`Combining multiple selectors`, () => {
-  expect(el.input.not(pseudo.active.or(pseudo.firstChild)).toString()).toBe(
-    'input:not(:active):not(:first-child)',
-  );
-  expect(ag.root.or(ag.rootWrapper).toString()).toBe('.ag-root, .ag-root-wrapper');
-  expect(any(ag.root, ag.rootWrapper).toString()).toBe('.ag-root, .ag-root-wrapper');
-  expect(any(ag.root, ag.rootWrapper).firstChild.toString()).toBe(
-    '.ag-root:first-child, .ag-root-wrapper:first-child',
-  );
+test('element selectors', () => {
+  expectSelector(el.input).toBe('input');
+  expectSelector(el.input.is(firstChild)).toBe('input:first-child');
 });
+
+test('selector is', () => {
+  expectSelector(selector('.foo').is(selector('bar'))).toBe('.foo:is(bar)');
+  expectSelector(selector('.foo').is(selector('bar', 'baz'))).toBe('.foo:is(bar, baz)');
+  expectSelector(selector('.foo').is(selector('bar')).is(selector('baz'))).toBe(
+    '.foo:is(bar):is(baz)',
+  );
+  // special case,
+  expectSelector(selector('.foo').is(selector('.bar'))).toBe('.foo.bar');
+  expectSelector(selector('.foo').is(selector(':quux'))).toBe('.foo:quux');
+  expectSelector(selector('.foo').is(selector('[la]'))).toBe('.foo[la]');
+
+  expectSelector(selector('.foo').is(selector('[la]', 'la'))).toBe('.foo:is([la], la)');
+});
+
+test('selector not', () => {
+  expectSelector(selector('.foo').not(selector('bar'))).toBe('.foo:not(bar)');
+  expectSelector(selector('.foo').not(focus)).toBe('.foo:not(:focus)');
+});
+
+test('element selectors', () => {
+  expectSelector(el.input).toBe('input');
+  expectSelector(el.input.is(firstChild)).toBe('input:first-child');
+});
+
+test('pseudo-class selectors', () => {
+  expectSelector(firstChild).toBe(':first-child');
+  expectSelector(nthChild(4)).toBe(':nth-child(4)');
+  expectSelector(nthChild(4).is(firstChild)).toBe(':nth-child(4):first-child');
+});
+
+const expectSelector = ({ selectors }: { selectors: string[] }) => expect(selectors.join(', '));

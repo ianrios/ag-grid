@@ -236,7 +236,7 @@ export default rules({
 
     '&layoutNormal': {
       overflowY: auto,
-      webkitOverflowScrolling: literal('touch'),
+      WebkitOverflowScrolling: literal('touch'),
     },
   },
 
@@ -354,7 +354,7 @@ export default rules({
     minHeight: zero,
 
     bodyViewport: {
-      webkitOverflowScrolling: literal('touch'),
+      WebkitOverflowScrolling: literal('touch'),
     },
   },
 

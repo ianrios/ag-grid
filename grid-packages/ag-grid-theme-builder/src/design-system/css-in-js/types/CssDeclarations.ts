@@ -72,9 +72,9 @@ type Property =
   | 'verticalAlign'
   | 'visibility'
   | 'whiteSpace'
-  | 'webkitOverflowScrolling'
-  | 'msOverflowStyle'
-  | 'mozAppearance'
+  | 'WebkitOverflowScrolling'
+  | 'MsOverflowStyle'
+  | 'MozAppearance'
   | 'width'
   | 'wordBreak'
   | 'writingMode'
@@ -101,7 +101,7 @@ export type PropertyValue = {
 export type CssPropertiesValue = PropertyValue | readonly PropertyValue[] | null | undefined;
 export type CssPropertiesRecord = Record<string, CssPropertiesValue>;
 
-export type CssProperties = Partial<
+export type CssDeclarations = Partial<
   {
     readonly [K in Property]: PropertyValue | null | undefined;
   } & {

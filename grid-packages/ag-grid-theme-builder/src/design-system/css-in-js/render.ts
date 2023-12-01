@@ -1,4 +1,4 @@
-import { CssProperties, PropertyValue } from './types/CssProperties';
+import { CssDeclarations, PropertyValue } from './types/CssDeclarations';
 import { toKebabCase } from './utils';
 
 export type Rule = StyleRule | AtRule;
@@ -6,13 +6,13 @@ export type Rule = StyleRule | AtRule;
 export type StyleRule = {
   type: 'style';
   selectors: string[];
-  properties: CssProperties;
+  declarations: CssDeclarations;
 };
 
 export type AtRule = {
   type: 'at';
   rule: string;
-  properties?: CssProperties;
+  properties?: CssDeclarations;
   styles?: StyleRule[];
   allowRtl: boolean;
 };
@@ -34,7 +34,7 @@ export const renderRules = (rules: Rule[]): string => {
 
 const emitStyleRule = (
   output: string[],
-  { selectors, properties }: StyleRule,
+  { selectors, declarations: properties }: StyleRule,
   indent = '',
   forbidRtlBecause?: string,
 ) => {
@@ -112,10 +112,7 @@ const emitSelectorsAndProperties = (
   output.push(indent, '}\n');
 };
 
-const renderPropertyName = (jsName: string) => {
-  const cssName = toKebabCase(jsName).replace('always-', '');
-  return /^(moz|ms|webkit)-/.test(cssName) ? '-' + cssName : cssName;
-};
+const renderPropertyName = (jsName: string) => toKebabCase(jsName).replace('always-', '');
 
 const renderPropertyValue = (value: unknown): string => {
   if (value == null) return '';

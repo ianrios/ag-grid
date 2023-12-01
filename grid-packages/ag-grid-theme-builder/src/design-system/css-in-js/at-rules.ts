@@ -1,10 +1,10 @@
 import { AtRule, StyleRule } from './render';
-import { CssProperties } from './types/CssProperties';
+import { CssDeclarations } from './types/CssDeclarations';
 
 export type KeyframesArgs = {
   id: string;
-  from: CssProperties;
-  to: CssProperties;
+  from: CssDeclarations;
+  to: CssDeclarations;
 };
 
 export const keyframes = ({ id, from, to }: KeyframesArgs): AtRule => ({
@@ -14,18 +14,18 @@ export const keyframes = ({ id, from, to }: KeyframesArgs): AtRule => ({
     {
       type: 'style',
       selectors: ['from'],
-      properties: from,
+      declarations: from,
     },
     {
       type: 'style',
       selectors: ['to'],
-      properties: to,
+      declarations: to,
     },
   ],
   allowRtl: false,
 });
 
-export const fontFace = (properties: CssProperties): AtRule => ({
+export const fontFace = (properties: CssDeclarations): AtRule => ({
   type: 'at',
   rule: `@font-face`,
   properties,

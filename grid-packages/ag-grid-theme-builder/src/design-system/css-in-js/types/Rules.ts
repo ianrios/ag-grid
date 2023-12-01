@@ -1,4 +1,4 @@
-import { CssProperties, CssPropertiesValue } from './CssProperties';
+import { CssDeclarations, CssPropertiesValue } from './CssDeclarations';
 import { GridClassName } from './GridClassName';
 
 export type TopLevelRules = SelectorRules & AtRules;
@@ -11,7 +11,7 @@ export type Selector =
   | PseudoElementSelector
   | Element
   | Special;
-export type SelectorValue = (CssProperties & SelectorRules) | null | undefined;
+export type SelectorValue = (CssDeclarations & SelectorRules) | null | undefined;
 
 export type SelectorRules = {
   readonly [K in Selector]?: SelectorValue;
@@ -56,14 +56,14 @@ export type PseudoElementSelector =
 
 export type AtRules = {
   '@keyframes'?: KeyframesRule;
-  '@font-face'?: CssProperties;
+  '@font-face'?: CssDeclarations;
   '@media'?: MediaRule;
 };
 
 export type KeyframesRule = {
   id: string;
-  from: CssProperties;
-  to: CssProperties;
+  from: CssDeclarations;
+  to: CssDeclarations;
 };
 
 export type MediaRule = {
