@@ -1,9 +1,5 @@
 import { expect, test } from 'vitest';
-import { el, firstChild, focus, nthChild, selector } from './style-rule';
-
-Next up:
-
-el and ag proxies
+import { $not, ag, el, firstChild, focus, not, nthChild, selector } from './style-rule';
 
 test('selector', () => {
   expectSelector(selector('.foo')).toBe('.foo');
@@ -29,6 +25,11 @@ test('selector is', () => {
   expectSelector(selector('.foo').is(selector('[la]', 'la'))).toBe('.foo:is([la], la)');
 });
 
+test('not', () => {
+  expectSelector(not(selector('.foo'))).toBe(':not(.foo)');
+  expectSelector($not(selector('.foo'))).toBe(':not(.foo)');
+});
+
 test('selector not', () => {
   expectSelector(selector('.foo').not(selector('bar'))).toBe('.foo:not(bar)');
   expectSelector(selector('.foo').not(focus)).toBe('.foo:not(:focus)');
@@ -37,6 +38,11 @@ test('selector not', () => {
 test('element selectors', () => {
   expectSelector(el.input).toBe('input');
   expectSelector(el.input.is(firstChild)).toBe('input:first-child');
+});
+
+test('ag class selectors', () => {
+  expectSelector(ag.root).toBe('.ag-root');
+  expectSelector(ag.rootWrapper.is(firstChild)).toBe('.ag-root-wrapper:first-child');
 });
 
 test('pseudo-class selectors', () => {

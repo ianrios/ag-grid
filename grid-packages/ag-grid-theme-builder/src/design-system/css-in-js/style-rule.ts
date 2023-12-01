@@ -1,7 +1,8 @@
 import { StyleRule } from './render';
 import { CssDeclarations } from './types/CssDeclarations';
 import { ElementName } from './types/ElementName';
-import { PseudoClass } from './types/PseudoClass';
+import { GridClassName } from './types/GridClassName';
+import { toKebabCase } from './utils';
 
 export type JoinableStyleRule = StyleRule & {
   tightJoin: boolean;
@@ -73,30 +74,27 @@ const _selector = (tightJoin: boolean, selectors: string[]): Selector => {
 export const selector = (...selectors: string[]) => _selector(false, selectors);
 export const $selector = (...selectors: string[]) => _selector(true, selectors);
 
-const pseudoClassSelectors = (selector: string) => [
-  _selector(false, [selector]),
-  _selector(true, [selector]),
-  _selector(false, [`:not(${selector})`]),
-  _selector(true, [`:not(${selector})`]),
-];
+const looseAndTightSelector = (name: string) => [_selector(false, [name]), _selector(true, [name])];
 
-export const [active, $active, notActive, $notActive] = pseudoClassSelectors(':active');
-export const [disabled, $disabled, notDisabled, $notDisabled] = pseudoClassSelectors(':disabled');
-export const [firstChild, $firstChild, notFirstChild, $notFirstChild] =
-  pseudoClassSelectors(':first-child');
-export const [lastChild, $lastChild, notLastChild, $notLastChild] =
-  pseudoClassSelectors(':last-child');
-export const [firstOfType, $firstOfType, notFirstOfType, $notFirstOfType] =
-  pseudoClassSelectors(':first-of-type');
-export const [focus, $focus] = pseudoClassSelectors(':focus');
-export const [focusVisible, $focusVisible] = pseudoClassSelectors(':focusVisible');
-export const [focusWithin, $focusWithin] = pseudoClassSelectors(':focusWithin');
-export const [hover, $hover] = pseudoClassSelectors(':hover');
-export const [invalid, $invalid] = pseudoClassSelectors(':invalid');
+export const [active, $active] = looseAndTightSelector(':active');
+export const [disabled, $disabled] = looseAndTightSelector(':disabled');
+export const [firstChild, $firstChild] = looseAndTightSelector(':first-child');
+export const [lastChild, $lastChild] = looseAndTightSelector(':last-child');
+export const [firstOfType, $firstOfType] = looseAndTightSelector(':first-of-type');
+export const [focus, $focus] = looseAndTightSelector(':focus');
+export const [focusVisible, $focusVisible] = looseAndTightSelector(':focusVisible');
+export const [focusWithin, $focusWithin] = looseAndTightSelector(':focusWithin');
+export const [hover, $hover] = looseAndTightSelector(':hover');
+export const [invalid, $invalid] = looseAndTightSelector(':invalid');
 
-const _nthChild = (tightJoin: boolean) => (n: number) => _selector(tightJoin, [`:nth-child(${n})`]);
-export const nthChild = _nthChild(true);
-export const $nthChild = _nthChild(false);
+const selectorWithArg = (tightJoin: boolean, name: string) => (n: number) =>
+  _selector(tightJoin, [`${name}(${n})`]);
+
+export const nthChild = selectorWithArg(false, ':nth-child');
+export const $nthChild = selectorWithArg(true, ':nth-child');
+
+export const not = ({ selectors }: Selector) => _selector(false, [`:not(${selectors.join(', ')})`]);
+export const $not = ({ selectors }: Selector) => _selector(true, [`:not(${selectors.join(', ')})`]);
 
 const selectorProxy = <T extends string>(
   tightJoin: boolean,
@@ -113,14 +111,12 @@ const selectorProxy = <T extends string>(
   });
 };
 
-// export const ag = selectorDslFactory<GridClassName>(false, false);
-export const el = selectorProxy<ElementName | PseudoClass>(false);
-export const $el = selectorProxy<ElementName | PseudoClass>(true);
-// export const $ag = selectorDslFactory<GridClassName>(true, false);
-// export const $el = selectorDslFactory<ElementName | PseudoClass>(true, true);
+export const el = selectorProxy<ElementName>(false);
+export const $el = selectorProxy<ElementName>(true);
 
-// export const any = (...selectors: ReadonlyArray<HasSelectors>) =>
-//   selectorDsl(false, false, selectors.map((s) => s.selectors).flat());
+const toAgClassName = (name: string) => '.ag-' + toKebabCase(name);
+export const ag = selectorProxy<GridClassName>(false, toAgClassName);
+export const $ag = selectorProxy<GridClassName>(true, toAgClassName);
 
 const flattenStyleRules = (
   parent: JoinableStyleRule,
