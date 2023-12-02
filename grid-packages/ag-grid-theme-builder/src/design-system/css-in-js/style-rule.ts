@@ -47,18 +47,23 @@ const _selector = (tightJoin: boolean, selectors: string[]): Selector => {
   };
   const api: SelectorAPI = {
     selectors,
-    is: (...others) => appendPseudo(others, 'is'),
-    not: (...others) => appendPseudo(others, 'not'),
-  };
-
-  const appendPseudo = (others: HasSelectors[], pseudoClass: string) => {
-    const joined = others.map((o) => o.selectors.join(', ')).join(', ');
-    if (pseudoClass === 'is' && /^\W\S*$/.test(joined)) {
-      // special case, if it's possible to append the selector directly do so, e.g.
-      // element.is(focus) becomes "element:focus" not element:is(:focus)
-      return append(joined);
-    }
-    return append(`:${pseudoClass}(${joined})`);
+    is: (...others) => {
+      let suffix = '';
+      for (const { selectors } of others) {
+        for (const selector of selectors) {
+          if (/^\W/.test(selector)) {
+            suffix += selector;
+          } else {
+            suffix += `:is(${selector})`;
+          }
+        }
+      }
+      return append(suffix);
+    },
+    not: (...others) => {
+      const joined = others.map((o) => o.selectors.join(', ')).join(', ');
+      return append(`:not(${joined})`);
+    },
   };
 
   const append = (suffix: string) =>
