@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { ColorExpression, literal, px, solid } from '.';
+import { px, solid } from '.';
 import { fontFace, keyframes, media } from './at-rules';
 import { renderRules } from './render';
 import * as dsl from './style-rule';
@@ -10,32 +10,32 @@ const { el, ag, $ag } = dsl as any;
 test(`Render nested rules with tight and loose joining`, () => {
   const rules = el.root(
     {
-      content: literal('base'),
+      content: 'base',
     },
 
     ag.a(
       {
-        content: literal('loose'),
+        content: 'loose',
       },
 
       ag.b({
-        content: literal('loose loose'),
+        content: 'loose loose',
       }),
       $ag.c({
-        content: literal('loose tight'),
+        content: 'loose tight',
       }),
     ),
 
     $ag.d(
       {
-        content: literal('tight'),
+        content: 'tight',
       },
 
       ag.e({
-        content: literal('tight loose'),
+        content: 'tight loose',
       }),
       $ag.f({
-        content: literal('tight tight'),
+        content: 'tight tight',
       }),
     ),
   );
@@ -68,19 +68,19 @@ test(`Render nested rules with tight and loose joining`, () => {
 test(`Render nested rules with selector product`, () => {
   const rules = dsl.is(el.a, el.b)(
     {
-      content: literal('ab content'),
+      content: 'ab content',
     },
 
     dsl.is(el.c, el.d)(
       {
-        content: literal('cd content'),
+        content: 'cd content',
       },
 
       dsl.is(
         el.e,
         el.f,
       )({
-        content: literal('ef content'),
+        content: 'ef content',
       }),
     ),
   );
@@ -101,13 +101,13 @@ test(`Render nested rules with selector product`, () => {
 test(`Render nested rules`, () => {
   const rules = ag.root(
     {
-      content: literal('root content'),
+      content: 'root content',
     },
     ag.active({
-      content: literal('active content'),
+      content: 'active content',
     }),
     ag.active.is(ag.rootWrapper)({
-      content: literal('active root wrapper content'),
+      content: 'active root wrapper content',
     }),
   );
   expect(renderRules(rules)).toMatchInlineSnapshot(`
@@ -171,7 +171,7 @@ test(`Render RTL versions`, () => {
 
 test(`Render a compound property value`, () => {
   const rules = el.a({
-    border: [solid, px(1), red],
+    border: [solid, px(1), 'red'],
   });
   expect(renderRules(rules)).toMatchInlineSnapshot(`
     "a {
@@ -183,7 +183,7 @@ test(`Render a compound property value`, () => {
 
 test(`RTL rules don't apply to property names`, () => {
   const rules = el.leading({
-    color: red,
+    color: 'red',
   });
   expect(renderRules(rules)).toMatchInlineSnapshot(`
     "leading {
@@ -195,9 +195,9 @@ test(`RTL rules don't apply to property names`, () => {
 
 test(`Convert browser prefixed property names`, () => {
   const rules = el.a({
-    WebkitOverflowScrolling: literal('x'),
-    MsOverflowStyle: literal('y'),
-    MozAppearance: literal('z'),
+    WebkitOverflowScrolling: 'x',
+    MsOverflowStyle: 'y',
+    MozAppearance: 'z',
   });
   expect(renderRules(rules)).toMatchInlineSnapshot(`
     "a {
@@ -213,11 +213,11 @@ test(`Render @keyframes blocks`, () => {
   const rule = keyframes({
     id: 'my-id',
     from: {
-      color: red,
+      color: 'red',
       paddingAlwaysLeft: px(1),
     },
     to: {
-      color: green,
+      color: 'green',
       paddingAlwaysLeft: px(2),
     },
   });
@@ -240,11 +240,11 @@ test(`@keyframes block throws error with RTL styles`, () => {
   const rule = keyframes({
     id: 'my-id',
     from: {
-      color: red,
+      color: 'red',
       paddingLeading: px(1),
     },
     to: {
-      color: green,
+      color: 'green',
       paddingTrailing: px(2),
     },
   });
@@ -255,9 +255,9 @@ test(`@keyframes block throws error with RTL styles`, () => {
 
 test(`Render @font-face blocks`, () => {
   const rule = fontFace({
-    fontFamily: literal('monospace'),
-    src: literal('url(./some-url)'),
-    fontWeight: literal('bold'),
+    fontFamily: 'monospace',
+    src: 'url(./some-url)',
+    fontWeight: 'bold',
   });
   expect(renderRules([rule])).toMatchInlineSnapshot(`
     "@font-face {
@@ -275,11 +275,11 @@ test(`Render @media blocks`, () => {
     rules: [
       el.one(
         {
-          color: red,
+          color: 'red',
           paddingAlwaysLeft: px(1),
         },
         el.two({
-          color: blue,
+          color: 'blue',
           paddingLeading: px(2),
         }),
       ),
@@ -304,7 +304,3 @@ test(`Render @media blocks`, () => {
     "
   `);
 });
-
-const red = literal('red') as unknown as ColorExpression;
-const green = literal('green') as unknown as ColorExpression;
-const blue = literal('blue') as unknown as ColorExpression;

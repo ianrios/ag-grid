@@ -1,3 +1,4 @@
+import * as css from 'csstype';
 import { AtRule, StyleRule } from './render';
 import { CssDeclarations } from './types/CssDeclarations';
 
@@ -25,7 +26,7 @@ export const keyframes = ({ id, from, to }: KeyframesArgs): AtRule => ({
   allowRtl: false,
 });
 
-export const fontFace = (properties: CssDeclarations): AtRule => ({
+export const fontFace = (properties: css.AtRule.FontFace): AtRule => ({
   type: 'at',
   rule: `@font-face`,
   properties,
