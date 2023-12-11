@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest';
-import { $not, ag, el, firstChild, focus, is, not, nthChild, selector } from './style-rule';
+import { $not, ag, el, firstChild, focus, is, not, nthChild } from './style-rule';
 
 test('selector', () => {
-  expectSelector(selector('.foo')).toBe('.foo');
-  expectSelector(selector('.foo', 'bar')).toBe('.foo, bar');
+  expectSelector(is('.foo')).toBe('.foo');
+  expectSelector(is('.foo', 'bar')).toBe('.foo, bar');
 });
 
 test('element selectors', () => {
@@ -12,29 +12,23 @@ test('element selectors', () => {
 });
 
 test('selector is', () => {
-  expectSelector(selector('.foo').is(selector('bar'))).toBe('.foo:is(bar)');
-  expectSelector(selector('.foo').is(selector('bar', 'baz'))).toBe('.foo:is(bar):is(baz)');
-  expectSelector(selector('.foo').is(selector('bar')).is(selector('baz'))).toBe(
-    '.foo:is(bar):is(baz)',
-  );
+  expectSelector(is('.foo').is(is('bar'))).toBe('.foo:is(bar)');
+  expectSelector(is('.foo').is(is('bar', 'baz'))).toBe('.foo:is(bar):is(baz)');
+  expectSelector(is('.foo').is(is('bar')).is(is('baz'))).toBe('.foo:is(bar):is(baz)');
   // special case,
-  expectSelector(selector('.foo').is(selector('.bar'))).toBe('.foo.bar');
-  expectSelector(selector('.foo').is(selector(':quux'))).toBe('.foo:quux');
-  expectSelector(selector('.foo').is(selector('[la]'))).toBe('.foo[la]');
+  expectSelector(is('.foo').is(is('.bar'))).toBe('.foo.bar');
+  expectSelector(is('.foo').is(is(':quux'))).toBe('.foo:quux');
+  expectSelector(is('.foo').is(is('[la]'))).toBe('.foo[la]');
 
-  expectSelector(selector('.foo').is(selector('[la]', 'la'))).toBe('.foo[la]:is(la)');
-  expectSelector(selector('.foo').is(selector('.a', '.b'), selector('.c', '.d'))).toBe(
-    '.foo.a.b.c.d',
-  );
+  expectSelector(is('.foo').is(is('[la]', 'la'))).toBe('.foo[la]:is(la)');
+  expectSelector(is('.foo').is(is('.a', '.b'), is('.c', '.d'))).toBe('.foo.a.b.c.d');
 });
 
 test('selector not', () => {
-  expectSelector(selector('.foo').not(selector('bar'))).toBe('.foo:not(bar)');
-  expectSelector(selector('.foo').not(selector('bar', 'baz'))).toBe('.foo:not(bar, baz)');
-  expectSelector(selector('.foo').not(selector('.a', '.b'), selector('.c', '.d'))).toBe(
-    '.foo:not(.a, .b, .c, .d)',
-  );
-  expectSelector(selector('.foo').not(focus)).toBe('.foo:not(:focus)');
+  expectSelector(is('.foo').not('bar')).toBe('.foo:not(bar)');
+  expectSelector(is('.foo').not('bar', 'baz')).toBe('.foo:not(bar, baz)');
+  expectSelector(is('.foo').not('.a', '.b', is('.c', '.d'))).toBe('.foo:not(.a, .b, .c, .d)');
+  expectSelector(is('.foo').not(focus)).toBe('.foo:not(:focus)');
 });
 
 test('top level is', () => {
@@ -43,8 +37,8 @@ test('top level is', () => {
 });
 
 test('top level not', () => {
-  expectSelector(not(selector('.foo'))).toBe(':not(.foo)');
-  expectSelector($not(selector('.foo'))).toBe(':not(.foo)');
+  expectSelector(not(is('.foo'))).toBe(':not(.foo)');
+  expectSelector($not(is('.foo'))).toBe(':not(.foo)');
 });
 
 test('element selectors', () => {
@@ -64,9 +58,9 @@ test('pseudo-class selectors', () => {
 });
 
 test('appending to multiple selectors', () => {
-  expectSelector(selector('a', 'b')).toBe('a, b');
-  expectSelector(selector('a', 'b').is(selector('.foo'))).toBe('a.foo, b.foo');
-  expectSelector(selector('a', 'b').is(selector('.foo', '.bar'))).toBe('a.foo.bar, b.foo.bar');
+  expectSelector(is('a', 'b')).toBe('a, b');
+  expectSelector(is('a', 'b').is(is('.foo'))).toBe('a.foo, b.foo');
+  expectSelector(is('a', 'b').is(is('.foo', '.bar'))).toBe('a.foo.bar, b.foo.bar');
 });
 
 const expectSelector = ({ selectors }: { selectors: string[] }) => expect(selectors.join(', '));

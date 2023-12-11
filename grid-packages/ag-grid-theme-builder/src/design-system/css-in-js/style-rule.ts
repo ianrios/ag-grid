@@ -12,6 +12,11 @@ export type HasSelectors = {
   selectors: string[];
 };
 
+export type SelectorMethods = {
+  is(...selector: ManySelectors): SelectorAPI;
+  not(...selector: ManySelectors): SelectorAPI;
+};
+
 export type SelectorCall = {
   (
     first: CssDeclarations | JoinableStyleRule[],
@@ -19,14 +24,9 @@ export type SelectorCall = {
   ): JoinableStyleRule[];
 };
 
-export type SelectorAPI = HasSelectors & {
-  is(...selector: HasSelectors[]): Selector;
-  not(...selector: HasSelectors[]): Selector;
-};
+export type SelectorAPI = HasSelectors & SelectorMethods & SelectorCall;
 
-export type Selector = SelectorCall & SelectorAPI;
-
-const _selector = (tightJoin: boolean, selectors: string[]): Selector => {
+const _selector = (tightJoin: boolean, selectors: string[]): SelectorAPI => {
   const call: SelectorCall = (first, ...rest) => {
     let declarations: CssDeclarations;
     let nestedRules: JoinableStyleRule[][];
@@ -45,23 +45,20 @@ const _selector = (tightJoin: boolean, selectors: string[]): Selector => {
     };
     return flattenStyleRules(parentRule, nestedRules);
   };
-  const api: SelectorAPI = {
-    selectors,
+  const methods: SelectorMethods = {
     is: (...others) => {
       let suffix = '';
-      for (const { selectors } of others) {
-        for (const selector of selectors) {
-          if (/^\W/.test(selector)) {
-            suffix += selector;
-          } else {
-            suffix += `:is(${selector})`;
-          }
+      for (const selector of flatten(others)) {
+        if (/^\W/.test(selector)) {
+          suffix += selector;
+        } else {
+          suffix += `:is(${selector})`;
         }
       }
       return append(suffix);
     },
     not: (...others) => {
-      const joined = others.map((o) => o.selectors.join(', ')).join(', ');
+      const joined = flatten(others).join(', ');
       return append(`:not(${joined})`);
     },
   };
@@ -72,12 +69,23 @@ const _selector = (tightJoin: boolean, selectors: string[]): Selector => {
       selectors.map((s) => s + suffix),
     );
 
-  const self: Selector = Object.assign(call, api);
-  return self;
+  return Object.assign(call, { selectors }, methods);
 };
 
-export const selector = (...selectors: string[]) => _selector(false, selectors);
-export const $selector = (...selectors: string[]) => _selector(true, selectors);
+type ManySelectors = ReadonlyArray<string | string[] | HasSelectors>;
+
+const flatten = (selectors: ManySelectors): string[] =>
+  selectors.flatMap((item) =>
+    typeof item !== 'string' && 'selectors' in item ? item.selectors : item,
+  );
+
+export const is = (...selectors: ManySelectors) => _selector(false, flatten(selectors));
+export const $is = (...selectors: ManySelectors) => _selector(true, flatten(selectors));
+
+export const not = (...selectors: ManySelectors) =>
+  _selector(false, [`:not(${flatten(selectors).join(', ')})`]);
+export const $not = (...selectors: ManySelectors) =>
+  _selector(true, [`:not(${flatten(selectors).join(', ')})`]);
 
 const looseAndTightSelector = (name: string) => [_selector(false, [name]), _selector(true, [name])];
 
@@ -92,24 +100,13 @@ export const [focusWithin, $focusWithin] = looseAndTightSelector(':focusWithin')
 export const [hover, $hover] = looseAndTightSelector(':hover');
 export const [invalid, $invalid] = looseAndTightSelector(':invalid');
 
-const selectorWithArg = (tightJoin: boolean, name: string) => (n: number) =>
-  _selector(tightJoin, [`${name}(${n})`]);
-
-export const nthChild = selectorWithArg(false, ':nth-child');
-export const $nthChild = selectorWithArg(true, ':nth-child');
-
-export const not = ({ selectors }: Selector) => _selector(false, [`:not(${selectors.join(', ')})`]);
-export const $not = ({ selectors }: Selector) => _selector(true, [`:not(${selectors.join(', ')})`]);
-
-export const is = (...selectors: Selector[]) =>
-  _selector(false, selectors.map((s) => s.selectors).flat());
-export const $is = (...selectors: Selector[]) =>
-  _selector(true, selectors.map((s) => s.selectors).flat());
+export const nthChild = (n: number) => _selector(false, [`:nth-child(${n})`]);
+export const $nthChild = (n: number) => _selector(true, [`:nth-child(${n})`]);
 
 const selectorProxy = <T extends string>(
   tightJoin: boolean,
   mapper?: (s: string) => string,
-): Record<T, Selector> => {
+): Record<T, SelectorAPI> => {
   return new Proxy({} as any, {
     get: (_, prop) => {
       prop = String(prop);
