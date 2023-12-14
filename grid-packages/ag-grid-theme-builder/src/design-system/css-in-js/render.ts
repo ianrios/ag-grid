@@ -17,9 +17,14 @@ export type AtRule = {
   allowRtl: boolean;
 };
 
-export const renderRules = (rules: Rule[]): string => {
+export const renderRules = (rules: Rule[] | Rule[][]): string => {
   const output: string[] = [];
+  rules = rules.flat();
   for (const rule of rules) {
+    if (rule.type !== 'at' && rule.type !== 'style') {
+      console.error('Invalid rule:', rule);
+      throw new Error('Invalid rule, see console');
+    }
     switch (rule.type) {
       case 'style':
         emitStyleRule(output, rule);

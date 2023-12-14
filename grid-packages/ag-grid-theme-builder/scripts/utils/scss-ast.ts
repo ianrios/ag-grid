@@ -1,69 +1,59 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { Node, parse, stringify } from 'scss-parser';
+import { parse, stringify } from 'scss-parser';
 
-type FileContent = {
+type Node = any;
+
+export type FileContent = {
   type: 'file-content';
   nodes: ParsedNode[];
 };
 
-type ParsedNode = StyleRule | AtRule | PropertyDeclaration | LineComment | Include;
+export type ParsedNode = StyleRule | PropertyDeclaration | LineComment | Include | TodoBlock;
 
-type StyleRule = {
+export type StyleRule = {
   type: 'style-rule';
   selectors: string[];
   children: ParsedNode[];
 };
 
-type AtRule = {
-  type: 'at-rule';
-  rule: string;
-  children: ParsedNode[];
-};
-
-type PropertyDeclaration = {
+export type PropertyDeclaration = {
   type: 'property';
   name: string;
   value: string;
   comment?: string;
 };
 
-type Include = {
+export type Include = {
   type: 'include';
   mixin: string;
   arguments: Argument[];
   block: ParsedNode[];
 };
 
-type Argument = ValueArgument | ListArgument | MapArgument;
+export type Argument = ValueArgument | ListArgument | MapArgument;
 
-type ValueArgument = {
+export type ValueArgument = {
   type: 'value';
   value: string;
 };
 
-type ListArgument = {
+export type ListArgument = {
   type: 'list';
   value: string[];
 };
 
-type MapArgument = {
+export type MapArgument = {
   type: 'map';
   value: Record<string, string>;
 };
 
-type LineComment = {
+export type LineComment = {
   type: 'line-comment';
   text: string;
 };
 
-export const parseScssFile = (filePath: string): FileContent => {
-  return parseScssString(
-    fs.readFileSync(
-      path.resolve(__dirname, '../../../../grid-community-modules/styles', filePath),
-      'utf8',
-    ),
-  );
+export type TodoBlock = {
+  type: 'todo';
+  scssSource: string;
 };
 
 export const parseScssString = (scssContent: string): FileContent => {
@@ -95,7 +85,8 @@ const collectChildren = (output: ParsedNode[], node: Node) => {
         collectDeclaration(output, child);
         continue;
       default:
-        console.error(nodes);
+        console.error('Context:', nodes);
+        console.error('Source:', stringify(child));
         throw new Error(`Don't know how to handle ${child.type} node`);
     }
   }
@@ -110,6 +101,14 @@ const collectAtRule = (output: ParsedNode[], node: Node) => {
       return collectMixin(output, node);
     case '@include':
       return collectInclude(output, node);
+    case '@for':
+      return collectTodo(output, node);
+    case '@keyframes':
+      return collectTodo(output, node);
+    case '@media':
+      return collectTodo(output, node);
+    case '@each':
+      return collectTodo(output, node);
     default:
       throw new Error(`Don't know how to handle ${atRule}`);
   }
@@ -184,6 +183,13 @@ const collectMixin = (output: ParsedNode[], node: Node) => {
   } else {
     throw new Error(`Don't know how to handle @mixin ${name}`);
   }
+};
+
+const collectTodo = (output: ParsedNode[], node: Node) => {
+  output.push({
+    type: 'todo',
+    scssSource: stringify(node),
+  });
 };
 
 const collectInclude = (output: ParsedNode[], node: Node) => {

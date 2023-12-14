@@ -8,8 +8,8 @@ export type PropertyValue = {
 
 // Built-in, non RTL-aware CSS directional properties
 type NativeDirectionalProperty =
+  | 'left'
   | 'right'
-  | 'bottom'
   // extract keys of StandardProperties that contain directional substrings
   | {
       [K in keyof css.StandardProperties]-?: K extends `${infer _prefix}${
@@ -40,9 +40,13 @@ type RTLAwareDeclarations = Partial<
 
 type AllowObjectPropertyValues<T> = { [K in keyof T]: T[K] | PropertyValue };
 
-export type CssDeclarations = AllowObjectPropertyValues<
-  Omit<css.StandardProperties, NativeDirectionalProperty>
-> &
+type PermittedNonStandardProperties = {
+  MsOverflowStyle?: css.Property.MsOverflowStyle;
+  WebkitOverflowScrolling?: css.Property.WebkitOverflowScrolling;
+};
+
+export type CssDeclarations = PermittedNonStandardProperties &
+  AllowObjectPropertyValues<Omit<css.StandardProperties, NativeDirectionalProperty>> &
   AllowObjectPropertyValues<RTLAwareDeclarations> & {
     /**
      * @deprecated 'left' is not supported, use 'leading' to flip the side in right-to-left mode (this is normally correct) or 'alwaysLeft' in the rare cases were you always want the same side

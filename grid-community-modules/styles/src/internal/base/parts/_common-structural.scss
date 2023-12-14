@@ -222,7 +222,6 @@
     // */
     .ag-header-container,
     .ag-floating-top-container,
-    .ag-body-container,
     .ag-pinned-right-cols-container,
     .ag-center-cols-container,
     .ag-pinned-left-cols-container,
@@ -539,10 +538,6 @@
 
     .ag-column-select-header-filter-wrapper {
         flex: 1 1 auto;
-    }
-
-    .ag-column-select-header-filter {
-        width: 100%;
     }
 
     .ag-column-select-list {
@@ -1726,20 +1721,19 @@
     }
 
     // Default values for themes that do not use the mixins
-    // TODO restore this using calc and a variable
-    // @for $i from 1 to 10 {
-    //     .ag-column-select-indent-#{$i} {
-    //         @include ag.unthemed-rtl(( padding-left: $i * 20px ));
-    //     }
+    @for $i from 1 to 10 {
+        .ag-column-select-indent-#{$i} {
+            @include ag.unthemed-rtl(( padding-left: $i * 20px ));
+        }
 
-    //     .ag-set-filter-indent-#{$i} {
-    //         @include ag.unthemed-rtl(( padding-left: $i * 20px ));
-    //     }
+        .ag-set-filter-indent-#{$i} {
+            @include ag.unthemed-rtl(( padding-left: $i * 20px ));
+        }
 
-    //     .ag-row-group-indent-#{$i} {
-    //         @include ag.unthemed-rtl(( padding-left: $i * 20px ));
-    //     }
-    // }
+        .ag-row-group-indent-#{$i} {
+            @include ag.unthemed-rtl(( padding-left: $i * 20px ));
+        }
+    }
 
     .ag-ltr {
         direction: ltr;

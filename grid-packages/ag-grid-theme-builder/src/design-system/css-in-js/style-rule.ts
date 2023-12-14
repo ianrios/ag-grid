@@ -100,6 +100,12 @@ export const [focusWithin, $focusWithin] = looseAndTightSelector(':focusWithin')
 export const [hover, $hover] = looseAndTightSelector(':hover');
 export const [invalid, $invalid] = looseAndTightSelector(':invalid');
 
+export const [before, $before] = looseAndTightSelector('::before');
+export const [after, $after] = looseAndTightSelector('::after');
+export const [placeholder, $placeholder] = looseAndTightSelector('::placeholder');
+
+export const child = _selector(false, ['> *']);
+
 export const nthChild = (n: number) => _selector(false, [`:nth-child(${n})`]);
 export const $nthChild = (n: number) => _selector(true, [`:nth-child(${n})`]);
 
@@ -118,8 +124,8 @@ const selectorProxy = <T extends string>(
   });
 };
 
-export const el = selectorProxy<ElementName>(false);
-export const $el = selectorProxy<ElementName>(true);
+export const el = selectorProxy<ElementName>(false, toKebabCase);
+export const $el = selectorProxy<ElementName>(true, toKebabCase);
 
 const toAgClassName = (name: string) => '.ag-' + toKebabCase(name);
 export const ag = selectorProxy<GridClassName>(false, toAgClassName);

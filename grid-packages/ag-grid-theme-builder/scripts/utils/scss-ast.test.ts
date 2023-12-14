@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+import * as path from 'path';
 import { expect, test } from 'vitest';
 import { parseScssString } from './scss-ast';
 
@@ -262,9 +264,17 @@ const allFiles = [
   'src/internal/base/_base-variables.scss',
 ];
 
-// test(`Parses codebase`, () => {
-//   for (const file of allFiles) {
-//     console.log('!!!', file);
-//     parseScssFile(file);
-//   }
-// });
+test(`Parses codebase`, () => {
+  for (const file of allFiles) {
+    parseScssFile(file);
+  }
+});
+
+const parseScssFile = (filePath: string) => {
+  return parseScssString(
+    fs.readFileSync(
+      path.resolve(__dirname, '../../../../grid-community-modules/styles', filePath),
+      'utf8',
+    ),
+  );
+};
