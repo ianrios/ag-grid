@@ -8,12 +8,12 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
   ],
-  ignorePatterns: ['dist', '*.cjs', '*.js'],
+  ignorePatterns: ['dist', '*.cjs', '*.js', '*.ts'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['./tsconfig.json'],
+    project: ['./src/tsconfig.json'],
     tsconfigRootDir: __dirname,
   },
   plugins: ['react-refresh'],
@@ -23,6 +23,11 @@ module.exports = {
     'react/prop-types': 'off',
     'no-console': 'warn',
     '@typescript-eslint/require-await': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-unsafe-argument ': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
   },
   settings: {
     react: {

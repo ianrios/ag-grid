@@ -6,14 +6,19 @@ export const mapObjectValues = <T, U>(
 
 export const mapPresentObjectValues = <T, U>(
   input: Record<string, T | null | undefined>,
-  mapper: (value: T) => U,
+  mapper: (value: T) => U | null | undefined,
 ): Record<string, U> =>
   Object.fromEntries(
-    Object.entries(input).flatMap(([key, value]) => (value != null ? [[key, mapper(value)]] : [])),
+    Object.entries(input).flatMap(([key, value]) => {
+      if (value == null) return [];
+      const mappedValue = mapper(value);
+      if (mappedValue == null) return [];
+      return [[key, mappedValue]];
+    }),
   );
 
 export const indexBy = <T, K extends keyof T>(
-  items: ReadonlyArray<T>,
+  items: readonly T[],
   keyProperty: K,
 ): Record<string, T> =>
   Object.fromEntries(items.map((item): [string, T] => [String(item[keyProperty]), item]));
@@ -25,11 +30,14 @@ export type ResultOrError<T> = { ok: true; result: T } | { ok: false; error: str
 export const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
-export const kebabCaseToTitleCase = (variableName: string, prefix?: string) => {
+export const titleCase = (variableName: string, prefix?: string) => {
   if (prefix && variableName.startsWith(prefix)) {
     variableName = variableName.substring(prefix.length);
   }
-  return variableName.replaceAll('-', ' ').replace(/(?:^|\W)+\w/g, (match) => match.toUpperCase());
+  return variableName
+    .replaceAll('-', ' ')
+    .replace(/(?:^|\W)+\w/g, (match) => match.toUpperCase())
+    .replace(/(?<=[a-z])(?=[A-Z])/g, ' ');
 };
 
 export const logErrorMessage = (message: string, error?: unknown) => {
