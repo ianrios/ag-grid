@@ -166,9 +166,9 @@ export const commonRules: Rule[] = [
       flexDirection: 'column',
     },
 
-    is(
-      $ag.layoutNormal,
-      $ag.layoutAutoHeight,
+    $is(
+      ag.layoutNormal,
+      ag.layoutAutoHeight,
     )({
       overflow: 'hidden',
       // was getting some 'shouldn't be there' scrolls, this sorts it out
@@ -365,9 +365,9 @@ export const commonRules: Rule[] = [
           visibility: 'hidden',
         },
 
-        is(
-          $ag.scrollbarScrolling,
-          $ag.scrollbarActive,
+        $is(
+          ag.scrollbarScrolling,
+          ag.scrollbarActive,
         )({
           visibility: 'visible',
           opacity: '1',
@@ -1622,7 +1622,6 @@ export const commonRules: Rule[] = [
   // */
   ag.icon({
     display: 'block',
-    speak: 'none',
   }),
 
   ag.group({

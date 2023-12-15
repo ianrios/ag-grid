@@ -47,6 +47,7 @@ const _selector = (tightJoin: boolean, selectors: string[]): SelectorAPI => {
   };
   const methods: SelectorMethods = {
     is: (...others) => {
+      checkNoTightJoins('is', others);
       let suffix = '';
       for (const selector of flatten(others)) {
         if (/^\W/.test(selector)) {
@@ -58,6 +59,7 @@ const _selector = (tightJoin: boolean, selectors: string[]): SelectorAPI => {
       return append(suffix);
     },
     not: (...others) => {
+      checkNoTightJoins('not', others);
       const joined = flatten(others).join(', ');
       return append(`:not(${joined})`);
     },
@@ -69,7 +71,16 @@ const _selector = (tightJoin: boolean, selectors: string[]): SelectorAPI => {
       selectors.map((s) => s + suffix),
     );
 
-  return Object.assign(call, { selectors }, methods);
+  return Object.assign(call, { selectors }, methods, { tightJoin });
+};
+
+const checkNoTightJoins = (method: string, selectors: ManySelectors) => {
+  const tight = selectors.find((s) => (s as JoinableStyleRule).tightJoin);
+  if (tight) {
+    const selector = flatten([tight])[0];
+    throw new Error(`Can't pass tightly joined selector ${selector} to ${method}(...)`);
+  }
+  return selectors;
 };
 
 type ManySelectors = ReadonlyArray<string | string[] | HasSelectors>;
@@ -79,13 +90,15 @@ const flatten = (selectors: ManySelectors): string[] =>
     typeof item !== 'string' && 'selectors' in item ? item.selectors : item,
   );
 
-export const is = (...selectors: ManySelectors) => _selector(false, flatten(selectors));
-export const $is = (...selectors: ManySelectors) => _selector(true, flatten(selectors));
+export const is = (...selectors: ManySelectors) =>
+  _selector(false, flatten(checkNoTightJoins('is', selectors)));
+export const $is = (...selectors: ManySelectors) =>
+  _selector(true, flatten(checkNoTightJoins('$is', selectors)));
 
 export const not = (...selectors: ManySelectors) =>
-  _selector(false, [`:not(${flatten(selectors).join(', ')})`]);
+  _selector(false, [`:not(${flatten(checkNoTightJoins('not', selectors)).join(', ')})`]);
 export const $not = (...selectors: ManySelectors) =>
-  _selector(true, [`:not(${flatten(selectors).join(', ')})`]);
+  _selector(true, [`:not(${flatten(checkNoTightJoins('$not', selectors)).join(', ')})`]);
 
 const looseAndTightSelector = (name: string) => [_selector(false, [name]), _selector(true, [name])];
 

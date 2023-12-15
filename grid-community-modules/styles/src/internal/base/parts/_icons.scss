@@ -32,7 +32,7 @@
         }
         }
 
-        @each $icon-name, $font-code in $icon-font-codes {
+        @each $icon-name, $font-code in ag.$icon-font-codes {
             .ag-icon-#{$icon-name} {
                 font-family: var(--ag-icon-font-family-#{$icon-name}, var(--ag-icon-font-family));
                 font-weight: var(--ag-icon-font-weight-#{$icon-name}, var(--ag-icon-font-weight));

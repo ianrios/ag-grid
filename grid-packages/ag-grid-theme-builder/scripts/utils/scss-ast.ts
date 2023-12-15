@@ -324,15 +324,3 @@ const stringValue = (node: Node): string => {
 };
 
 const toScss = (node: Node): string => stringify(node).trim();
-
-const logAst = (ast: any) =>
-  console.log(
-    JSON.stringify(
-      ast,
-      (key, value) => {
-        if (key === 'start' || key === 'next') return undefined;
-        return value;
-      },
-      '  ',
-    ),
-  );

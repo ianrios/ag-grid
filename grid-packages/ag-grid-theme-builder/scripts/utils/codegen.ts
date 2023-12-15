@@ -27,7 +27,6 @@ export const generateFileContent = async (file: FileContent) => {
     let formatted = await prettier.format(unformatted, {
       ...(await options),
       parser: 'typescript',
-      //   semi: false,
     });
     formatted = formatted.trim();
     if (formatted.endsWith(';')) {
@@ -96,8 +95,19 @@ const styleRule = (node: StyleRule): string => {
     return noStrings ? `is(${JSON.stringify(selector)})` : JSON.stringify(selector);
   };
   const selectors = node.selectors.map((s) => convertSelector(s));
-  let code =
-    selectors.length === 1 && !hasStringSelectors ? selectors[0] : `is(${selectors.join(', ')})`;
+  let code: string;
+  if (selectors.length === 1 && !hasStringSelectors) {
+    code = selectors[0];
+  } else {
+    const tightJoined = selectors.filter((s) => s.startsWith('$'));
+    if (tightJoined.length === 0) {
+      code = `is(${selectors.join(', ')})`;
+    } else if (tightJoined.length === selectors.length) {
+      code = `$is(${selectors.map((s) => s.substring(1)).join(', ')})`;
+    } else {
+      throw error("Can't handle mixed tight and loose selectors:", selectors);
+    }
+  }
   code += '(';
   let comments: string[] = [];
   const properties: string[] = [];
@@ -127,9 +137,6 @@ const error = (...args: any[]): Error => {
 };
 
 const propertyDeclaration = (node: PropertyDeclaration): string => {
-  if (node.name === 'background-image') {
-    console.error(node);
-  }
   const name = node.name.replace('right', 'always-right').replace('left', 'always-left');
   const cast = node.value.includes('!important') ? ' as any' : '';
   return toCamelCase(name) + ': ' + JSON.stringify(node.value) + cast;
