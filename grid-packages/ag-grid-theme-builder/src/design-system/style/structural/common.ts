@@ -1,5 +1,4 @@
-
-import { $ag, $before, $not, ag, child, is, $is, $placeholder } from 'design-system/css-in-js';
+import { $ag, $before, $is, $not, $placeholder, ag, child, is } from 'design-system/css-in-js';
 import { Rule } from 'design-system/css-in-js/render';
 
 export const commonRules: Rule[] = [
@@ -10,12 +9,12 @@ export const commonRules: Rule[] = [
   // */
   // if we don't do this, then the width and height of the grid would be
   // ignored, as there is no default display for the these custom elements
-  is(
-    'ag-grid',
-    'ag-grid-angular',
-  )({
-    display: 'block',
-  }),
+  // is(
+  //   'ag-grid',
+  //   'ag-grid-angular',
+  // )({
+  //   display: 'block',
+  // }),
 
   ag.hidden({
     display: 'none !important' as any,
@@ -344,47 +343,47 @@ export const commonRules: Rule[] = [
     minHeight: '0',
   }),
 
-  is(ag.bodyHorizontalScroll, ag.bodyVerticalScroll)(
-    {
-      minHeight: '0',
-      minWidth: '0',
-      display: 'flex',
-      position: 'relative',
-    },
+  // is(ag.bodyHorizontalScroll, ag.bodyVerticalScroll)(
+  //   {
+  //     minHeight: '0',
+  //     minWidth: '0',
+  //     display: 'flex',
+  //     position: 'relative',
+  //   },
 
-    $ag.scrollbarInvisible(
-      {
-        position: 'absolute',
-        bottom: '0',
-      },
+  //   $ag.scrollbarInvisible(
+  //     {
+  //       position: 'absolute',
+  //       bottom: '0',
+  //     },
 
-      $ag.appleScrollbar(
-        {
-          opacity: '0',
-          transition: 'opacity 0.4s',
-          visibility: 'hidden',
-        },
+  //     $ag.appleScrollbar(
+  //       {
+  //         opacity: '0',
+  //         transition: 'opacity 0.4s',
+  //         visibility: 'hidden',
+  //       },
 
-        $is(
-          ag.scrollbarScrolling,
-          ag.scrollbarActive,
-        )({
-          visibility: 'visible',
-          opacity: '1',
-        }),
-      ),
-    ),
-  ),
+  //       $is(
+  //         ag.scrollbarScrolling,
+  //         ag.scrollbarActive,
+  //       )({
+  //         visibility: 'visible',
+  //         opacity: '1',
+  //       }),
+  //     ),
+  //   ),
+  // ),
 
   ag.bodyHorizontalScroll(
     {
       width: '100%',
     },
 
-    $ag.scrollbarInvisible({
-      alwaysLeft: '0',
-      alwaysRight: '0',
-    }),
+    // $ag.scrollbarInvisible({
+    //   alwaysLeft: '0',
+    //   alwaysRight: '0',
+    // }),
   ),
 
   ag.bodyVerticalScroll(
@@ -392,27 +391,30 @@ export const commonRules: Rule[] = [
       height: '100%',
     },
 
-    $ag.scrollbarInvisible({
-      top: '0',
-      zIndex: '10',
-      trailing: '0',
-    }),
+    // $ag.scrollbarInvisible({
+    //   top: '0',
+    //   zIndex: '10',
+    //   trailing: '0',
+    // }),
   ),
 
   ag.forceVerticalScroll({
     overflowY: 'scroll !important' as any,
   }),
 
-  is(ag.horizontalLeftSpacer, ag.horizontalRightSpacer)(
+  is(
+    ag.horizontalLeftSpacer,
+    ag.horizontalRightSpacer,
+  )(
     {
       height: '100%',
       minWidth: '0',
       overflowX: 'scroll',
     },
 
-    $ag.scrollerCorner({
-      overflowX: 'hidden',
-    }),
+    // $ag.scrollerCorner({
+    //   overflowX: 'hidden',
+    // }),
   ),
 
   // /**
@@ -1923,4 +1925,3 @@ export const commonRules: Rule[] = [
     }),
   ),
 ].flat();
-  

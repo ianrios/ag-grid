@@ -117,11 +117,19 @@ const emitSelectorsAndProperties = (
   output.push(indent, '}\n');
 };
 
-const renderPropertyName = (jsName: string) => toKebabCase(jsName).replace('always-', '');
+const propertyNameCache = new Map<string, string>();
+
+const renderPropertyName = (jsName: string) => {
+  const cached = propertyNameCache.get(jsName);
+  if (cached) return cached;
+  const cssName = toKebabCase(jsName).replace('always-', '');
+  propertyNameCache.set(jsName, cssName);
+  return cssName;
+};
 
 const renderPropertyValue = (value: unknown): string => {
   if (value == null) return '';
-  if (typeof value === 'string') return value || '""';
+  if (typeof value === 'string') return value;
   if (typeof value === 'number') return String(value);
   if (Array.isArray(value)) {
     return value.map(renderPropertyValue).join(' ');
