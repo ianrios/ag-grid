@@ -23,7 +23,6 @@ export const getGroupColumnDefs = (columns: ColDef[]): ColGroupDef[] => [
     headerName: 'Data',
     children: columns.filter((c) => c.field !== 'make' && c.field !== 'model'),
   },
-  columns.find((c) => c.field === 'model'),
 ];
 
 export const getDeepGroupColumnDefs = (columns: ColDef[]): ColGroupDef[] => [

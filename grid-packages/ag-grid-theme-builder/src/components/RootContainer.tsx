@@ -1,8 +1,7 @@
+import { TrashCan } from '@carbon/icons-react';
 import styled from '@emotion/styled';
-import { Delete } from '@mui/icons-material';
 import { Button } from '@mui/joy';
 import { memo } from 'react';
-import { Tooltip } from 'react-tooltip';
 import { GridPreview } from './GridPreview';
 
 export const RootContainer = memo(() => {
@@ -11,7 +10,7 @@ export const RootContainer = memo(() => {
       <Container>
         <Header>
           <Button
-            startDecorator={<Delete />}
+            startDecorator={<TrashCan />}
             onClick={() => {
               if (confirm('Discard all of your theme customisations?')) {
                 localStorage.clear();
@@ -28,12 +27,6 @@ export const RootContainer = memo(() => {
         <Main>
           <GridPreview />
         </Main>
-        <Tooltip
-          id="theme-builder-tooltip"
-          className="tooltip"
-          place="top"
-          anchorSelect="[data-tooltip-content]"
-        />
       </Container>
     </>
   );

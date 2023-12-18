@@ -1,9 +1,44 @@
+import { AgGridReact } from '@ag-grid-community/react'; // React Grid Logic
 import styled from '@emotion/styled';
 import { withErrorBoundary } from 'components/ErrorBoundary';
-import { memo } from 'react';
+import { installTheme } from 'design-system/theme';
+import { getColumnDefs, getRowData } from 'model/exampleData';
+import { memo, useEffect, useMemo } from 'react';
+
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { AdvancedFilterModule } from '@ag-grid-enterprise/advanced-filter';
+import { ClipboardModule } from '@ag-grid-enterprise/clipboard';
+import { ColumnsToolPanelModule } from '@ag-grid-enterprise/column-tool-panel';
+import { FiltersToolPanelModule } from '@ag-grid-enterprise/filter-tool-panel';
+import { MenuModule } from '@ag-grid-enterprise/menu';
+import { RangeSelectionModule } from '@ag-grid-enterprise/range-selection';
+import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
+
+import { ModuleRegistry } from '@ag-grid-community/core';
+ModuleRegistry.registerModules([
+  ClientSideRowModelModule,
+  AdvancedFilterModule,
+  ClipboardModule,
+  ColumnsToolPanelModule,
+  FiltersToolPanelModule,
+  MenuModule,
+  RangeSelectionModule,
+  RowGroupingModule,
+]);
 
 const GridPreview = () => {
-  return <Wrapper>TODO: restore me</Wrapper>;
+  const columnDefs = useMemo(getColumnDefs, []);
+  const rowData = useMemo(getRowData, []);
+
+  useEffect(() => {
+    installTheme({ name: 'custom' });
+  });
+
+  return (
+    <Wrapper className="ag-theme-custom">
+      <AgGridReact columnDefs={columnDefs} rowData={rowData} />
+    </Wrapper>
+  );
 };
 
 const GridPreviewWrapped = memo(withErrorBoundary(GridPreview));
