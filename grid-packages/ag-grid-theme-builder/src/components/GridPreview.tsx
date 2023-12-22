@@ -1,11 +1,6 @@
-import { AgGridReact } from '@ag-grid-community/react'; // React Grid Logic
-import styled from '@emotion/styled';
-import { withErrorBoundary } from 'components/ErrorBoundary';
-import { installTheme } from 'design-system/theme';
-import { getColumnDefs, getRowData } from 'model/exampleData';
-import { memo, useEffect, useMemo } from 'react';
-
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { ModuleRegistry } from '@ag-grid-community/core';
+import { AgGridReact } from '@ag-grid-community/react';
 import { AdvancedFilterModule } from '@ag-grid-enterprise/advanced-filter';
 import { ClipboardModule } from '@ag-grid-enterprise/clipboard';
 import { ColumnsToolPanelModule } from '@ag-grid-enterprise/column-tool-panel';
@@ -13,8 +8,12 @@ import { FiltersToolPanelModule } from '@ag-grid-enterprise/filter-tool-panel';
 import { MenuModule } from '@ag-grid-enterprise/menu';
 import { RangeSelectionModule } from '@ag-grid-enterprise/range-selection';
 import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
+import styled from '@emotion/styled';
+import { withErrorBoundary } from 'components/ErrorBoundary';
+import { installTheme } from 'design-system/theme';
+import { GridConfig, buildGridOptions } from 'model/grid-options';
+import { memo, useEffect, useMemo } from 'react';
 
-import { ModuleRegistry } from '@ag-grid-community/core';
 ModuleRegistry.registerModules([
   ClientSideRowModelModule,
   AdvancedFilterModule,
@@ -26,17 +25,27 @@ ModuleRegistry.registerModules([
   RowGroupingModule,
 ]);
 
+const gridConfig: GridConfig = {
+  advancedFilter: false,
+  filtersToolPanel: true,
+  columnsToolPanel: true,
+  columnGroups: true,
+  rowGrouping: true,
+  columnResizing: true,
+  rowDrag: true,
+  rowSelection: true,
+};
+
 const GridPreview = () => {
-  const columnDefs = useMemo(getColumnDefs, []);
-  const rowData = useMemo(getRowData, []);
+  const options = useMemo(() => buildGridOptions(gridConfig), []);
 
   useEffect(() => {
     installTheme({ name: 'custom' });
-  });
+  }, []);
 
   return (
     <Wrapper className="ag-theme-custom">
-      <AgGridReact columnDefs={columnDefs} rowData={rowData} />
+      <AgGridReact {...options} />
     </Wrapper>
   );
 };

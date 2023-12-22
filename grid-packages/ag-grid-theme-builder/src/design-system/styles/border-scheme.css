@@ -1,0 +1,187 @@
+:ag-current-theme {
+  .ag-column-drop-horizontal {
+    border-bottom: var(--ag-borders) var(--ag-border-color);
+  }
+
+  .ag-column-drop-horizontal-half-width:not(:last-child) {
+    @include ag.unthemed-rtl((border-right: var(--ag-borders) var(--ag-border-color)));
+  }
+
+  .ag-chart-menu-panel {
+    @include ag.unthemed-rtl((border-left: solid 1px var(--ag-border-color)));
+  }
+
+  .ag-paging-panel {
+    border-top: 1px solid var(--ag-border-color);
+  }
+
+  .ag-status-bar {
+    border-top: var(--ag-borders) var(--ag-border-color);
+  }
+
+  .ag-root-wrapper {
+    border: var(--ag-borders) var(--ag-border-color);
+  }
+
+  /* NOTE: these don't need an RTL version because the "left spacer" is always the one visually on the left */
+  /*rtl:ignore*/
+  .ag-body-horizontal-scroll:not(.ag-scrollbar-invisible) {
+    .ag-horizontal-left-spacer:not(.ag-scroller-corner) {
+      border-right: var(--ag-borders-critical) var(--ag-border-color);
+    }
+
+    .ag-horizontal-right-spacer:not(.ag-scroller-corner) {
+      border-left: var(--ag-borders-critical) var(--ag-border-color);
+    }
+  }
+
+  .ag-floating-top {
+    border-bottom: var(--ag-borders-critical) var(--ag-border-color);
+  }
+
+  .ag-floating-bottom {
+    border-top: var(--ag-borders-critical) var(--ag-border-color);
+  }
+
+  .ag-header,
+  .ag-advanced-filter-header {
+    border-bottom: var(--ag-borders-critical) var(--ag-border-color);
+  }
+
+  .ag-pinned-right-header {
+    border-left: var(--ag-borders-critical) var(--ag-border-color);
+  }
+
+  .ag-pinned-left-header {
+    border-right: var(--ag-borders-critical) var(--ag-border-color);
+  }
+
+  .ag-header-row:not(:first-child) {
+    .ag-header-cell:not(.ag-header-span-height.ag-header-span-total),
+    .ag-header-group-cell.ag-header-group-cell-with-group {
+      border-top: var(--ag-borders-critical) var(--ag-border-color);
+    }
+  }
+
+  /**
+ * GRID
+ */
+
+  .ag-cell {
+    @include ag.unthemed-rtl((border-right: var(--ag-cell-horizontal-border)));
+    @include ag.unthemed-rtl((border-right-width: 1px));
+  }
+
+  .ag-cell.ag-cell-first-right-pinned:not(.ag-cell-range-left):not(.ag-cell-range-single-cell) {
+    border-left: var(--ag-borders-critical) var(--ag-border-color);
+  }
+
+  .ag-cell.ag-cell-last-left-pinned:not(.ag-cell-range-right):not(.ag-cell-range-single-cell) {
+    border-right: var(--ag-borders-critical) var(--ag-border-color);
+  }
+
+  .ag-row {
+    border-bottom: var(--ag-row-border-style) var(--ag-row-border-color) var(--ag-row-border-width);
+  }
+
+  /* sidebar visually on left */
+  .ag-ltr .ag-side-bar-left,
+  .ag-rtl .ag-side-bar-right {
+    border-right: var(--ag-borders) var(--ag-border-color);
+    .ag-tool-panel-wrapper {
+      border-left: var(--ag-borders) var(--ag-border-color);
+    }
+  }
+  /*
+Next up: looks like I'll use CSS variables, at least as an implementation detail. Make
+a list of these to use, with a small number of general ones (perhaps border-color, divider-color)
+and a specific one for each use, but sharing between cases of essentially the same border, so
+horizontal column drop and header row can share header-border-color.
+
+What should the API look like?
+
+borders: [
+  {
+    color: "#000",
+    style: "solid",
+    width: 1,
+    elements: ["header", "divider"]
+  }
+]
+*/
+
+  /* sidebar visually on right */
+  .ag-rtl .ag-side-bar-left,
+  .ag-ltr .ag-side-bar-right {
+    border-left: var(--ag-borders) var(--ag-border-color);
+
+    .ag-tool-panel-wrapper {
+      border-right: var(--ag-borders) var(--ag-border-color);
+    }
+  }
+
+  .ag-dialog {
+    border: var(--ag-borders) var(--ag-border-color);
+  }
+
+  .ag-panel-title-bar {
+    border-bottom: var(--ag-borders) var(--ag-border-color);
+  }
+
+  /**
+ * DIVIDERS
+ */
+
+  .ag-menu-separator-part::after {
+    border-top: var(--ag-borders-critical) var(--ag-border-color);
+  }
+
+  .ag-column-drop-vertical {
+    border-bottom: var(--ag-borders-secondary) var(--ag-secondary-border-color);
+
+    &.ag-last-column-drop {
+      border-bottom: none;
+    }
+  }
+
+  .ag-advanced-filter-builder-button-panel {
+    border-top: var(--ag-borders-secondary) var(--ag-secondary-border-color);
+  }
+
+  .ag-column-select-header {
+    border-bottom: var(--ag-borders-secondary) var(--ag-secondary-border-color);
+  }
+
+  .ag-column-panel-column-select {
+    border-bottom: var(--ag-borders-secondary) var(--ag-secondary-border-color);
+    border-top: var(--ag-borders-secondary) var(--ag-secondary-border-color);
+  }
+
+  /* NOTE: not in quartz */
+  .ag-charts-settings-group-title-bar,
+  .ag-charts-data-group-title-bar,
+  .ag-charts-format-top-level-group-title-bar {
+    border-top: var(--ag-borders-secondary) var(--ag-secondary-border-color);
+  }
+
+  .ag-filter-apply-panel {
+    border-top: var(--ag-borders-secondary) var(--ag-secondary-border-color);
+  }
+
+  /*
+NOTE: was used in balham, probably no longer desirable.
+Maybe we can have a separate Balham border scheme? Or just deprecate it?
+.ag-filter-toolpanel-group-level-0 {
+  border-top: var(--ag-borders-secondary) var(--ag-secondary-border-color);
+}
+
+.ag-filter-toolpanel-instance-filter {
+  border-bottom: var(--ag-borders) var(--ag-border-color);
+  border-top: var(--ag-borders) var(--ag-border-color);
+}
+
+.ag-filter-separator {
+  border-top: var(--ag-borders-critical) var(--ag-border-color);
+}
+*/
+}

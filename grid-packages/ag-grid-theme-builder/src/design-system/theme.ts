@@ -1,4 +1,4 @@
-import { colorScheme, commonStructural, lucideIcons } from './styles';
+import { borderScheme, colorScheme, commonStructural, lucideIcons, reset } from './styles';
 
 export type Theme = {
   name: string;
@@ -12,11 +12,14 @@ export const installTheme = (theme: Theme) => {
     throw new Error('Invalid theme name, use kebab-case and do not include the `ag-theme` prefix');
   }
 
-  const themeCss = [colorScheme(), lucideIcons({ color: '#000', iconSize: 16, strokeWidth: 1.5 })]
+  const themeCss = [
+    reset(),
+    colorScheme(),
+    lucideIcons({ color: '#000', iconSize: 16, strokeWidth: 1.5 }),
+    borderScheme(),
+  ]
     .join('\n\n')
-    .replaceAll('.ag-rtl _theme_', '_theme_ .ag-rtl')
-    .replaceAll('.ag-ltr _theme_', '_theme_ .ag-ltr')
-    .replaceAll('_theme_', `.ag-theme-${themeName}`);
+    .replaceAll(':ag-current-theme', `.ag-theme-${themeName}`);
 
   inject(`theme-${themeName}`, () => themeCss);
 };

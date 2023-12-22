@@ -1,0 +1,25 @@
+:ag-current-theme {
+  /* IMPORTANT! All resets must be scoped to elements with an [class^='ag-'] attribute to
+  avoid messing with custom component styles */
+
+  [class^='ag-'],
+  [class^='ag-']:focus,
+  [class^='ag-']::after,
+  [class^='ag-']::before {
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+  }
+
+  button[class^='ag-'],
+  input[class^='ag-'] {
+    border: none;
+    padding: none;
+    margin: none;
+    background: none;
+  }
+
+  [class^='ag-']::-ms-clear {
+    display: none;
+  }
+}

@@ -27,13 +27,13 @@ export const lucideIcons = ({
   for (const [agName, svgFragment] of Object.entries(agIconNameToSvgFragment)) {
     const svg = svgPrefix + svgFragment + svgSuffix;
     const dataUri = `url(data:image/svg+xml;utf8,${encodeURIComponent(svg)})`;
-    cssParts.push(`_theme_ .ag-icon-${agName} {\n\tbackground-image: ${dataUri}\n}`);
+    cssParts.push(`:ag-current-theme .ag-icon-${agName} {\n\tbackground-image: ${dataUri}\n}`);
   }
 
   return cssParts.join('\n\n');
 };
 
-const iconCss = (size: number) => `_theme_ .ag-icon {
+const iconCss = (size: number) => `:ag-current-theme .ag-icon {
   width: ${size}px;
   height: ${size}px;
   background: transparent center/contain no-repeat;

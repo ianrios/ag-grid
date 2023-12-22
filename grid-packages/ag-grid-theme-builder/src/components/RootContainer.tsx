@@ -47,11 +47,6 @@ const Container = styled('div')`
   }
 `;
 
-const DefaultsElement = styled('div')`
-  position: absolute;
-  transform: translateY(-10);
-`;
-
 const Header = styled('div')`
   grid-area: header;
   display: flex;
