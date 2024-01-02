@@ -1,7 +1,4 @@
-
-
-.ag-root-wrapper-body {
-  }
-
-
-  
+:ag-current-theme {
+  --ag-border-color: #999;
+  --ag-row-border-color: var(--ag-border-color);
+}

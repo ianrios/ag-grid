@@ -1,4 +1,4 @@
-import { borderScheme, colorScheme, commonStructural, lucideIcons, reset } from './styles';
+import { borders, colorScheme, commonStructural, lucideIcons, reset } from './styles';
 
 export type Theme = {
   name: string;
@@ -16,7 +16,7 @@ export const installTheme = (theme: Theme) => {
     reset(),
     colorScheme(),
     lucideIcons({ color: '#000', iconSize: 16, strokeWidth: 1.5 }),
-    borderScheme(),
+    borders(),
   ]
     .join('\n\n')
     .replaceAll(':ag-current-theme', `.ag-theme-${themeName}`);

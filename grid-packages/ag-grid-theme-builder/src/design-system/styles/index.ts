@@ -7,7 +7,7 @@ export const reset = (): string => resetCSS;
 import colorSchemeCSS from './colour-scheme.css?inline';
 export const colorScheme = (): string => colorSchemeCSS;
 
-import borderSchemeCSS from './border-scheme.css?inline';
-export const borderScheme = (): string => borderSchemeCSS;
+export * from './borders';
+// export type { BordersParams } from './borders';
 
 export { lucideIcons } from './lucide-icons';

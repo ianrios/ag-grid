@@ -81,10 +81,10 @@
   .ag-column-drop-vertical {
     min-height: 50px;
 
-    // border-bottom: var(--ag-borders-secondary) var(--ag-secondary-border-color);
-    // &.ag-last-column-drop {
-    //     border-bottom: none;
-    // }
+    border-bottom: var(--ag-borders-secondary) var(--ag-secondary-border-color);
+    &.ag-last-column-drop {
+      border-bottom: none;
+    }
   }
 
   .ag-column-drop-vertical-icon {

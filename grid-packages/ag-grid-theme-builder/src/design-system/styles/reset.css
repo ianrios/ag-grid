@@ -1,6 +1,10 @@
 :ag-current-theme {
-  /* IMPORTANT! All resets must be scoped to elements with an [class^='ag-'] attribute to
-  avoid messing with custom component styles */
+  line-height: normal;
+
+  /**
+   * These resets are scoped to elements with an [class^='ag-'] attribute to
+   * avoid messing with custom component styles
+   */
 
   [class^='ag-'],
   [class^='ag-']:focus,
@@ -17,6 +21,11 @@
     padding: none;
     margin: none;
     background: none;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    line-height: inherit;
   }
 
   [class^='ag-']::-ms-clear {
