@@ -679,6 +679,31 @@ ag-grid-aurelia {
 .ag-row {
   white-space: nowrap;
   width: 100%;
+  height: var(--ag-row-height, 26px);
+  /* Work out the correct line height so that in the common case of single-line
+  cell content within a default height row, the content is vertically centred. */
+  --ag-internal-content-line-height: min(
+    /* In general, content should be just big enough to fit into the default row height. */
+      calc(var(--ag-row-height, 26px) - 1px),
+    /* But if variable row heights are enabled, --ag-line-height indicates the
+      actual height of the current row, and we should not allow the line height to
+      be bigger than this otherwise content will not fit.  */
+      var(--ag-line-height, 1000px)
+  );
+}
+
+.ag-cell,
+.ag-full-width-row .ag-cell-wrapper.ag-row-group {
+  /* There is always a 1px border around cells, defaulting to transparent to
+  avoid layout shift when we add a selection border. */
+  border: 1px solid transparent;
+  line-height: var(--ag-internal-content-line-height);
+}
+
+.ag-cell-wrapper > *:not(.ag-cell-value):not(.ag-group-value) {
+  /* cell widgets like checkboxes don't respond to line-height, so set their
+  height to vertically centre them */
+  height: var(--ag-internal-content-line-height);
 }
 
 .ag-row-loading {

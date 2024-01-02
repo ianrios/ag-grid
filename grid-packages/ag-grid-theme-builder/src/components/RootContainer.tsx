@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { Button } from '@mui/joy';
 import { memo } from 'react';
 import { GridPreview } from './GridPreview';
+import { SchemesEditor } from './SchemesEditor';
 
 export const RootContainer = memo(() => {
   return (
@@ -22,7 +23,7 @@ export const RootContainer = memo(() => {
           </Button>
         </Header>
         <Menu>
-          <div>MENU</div>
+          <SchemesEditor />
         </Menu>
         <Main>
           <GridPreview />
