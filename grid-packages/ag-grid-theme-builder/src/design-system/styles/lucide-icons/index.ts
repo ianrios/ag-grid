@@ -1,6 +1,6 @@
 import agIconNameToSvgFragment from './lucide-fragments';
 
-export type LucideIconsConfig = {
+export type LucideIconsArgs = {
   color?: string;
   strokeWidth?: number;
   iconSize?: number;
@@ -10,11 +10,11 @@ export const lucideIcons = ({
   color = '#000',
   iconSize = 16,
   strokeWidth = 1.5,
-}: LucideIconsConfig): string => {
+}: LucideIconsArgs): string => {
   const cssParts = [iconCss(iconSize)];
 
   if (/[<>&'"]/.test(color)) {
-    // we're just testing for characters that will break the HTML, not attempting to validate
+    // we're just testing for characters that will break the XML, not attempting to validate
     // the CSS color spec which is pretty huge
     throw new Error(`Expected icon color to be a valid CSS color, got ${JSON.stringify(color)}`);
   }
