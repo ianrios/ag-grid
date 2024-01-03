@@ -9,7 +9,13 @@ import { useState } from 'react';
 
 export const SchemesEditor = () => {
   const [value, setValue] = useState<string | LucideIconsConfig | null>(null);
-  return <SchemesEditorRenderer value={value} onChange={setValue} scheme={lucideIconsScheme} />;
+  const [value2, setValue2] = useState<string | LucideIconsConfig | null>(null);
+  return (
+    <>
+      <SchemesEditorRenderer value={value} onChange={setValue} scheme={lucideIconsScheme} />
+      <SchemesEditorRenderer value={value} onChange={setValue} scheme={lucideIconsScheme} />
+    </>
+  );
 };
 
 type SchemesEditorProps<T extends object> = {

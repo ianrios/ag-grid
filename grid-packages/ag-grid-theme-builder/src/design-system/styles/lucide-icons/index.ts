@@ -1,6 +1,6 @@
 import agIconNameToSvgFragment from './lucide-fragments';
 
-export type LucideIconsArgs = {
+export type LucideIconsParams = {
   color?: string;
   strokeWidth?: number;
   iconSize?: number;
@@ -10,7 +10,7 @@ export const lucideIcons = ({
   color = '#000',
   iconSize = 16,
   strokeWidth = 1.5,
-}: LucideIconsArgs): string => {
+}: LucideIconsParams): string => {
   const cssParts = [iconCss(iconSize)];
 
   if (/[<>&'"]/.test(color)) {
