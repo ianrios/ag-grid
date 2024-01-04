@@ -1,4 +1,5 @@
 import { Checkbox, ListItem } from '@mui/joy';
+import { titleCase } from 'model/utils';
 import { SchemeConfigEditor } from '../schemes-types';
 import { BordersConfig } from './borders-scheme';
 
@@ -46,6 +47,7 @@ function CheckboxPropertyEditor<T>({
       <Checkbox
         checked={!!value[property]}
         onChange={() => onPropertyChange(property, !value[property] as T[typeof property])}
+        label={titleCase(String(property))}
       />
     </ListItem>
   );

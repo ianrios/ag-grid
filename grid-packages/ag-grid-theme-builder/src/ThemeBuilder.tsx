@@ -1,8 +1,7 @@
 import { CssBaseline, CssVarsProvider, extendTheme } from '@mui/joy';
-// import { initStore } from 'atoms/store';
 import { App } from 'components/App';
-// import { Provider } from 'jotai';
-// import { useMemo } from 'react';
+import { Provider, createStore } from 'jotai';
+import { useMemo } from 'react';
 
 const theme = extendTheme({
   components: {
@@ -16,13 +15,13 @@ const theme = extendTheme({
 });
 
 export const ThemeBuilder = () => {
-  // const store = useMemo(initStore, []);
+  const store = useMemo(createStore, []);
   return (
-    // <Provider store={store}>
-    <CssVarsProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </CssVarsProvider>
-    // </Provider>
+    <Provider store={store}>
+      <CssVarsProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </CssVarsProvider>
+    </Provider>
   );
 };

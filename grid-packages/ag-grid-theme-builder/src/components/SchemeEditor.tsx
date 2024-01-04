@@ -1,43 +1,28 @@
 import { ChevronSort, Close, SettingsAdjust, TrashCan } from '@carbon/icons-react';
 import { Dropdown, ListItemButton, Menu, MenuButton, MenuItem } from '@mui/joy';
-import { bordersScheme } from 'features/schemes/borders/borders-scheme';
-import {
-  LucideIconsConfig,
-  lucideIconsScheme,
-} from 'features/schemes/lucide-icons/lucide-icons-scheme';
 import { Scheme, SchemePreset } from 'features/schemes/schemes-types';
-import { useState } from 'react';
+import { useAtom } from 'jotai';
 
-export const SchemesEditor = () => {
-  const [value, setValue] = useState<string | LucideIconsConfig | null>(null);
-  const [value2, setValue2] = useState<string | LucideIconsConfig | null>(null);
-  Next up: mode SchemesEditor to a different file and have one SchemeEditor taking the SchemesEditor, to make useAtomValue easier
-  return (
-    <>
-      <SchemesEditorRenderer value={value} onChange={setValue} scheme={lucideIconsScheme} />
-      <SchemesEditorRenderer value={value} onChange={setValue} scheme={bordersScheme} />
-    </>
-  );
-};
-
-type SchemesEditorProps<T extends object> = {
-  value: string | T | null;
-  onChange: (value: string | T | null) => void;
+type SchemeEditorProps<T extends object> = {
   scheme: Scheme<T>;
 };
 
-export const SchemesEditorRenderer = <C extends object>({
-  value,
-  onChange,
-  scheme,
-}: SchemesEditorProps<C>) => {
+export const SchemeEditor = <C extends object>({ scheme }: SchemeEditorProps<C>) => {
+  const [value, setValue] = useAtom(scheme.atom);
   const selectedPreset = scheme.presets.find((p) => p.id === value);
   const customConfig = typeof value === 'object' ? value : null;
   const EditorComponent = scheme.editorComponent;
+  const PresetPreviewComponent = scheme.presetPreviewComponent;
   return (
     <Dropdown>
       <MenuButton sx={{ gap: 1 }}>
-        {selectedPreset?.preview || (customConfig != null ? customFragment : noneFragment)}
+        {selectedPreset ? (
+          <PresetPreviewComponent {...selectedPreset} />
+        ) : customConfig != null ? (
+          customFragment
+        ) : (
+          noneFragment
+        )}
         <ChevronSort />
       </MenuButton>
       <Menu placement="top-start">
@@ -46,10 +31,10 @@ export const SchemesEditorRenderer = <C extends object>({
             <EditorComponent
               value={customConfig}
               onPropertyChange={(property, propertyValue) =>
-                onChange({ ...customConfig, [property]: propertyValue })
+                setValue({ ...customConfig, [property]: propertyValue })
               }
             />
-            <ListItemButton onClick={() => onChange(defaultPreset(scheme).id)}>
+            <ListItemButton onClick={() => setValue(defaultPreset(scheme).id)}>
               <TrashCan /> Remove customisations
             </ListItemButton>
           </>
@@ -58,18 +43,18 @@ export const SchemesEditorRenderer = <C extends object>({
             {scheme.presets.map((preset) => (
               <MenuItem
                 key={preset.id}
-                onClick={() => onChange(preset.id)}
+                onClick={() => setValue(preset.id)}
                 selected={preset.id === value}
               >
-                {preset.preview}
+                <PresetPreviewComponent {...preset} />
               </MenuItem>
             ))}
             <ListItemButton
-              onClick={() => onChange((selectedPreset || defaultPreset(scheme)).value)}
+              onClick={() => setValue((selectedPreset || defaultPreset(scheme)).value)}
             >
               {customFragment}
             </ListItemButton>
-            <MenuItem onClick={() => onChange(null)} selected={value == null}>
+            <MenuItem onClick={() => setValue(null)} selected={value == null}>
               {noneFragment}
             </MenuItem>
           </>

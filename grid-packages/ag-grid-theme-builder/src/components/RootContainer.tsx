@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Button } from '@mui/joy';
 import { memo } from 'react';
 import { GridPreview } from './GridPreview';
-import { SchemesEditor } from './SchemeEditor';
+import { SchemesEditor } from './SchemesEditor';
 
 export const RootContainer = memo(() => {
   return (

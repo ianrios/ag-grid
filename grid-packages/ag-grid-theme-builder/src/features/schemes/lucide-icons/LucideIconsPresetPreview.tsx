@@ -1,4 +1,8 @@
-export const LucideIconsPreview = (props: { label: string; strokeWidth: number }) => (
+import { titleCase } from 'model/utils';
+import { SchemePreset } from '../schemes-types';
+import { LucideIconsConfig } from './lucide-icons-scheme';
+
+export const LucideIconsPresetPreview = (props: SchemePreset<LucideIconsConfig>) => (
   <>
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -7,7 +11,7 @@ export const LucideIconsPreview = (props: { label: string; strokeWidth: number }
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={(props.strokeWidth * 24) / 16}
+      strokeWidth={(props.value.strokeWidth * 24) / 16}
       strokeLinecap="round"
       strokeLinejoin="round"
     >
@@ -20,7 +24,7 @@ export const LucideIconsPreview = (props: { label: string; strokeWidth: number }
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={(props.strokeWidth * 24) / 16}
+      strokeWidth={(props.value.strokeWidth * 24) / 16}
       strokeLinecap="round"
       strokeLinejoin="round"
     >
@@ -30,6 +34,6 @@ export const LucideIconsPreview = (props: { label: string; strokeWidth: number }
       <path d="M21 18V8a2 2 0 0 0-2-2h-5" />
       <path d="m16 8-2-2 2-2" />
     </svg>
-    {props.label}
+    {titleCase(props.id)}
   </>
 );

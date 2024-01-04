@@ -5,6 +5,7 @@ export type Scheme<TConfig extends object> = {
   atom: PersistentAtom<TConfig | string | null>;
   presets: SchemePreset<TConfig>[];
   editorComponent: SchemeConfigEditor<TConfig>;
+  presetPreviewComponent: SchemeConfigPreview<TConfig>;
 };
 
 export type SchemeConfigEditorProps<T extends object> = {
@@ -14,9 +15,10 @@ export type SchemeConfigEditorProps<T extends object> = {
 
 export type SchemeConfigEditor<T extends object> = React.FC<SchemeConfigEditorProps<T>>;
 
+export type SchemeConfigPreview<T extends object> = React.FC<SchemePreset<T>>;
+
 export type SchemePreset<T> = {
   id: string;
-  preview: React.ReactNode;
   default?: boolean;
   value: T;
 };
