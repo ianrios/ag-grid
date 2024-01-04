@@ -1,46 +1,32 @@
-import { Checkbox, ListItem, Slider } from '@mui/joy';
-import { ColorEditor } from 'features/editors/ColorEditor';
+import { Checkbox, ListItem } from '@mui/joy';
 import { SchemeConfigEditor } from '../schemes-types';
 import { BordersConfig } from './borders-scheme';
 
-Next up: get this working
+const booleanFields = [
+  'outside',
+  'belowHeaders',
+  'aboveFooters',
+  'betweenRows',
+  'betweenColumns',
+  'pinnedRows',
+  'pinnedColumns',
+  'sidePanels',
+] as const;
 
 export const BordersConfigEditor: SchemeConfigEditor<BordersConfig> = ({
   value,
   onPropertyChange,
 }) => (
   <>
-    <ListItem>
-      Size:
-      <Slider
-        value={value.size}
-        min={8}
-        max={32}
-        step={1}
-        onChange={(_, value) => onPropertyChange('size', Array.isArray(value) ? value[0] : value)}
-        valueLabelDisplay="auto"
-        valueLabelFormat={(v) => `${v}px`}
-      />
-      {/* <Checkbox value={props.value.color} /> */}
-    </ListItem>
-    <ListItem>
-      Weight:
-      <Slider
-        value={value.strokeWidth}
-        min={0.1}
-        max={4}
-        step={0.1}
-        onChange={(_, value) =>
-          onPropertyChange('strokeWidth', Array.isArray(value) ? value[0] : value)
-        }
-        valueLabelDisplay="auto"
-        valueLabelFormat={(v) => `${v}px`}
-      />
-      {/* <Checkbox value={props.value.color} /> */}
-    </ListItem>
-    <ListItem>
-      <ColorEditor value={value.color} onChange={(v) => onPropertyChange('color', v)} />
-    </ListItem>
+    {booleanFields.map((field) => (
+      <ListItem key={field}>
+        <CheckboxPropertyEditor<BordersConfig>
+          value={value}
+          property={field}
+          onPropertyChange={onPropertyChange}
+        />
+      </ListItem>
+    ))}
   </>
 );
 

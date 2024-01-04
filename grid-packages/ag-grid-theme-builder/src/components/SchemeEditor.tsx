@@ -1,5 +1,6 @@
 import { ChevronSort, Close, SettingsAdjust, TrashCan } from '@carbon/icons-react';
 import { Dropdown, ListItemButton, Menu, MenuButton, MenuItem } from '@mui/joy';
+import { bordersScheme } from 'features/schemes/borders/borders-scheme';
 import {
   LucideIconsConfig,
   lucideIconsScheme,
@@ -10,10 +11,11 @@ import { useState } from 'react';
 export const SchemesEditor = () => {
   const [value, setValue] = useState<string | LucideIconsConfig | null>(null);
   const [value2, setValue2] = useState<string | LucideIconsConfig | null>(null);
+  Next up: mode SchemesEditor to a different file and have one SchemeEditor taking the SchemesEditor, to make useAtomValue easier
   return (
     <>
       <SchemesEditorRenderer value={value} onChange={setValue} scheme={lucideIconsScheme} />
-      <SchemesEditorRenderer value={value} onChange={setValue} scheme={lucideIconsScheme} />
+      <SchemesEditorRenderer value={value} onChange={setValue} scheme={bordersScheme} />
     </>
   );
 };

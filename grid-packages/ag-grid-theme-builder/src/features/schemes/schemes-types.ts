@@ -1,5 +1,8 @@
+import { PersistentAtom } from 'model/JSONStorage';
+
 export type Scheme<TConfig extends object> = {
   label: string;
+  atom: PersistentAtom<TConfig | string | null>;
   presets: SchemePreset<TConfig>[];
   editorComponent: SchemeConfigEditor<TConfig>;
 };
