@@ -7,7 +7,7 @@ export type Scheme<TParams extends object> = {
   label: string;
   valueAtom: PersistentAtom<SchemeValue<TParams>>;
   presets: SchemePreset<TParams>[];
-  editorComponent: SchemeParamsEditor<TParams>;
+  paramsEditorComponent: SchemeParamsEditor<TParams>;
   presetPreviewComponent: SchemePresetPreview<TParams>;
 };
 

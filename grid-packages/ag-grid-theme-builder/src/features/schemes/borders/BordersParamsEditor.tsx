@@ -43,12 +43,10 @@ function CheckboxPropertyEditor<T>({
   onPropertyChange,
 }: CheckboxPropertyEditorProps<T>) {
   return (
-    <ListItem>
-      <Checkbox
-        checked={!!value[property]}
-        onChange={() => onPropertyChange(property, !value[property] as T[typeof property])}
-        label={titleCase(String(property))}
-      />
-    </ListItem>
+    <Checkbox
+      checked={!!value[property]}
+      onChange={() => onPropertyChange(property, !value[property] as T[typeof property])}
+      label={titleCase(String(property))}
+    />
   );
 }

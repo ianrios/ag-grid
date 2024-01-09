@@ -39,6 +39,6 @@ export const bordersScheme = defineScheme({
       },
     },
   ],
-  editorComponent: BordersConfigEditor,
+  paramsEditorComponent: BordersConfigEditor,
   presetPreviewComponent: BordersPresetPreview,
 });

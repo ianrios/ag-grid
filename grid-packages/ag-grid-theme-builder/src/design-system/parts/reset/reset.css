@@ -18,7 +18,7 @@
   button[class^='ag-'],
   input[class^='ag-'] {
     border: none;
-    padding: none;
+    padding: 0;
     margin: none;
     background: none;
     color: inherit;

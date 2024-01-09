@@ -21,6 +21,6 @@ export const quartzIconsScheme = scheme({
       params: quartzIconsParamsDefaults({ strokeWidth: 2 }),
     },
   ],
-  editorComponent: QuartzIconsParamsEditor,
+  paramsEditorComponent: QuartzIconsParamsEditor,
   presetPreviewComponent: QuartzIconsPresetPreview,
 });

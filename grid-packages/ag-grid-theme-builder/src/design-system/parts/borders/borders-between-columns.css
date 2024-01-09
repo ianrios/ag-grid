@@ -4,5 +4,6 @@
   }
   .ag-cell {
     border-right: solid 1px var(--ag-border-color);
+    border: solid 5px red !important;
   }
 }

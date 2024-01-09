@@ -72,31 +72,36 @@ export const bordersParamsDefaults = (params: BordersParams = {}): Required<Bord
   });
 
 import { ThemePart } from 'design-system/design-system-types';
-import { applyDefaults } from 'design-system/design-system-utils';
-import aboveFootersCSS from './borders-above-footers.css?inline';
-import belowHeadersCSS from './borders-below-headers.css?inline';
-import betweenColumnsCSS from './borders-between-columns.css?inline';
-import betweenRowsCSS from './borders-between-rows.css?inline';
-import outsideCSS from './borders-outside.css?inline';
-import pinnedColumnsCSS from './borders-pinned-columns.css?inline';
-import pinnedRowsCSS from './borders-pinned-rows.css?inline';
-import sidePanelsCSS from './borders-side-panels.css?inline';
+import { applyDefaults, recordEntries } from 'design-system/design-system-utils';
+import aboveFooters from './borders-above-footers.css?inline';
+import belowHeaders from './borders-below-headers.css?inline';
+import betweenColumns from './borders-between-columns.css?inline';
+import betweenRows from './borders-between-rows.css?inline';
+import outside from './borders-outside.css?inline';
+import pinnedColumns from './borders-pinned-columns.css?inline';
+import pinnedRows from './borders-pinned-rows.css?inline';
+import sidePanels from './borders-side-panels.css?inline';
+
+const parts: Record<keyof BordersParams, string> = {
+  aboveFooters,
+  belowHeaders,
+  betweenColumns,
+  betweenRows,
+  outside,
+  pinnedColumns,
+  pinnedRows,
+  sidePanels,
+};
 
 export const borders = (params: BordersParams = {}): ThemePart => {
-  const withDefaults = bordersParamsDefaults(params);
+  let css = '';
+  for (const [name, include] of recordEntries(bordersParamsDefaults(params))) {
+    if (include) {
+      css += `\n/* SUB PART borders > ${name} */\n${parts[name]}`;
+    }
+  }
   return {
-    css: [
-      withDefaults.outside && outsideCSS,
-      withDefaults.belowHeaders && belowHeadersCSS,
-      withDefaults.aboveFooters && aboveFootersCSS,
-      withDefaults.betweenRows && betweenRowsCSS,
-      withDefaults.betweenColumns && betweenColumnsCSS,
-      withDefaults.pinnedRows && pinnedRowsCSS,
-      withDefaults.pinnedColumns && pinnedColumnsCSS,
-      withDefaults.sidePanels && sidePanelsCSS,
-    ]
-      .filter(Boolean)
-      .join('\n'),
+    css,
     variables: {},
   };
 };

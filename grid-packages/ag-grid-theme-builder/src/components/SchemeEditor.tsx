@@ -11,13 +11,15 @@ export const SchemeEditor = <C extends object>({ scheme }: SchemeEditorProps<C>)
   const [value, setValue] = useAtom(scheme.valueAtom);
   const selectedPreset = scheme.presets.find((p) => p.id === value);
   const customParams = typeof value === 'object' ? value : null;
-  const EditorComponent = scheme.editorComponent;
+  const EditorComponent = scheme.paramsEditorComponent;
   const PresetPreviewComponent = scheme.presetPreviewComponent;
   return (
     <Dropdown>
       <MenuButton sx={{ gap: 1 }}>
         {selectedPreset ? (
-          <PresetPreviewComponent {...selectedPreset} />
+          <>
+            <PresetPreviewComponent {...selectedPreset} />
+          </>
         ) : customParams != null ? (
           customFragment
         ) : (

@@ -1,9 +1,9 @@
 @mixin output {
-  .ag-root-wrapper,
-  .ag-sticky-top,
-  .ag-dnd-ghost {
-    background-color: var(--ag-background-color);
-  }
+  // .ag-root-wrapper,
+  // .ag-sticky-top,
+  // .ag-dnd-ghost {
+  //   background-color: var(--ag-background-color);
+  // }
 
   [class*='ag-theme-'] {
     -webkit-font-smoothing: antialiased;

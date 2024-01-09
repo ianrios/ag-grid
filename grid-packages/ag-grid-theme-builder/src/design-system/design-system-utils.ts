@@ -2,9 +2,9 @@ import { ThemePart } from './design-system-types';
 
 export const applyDefaults = <T extends object>(record: T, defaults: Required<T>): Required<T> => {
   const result = { ...defaults };
-  for (const key of Object.keys(record)) {
+  for (const [key, value] of recordEntries(record)) {
     if (key in record) {
-      result[key as keyof T] = record[key as keyof T];
+      result[key] = value;
     }
   }
   return result;
@@ -25,3 +25,12 @@ export const combineThemeParts = (
   }
   return result;
 };
+
+/**
+ * Version of Object.entries typed to allow easy iteration over objects. Callers
+ * must promise that objects passed do not have any additional keys over those
+ * included in the type
+ */
+export const recordEntries = <K extends string | number | symbol, V>(
+  record: Record<K, V>,
+): [K, V][] => Object.entries(record) as [K, V][];

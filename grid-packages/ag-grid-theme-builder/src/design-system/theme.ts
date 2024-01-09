@@ -23,7 +23,11 @@ export const installTheme = (theme: Theme, parts: ThemePart[]) => {
       .join('\n') +
     '\n}';
 
-  css = css.replaceAll(':ag-current-theme', `.ag-theme-${themeName}`);
+  css = css
+    // RTLCSS adds .ag-rtl selectors as ancestors of the theme selector, but it needs to be a descendent
+    .replaceAll('.ag-ltr :ag-current-theme', ':ag-current-theme .ag-ltr')
+    .replaceAll('.ag-rtl :ag-current-theme', ':ag-current-theme .ag-rtl')
+    .replaceAll(':ag-current-theme', `.ag-theme-${themeName}`);
 
   addOrUpdateStyle(`theme-${themeName}`, css);
 };
