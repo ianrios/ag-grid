@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { BordersParams } from 'design-system/styles';
+import { BordersParams } from 'design-system/parts';
 import { titleCase } from 'model/utils';
 import { SchemePreset } from '../schemes-types';
 

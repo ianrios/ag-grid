@@ -1,4 +1,4 @@
-import { quartzIconsParamsDefaults } from 'design-system/styles';
+import { quartzIconsParamsDefaults } from 'design-system/parts';
 import { scheme } from 'features/schemes/schemes-types';
 import { QuartzIconsParamsEditor } from './QuartzIconsParamsEditor';
 import { QuartzIconsPresetPreview } from './QuartzIconsPresetPreview';

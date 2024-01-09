@@ -1,41 +1,41 @@
-import { borders, colorScheme, commonStructural, quartzIcons, reset } from './styles';
+import { ThemePart } from './design-system-types';
+import { combineThemeParts } from './design-system-utils';
+import { commonStructural, reset } from './parts';
 
 export type Theme = {
   name: string;
 };
 
-export const installTheme = (theme: Theme) => {
-  inject('common', commonStructural);
+export const installTheme = (theme: Theme, parts: ThemePart[]) => {
+  addOrUpdateStyle('common', commonStructural());
 
   const themeName = theme.name;
   if (/^(\.|ag-)/.test(themeName) || !/^\w+(-\w+)*$/.test(themeName)) {
     throw new Error('Invalid theme name, use kebab-case and do not include the `ag-theme` prefix');
   }
 
-  const themeCss = [
-    reset(),
-    colorScheme(),
-    quartzIcons({ color: '#000', iconSize: 16, strokeWidth: 1.5 }),
-    borders({
-      belowHeaders: false,
-    }),
-  ]
-    .join('\n\n')
-    .replaceAll(':ag-current-theme', `.ag-theme-${themeName}`);
+  let { css, variables } = combineThemeParts([reset(), ...parts]);
 
-  inject(`theme-${themeName}`, () => themeCss);
+  css +=
+    '\n:ag-current-theme {\n' +
+    Object.entries(variables)
+      .map(([name, value]) => `\t${name}: ${value};`)
+      .join('\n') +
+    '\n}';
+
+  css = css.replaceAll(':ag-current-theme', `.ag-theme-${themeName}`);
+
+  addOrUpdateStyle(`theme-${themeName}`, css);
 };
 
-const inject = (id: string, generate: () => string) => {
+const addOrUpdateStyle = (id: string, css: string) => {
   id = `ag-injected-style-${id}`;
   const head = document.querySelector('head');
   if (!head) throw new Error("Can't inject theme before document head is created");
   let style = head.querySelector(`#${id}`) as HTMLStyleElement;
-  const existing = !!style;
-  if (!existing) {
+  if (!style) {
     style = document.createElement('style');
     style.setAttribute('id', id);
-    style.dataset.agInjectedStyle = '';
     style.setAttribute('data-ag-injected-style', '');
     const others = document.querySelectorAll('head [data-ag-injected-style]');
     if (others.length > 0) {
@@ -49,5 +49,5 @@ const inject = (id: string, generate: () => string) => {
       head.insertBefore(style, head.firstChild);
     }
   }
-  style.textContent = generate();
+  style.textContent = css;
 };

@@ -1,4 +1,4 @@
-import { QuartzIconsParams } from 'design-system/styles';
+import { QuartzIconsParams } from 'design-system/parts';
 import { titleCase } from 'model/utils';
 import { SchemePreset } from '../schemes-types';
 

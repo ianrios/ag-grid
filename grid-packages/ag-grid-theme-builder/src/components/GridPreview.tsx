@@ -11,7 +11,9 @@ import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 import styled from '@emotion/styled';
 import { withErrorBoundary } from 'components/ErrorBoundary';
 import { installTheme } from 'design-system/theme';
+import { useAtomValue } from 'jotai';
 import { GridConfig, buildGridOptions } from 'model/grid-options';
+import { renderedThemeAtom } from 'model/rendered-theme';
 import { memo, useEffect, useMemo } from 'react';
 
 ModuleRegistry.registerModules([
@@ -39,9 +41,11 @@ const gridConfig: GridConfig = {
 const GridPreview = () => {
   const options = useMemo(() => buildGridOptions(gridConfig), []);
 
+  const renderedTheme = useAtomValue(renderedThemeAtom);
+
   useEffect(() => {
-    installTheme({ name: 'custom' });
-  }, []);
+    installTheme({ name: 'custom' }, [renderedTheme]);
+  }, [renderedTheme]);
 
   return (
     <Wrapper className="ag-theme-custom">

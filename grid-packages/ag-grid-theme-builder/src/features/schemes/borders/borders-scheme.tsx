@@ -1,4 +1,4 @@
-import { bordersParamsDefaults } from 'design-system/styles';
+import { bordersParamsDefaults } from 'design-system/parts';
 import { scheme as defineScheme } from 'features/schemes/schemes-types';
 import { BordersConfigEditor } from './BordersParamsEditor';
 import { BordersPresetPreview } from './BordersPresetPreview';

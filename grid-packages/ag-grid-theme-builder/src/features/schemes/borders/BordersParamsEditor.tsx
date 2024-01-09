@@ -1,5 +1,5 @@
 import { Checkbox, ListItem } from '@mui/joy';
-import { BordersParams } from 'design-system/styles';
+import { BordersParams } from 'design-system/parts';
 import { titleCase } from 'model/utils';
 import { SchemeParamsEditor } from '../schemes-types';
 

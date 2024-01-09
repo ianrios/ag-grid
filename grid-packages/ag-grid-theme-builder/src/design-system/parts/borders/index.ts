@@ -71,6 +71,7 @@ export const bordersParamsDefaults = (params: BordersParams = {}): Required<Bord
     sidePanels: true,
   });
 
+import { ThemePart } from 'design-system/design-system-types';
 import { applyDefaults } from 'design-system/design-system-utils';
 import aboveFootersCSS from './borders-above-footers.css?inline';
 import belowHeadersCSS from './borders-below-headers.css?inline';
@@ -81,18 +82,21 @@ import pinnedColumnsCSS from './borders-pinned-columns.css?inline';
 import pinnedRowsCSS from './borders-pinned-rows.css?inline';
 import sidePanelsCSS from './borders-side-panels.css?inline';
 
-export const borders = (params: BordersParams = {}): string => {
+export const borders = (params: BordersParams = {}): ThemePart => {
   const withDefaults = bordersParamsDefaults(params);
-  return [
-    withDefaults.outside && outsideCSS,
-    withDefaults.belowHeaders && belowHeadersCSS,
-    withDefaults.aboveFooters && aboveFootersCSS,
-    withDefaults.betweenRows && betweenRowsCSS,
-    withDefaults.betweenColumns && betweenColumnsCSS,
-    withDefaults.pinnedRows && pinnedRowsCSS,
-    withDefaults.pinnedColumns && pinnedColumnsCSS,
-    withDefaults.sidePanels && sidePanelsCSS,
-  ]
-    .filter(Boolean)
-    .join('\n');
+  return {
+    css: [
+      withDefaults.outside && outsideCSS,
+      withDefaults.belowHeaders && belowHeadersCSS,
+      withDefaults.aboveFooters && aboveFootersCSS,
+      withDefaults.betweenRows && betweenRowsCSS,
+      withDefaults.betweenColumns && betweenColumnsCSS,
+      withDefaults.pinnedRows && pinnedRowsCSS,
+      withDefaults.pinnedColumns && pinnedColumnsCSS,
+      withDefaults.sidePanels && sidePanelsCSS,
+    ]
+      .filter(Boolean)
+      .join('\n'),
+    variables: {},
+  };
 };

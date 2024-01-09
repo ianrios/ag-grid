@@ -31,7 +31,7 @@ export const scheme = <T extends object>(args: Omit<Scheme<T>, 'valueAtom'>): Sc
   if (defaults.length !== 1) throw new Error('Expected 1 default');
   return {
     ...args,
-    valueAtom: atomWithJSONStorage<SchemeValue<T>>(`scheme.${args.id}`, defaults[0].id),
+    valueAtom: atomWithJSONStorage<SchemeValue<T>>('scheme.' + args.id, defaults[0].id),
   };
 };
 
@@ -45,7 +45,7 @@ export const getParamsForValue = <T extends object>(
   if (value == null) return null;
   if (typeof value === 'string') {
     // value is named preset
-    const preset = scheme.presets.find((p) => p.isDefault);
+    const preset = scheme.presets.find((p) => p.id === value);
     if (!preset) throw new Error(`Could not find preset "${value}" of scheme "${scheme.label}"`);
     return preset.params;
   }

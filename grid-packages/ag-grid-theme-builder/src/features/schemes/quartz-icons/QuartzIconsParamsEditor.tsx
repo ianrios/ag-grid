@@ -1,5 +1,5 @@
 import { ListItem, Slider } from '@mui/joy';
-import { QuartzIconsParams, quartzIconsParamsDefaults } from 'design-system/styles';
+import { QuartzIconsParams, quartzIconsParamsDefaults } from 'design-system/parts';
 import { ColorEditor } from 'features/editors/ColorEditor';
 import { SchemeParamsEditor } from '../schemes-types';
 

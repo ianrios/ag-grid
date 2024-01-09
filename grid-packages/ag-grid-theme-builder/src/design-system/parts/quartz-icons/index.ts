@@ -1,3 +1,4 @@
+import { ThemePart } from 'design-system/design-system-types';
 import { applyDefaults } from 'design-system/design-system-utils';
 import { logErrorMessageOnce } from 'model/utils';
 import agIconNameToSvgFragment from './lucide-fragments';
@@ -17,7 +18,8 @@ export const quartzIconsParamsDefaults = (
     strokeWidth: 1.5,
   });
 
-export const quartzIcons = (params: QuartzIconsParams = {}): string => {
+export const quartzIcons = (params: QuartzIconsParams = {}): ThemePart => {
+  console.log('QUARTZ RENDER', params);
   let { iconSize, color, strokeWidth } = quartzIconsParamsDefaults(params);
   const cssParts = [iconCss(iconSize)];
 
@@ -38,7 +40,7 @@ export const quartzIcons = (params: QuartzIconsParams = {}): string => {
   // prevent the stroke width from changing as a result of scaling the icon image
   const scaledStrokeWidth = (strokeWidth * 24) / iconSize;
 
-  const svgPrefix = `<svg xmlns="http://www.w3.org/2000/svg" width="${iconSize}" height="${iconSize}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${scaledStrokeWidth}" stroke-linecap="round" stroke-linejoin="round">`;
+  const svgPrefix = `<svg xmlns="http://www.w3.org/2000/svg" width="${iconSize}" height="${iconSize}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="${scaledStrokeWidth}" stroke-linecap="round" stroke-linejoin="round">`;
   const svgSuffix = '</svg>';
   for (const [agName, svgFragment] of Object.entries(agIconNameToSvgFragment)) {
     const svg = svgPrefix + svgFragment + svgSuffix;
@@ -46,9 +48,13 @@ export const quartzIcons = (params: QuartzIconsParams = {}): string => {
     cssParts.push(`:ag-current-theme .ag-icon-${agName} {\n\tbackground-image: ${dataUri}\n}`);
   }
 
-  return cssParts.join('\n');
+  return {
+    css: cssParts.join('\n'),
+    variables: {},
+  };
 };
 
+// TODO use --ag-icon-size variable
 const iconCss = (size: number) => `:ag-current-theme .ag-icon {
   width: ${size}px;
   height: ${size}px;
