@@ -1,6 +1,6 @@
 import { ChevronSort, Close, SettingsAdjust, TrashCan } from '@carbon/icons-react';
 import { Dropdown, ListItemButton, Menu, MenuButton, MenuItem } from '@mui/joy';
-import { Scheme, SchemePreset } from 'features/schemes/schemes-types';
+import { Scheme, getDefaultPreset } from 'features/schemes/schemes-types';
 import { useAtom } from 'jotai';
 
 type SchemeEditorProps<T extends object> = {
@@ -8,9 +8,9 @@ type SchemeEditorProps<T extends object> = {
 };
 
 export const SchemeEditor = <C extends object>({ scheme }: SchemeEditorProps<C>) => {
-  const [value, setValue] = useAtom(scheme.atom);
+  const [value, setValue] = useAtom(scheme.valueAtom);
   const selectedPreset = scheme.presets.find((p) => p.id === value);
-  const customConfig = typeof value === 'object' ? value : null;
+  const customParams = typeof value === 'object' ? value : null;
   const EditorComponent = scheme.editorComponent;
   const PresetPreviewComponent = scheme.presetPreviewComponent;
   return (
@@ -18,7 +18,7 @@ export const SchemeEditor = <C extends object>({ scheme }: SchemeEditorProps<C>)
       <MenuButton sx={{ gap: 1 }}>
         {selectedPreset ? (
           <PresetPreviewComponent {...selectedPreset} />
-        ) : customConfig != null ? (
+        ) : customParams != null ? (
           customFragment
         ) : (
           noneFragment
@@ -26,15 +26,15 @@ export const SchemeEditor = <C extends object>({ scheme }: SchemeEditorProps<C>)
         <ChevronSort />
       </MenuButton>
       <Menu placement="top-start">
-        {customConfig ? (
+        {customParams ? (
           <>
             <EditorComponent
-              value={customConfig}
+              value={customParams}
               onPropertyChange={(property, propertyValue) =>
-                setValue({ ...customConfig, [property]: propertyValue })
+                setValue({ ...customParams, [property]: propertyValue })
               }
             />
-            <ListItemButton onClick={() => setValue(defaultPreset(scheme).id)}>
+            <ListItemButton onClick={() => setValue(getDefaultPreset(scheme).id)}>
               <TrashCan /> Remove customisations
             </ListItemButton>
           </>
@@ -50,7 +50,7 @@ export const SchemeEditor = <C extends object>({ scheme }: SchemeEditorProps<C>)
               </MenuItem>
             ))}
             <ListItemButton
-              onClick={() => setValue((selectedPreset || defaultPreset(scheme)).value)}
+              onClick={() => setValue((selectedPreset || getDefaultPreset(scheme)).params)}
             >
               {customFragment}
             </ListItemButton>
@@ -63,10 +63,6 @@ export const SchemeEditor = <C extends object>({ scheme }: SchemeEditorProps<C>)
     </Dropdown>
   );
 };
-
-function defaultPreset<T extends object>(scheme: Scheme<T>): SchemePreset<T> {
-  return scheme.presets.find((p) => p.default) || scheme.presets[0];
-}
 
 const customFragment = (
   <>

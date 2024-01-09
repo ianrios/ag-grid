@@ -1,7 +1,7 @@
 import { Checkbox, ListItem } from '@mui/joy';
+import { BordersParams } from 'design-system/styles';
 import { titleCase } from 'model/utils';
-import { SchemeConfigEditor } from '../schemes-types';
-import { BordersConfig } from './borders-scheme';
+import { SchemeParamsEditor } from '../schemes-types';
 
 const booleanFields = [
   'outside',
@@ -14,14 +14,14 @@ const booleanFields = [
   'sidePanels',
 ] as const;
 
-export const BordersConfigEditor: SchemeConfigEditor<BordersConfig> = ({
+export const BordersConfigEditor: SchemeParamsEditor<BordersParams> = ({
   value,
   onPropertyChange,
 }) => (
   <>
     {booleanFields.map((field) => (
       <ListItem key={field}>
-        <CheckboxPropertyEditor<BordersConfig>
+        <CheckboxPropertyEditor<BordersParams>
           value={value}
           property={field}
           onPropertyChange={onPropertyChange}

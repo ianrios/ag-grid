@@ -59,6 +59,19 @@ export type BordersParams = {
   sidePanels?: boolean;
 };
 
+export const bordersParamsDefaults = (params: BordersParams = {}): Required<BordersParams> =>
+  applyDefaults(params, {
+    outside: true,
+    belowHeaders: true,
+    aboveFooters: true,
+    betweenRows: true,
+    betweenColumns: false,
+    pinnedRows: true,
+    pinnedColumns: true,
+    sidePanels: true,
+  });
+
+import { applyDefaults } from 'design-system/design-system-utils';
 import aboveFootersCSS from './borders-above-footers.css?inline';
 import belowHeadersCSS from './borders-below-headers.css?inline';
 import betweenColumnsCSS from './borders-between-columns.css?inline';
@@ -68,25 +81,18 @@ import pinnedColumnsCSS from './borders-pinned-columns.css?inline';
 import pinnedRowsCSS from './borders-pinned-rows.css?inline';
 import sidePanelsCSS from './borders-side-panels.css?inline';
 
-export const borders = ({
-  outside = true,
-  belowHeaders = true,
-  aboveFooters = true,
-  betweenRows = true,
-  betweenColumns = false,
-  pinnedRows = true,
-  pinnedColumns = true,
-  sidePanels = true,
-}: BordersParams = {}): string =>
-  [
-    outside && outsideCSS,
-    belowHeaders && belowHeadersCSS,
-    aboveFooters && aboveFootersCSS,
-    betweenRows && betweenRowsCSS,
-    betweenColumns && betweenColumnsCSS,
-    pinnedRows && pinnedRowsCSS,
-    pinnedColumns && pinnedColumnsCSS,
-    sidePanels && sidePanelsCSS,
+export const borders = (params: BordersParams = {}): string => {
+  const withDefaults = bordersParamsDefaults(params);
+  return [
+    withDefaults.outside && outsideCSS,
+    withDefaults.belowHeaders && belowHeadersCSS,
+    withDefaults.aboveFooters && aboveFootersCSS,
+    withDefaults.betweenRows && betweenRowsCSS,
+    withDefaults.betweenColumns && betweenColumnsCSS,
+    withDefaults.pinnedRows && pinnedRowsCSS,
+    withDefaults.pinnedColumns && pinnedColumnsCSS,
+    withDefaults.sidePanels && sidePanelsCSS,
   ]
     .filter(Boolean)
     .join('\n');
+};

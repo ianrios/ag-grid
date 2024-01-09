@@ -1,18 +1,16 @@
 import { BordersParams } from 'design-system/styles';
-import { Scheme } from 'features/schemes/schemes-types';
+import { Scheme, SchemeValue } from 'features/schemes/schemes-types';
 import { atomWithJSONStorage } from 'model/JSONStorage';
-import { BordersConfigEditor } from './BordersConfigEditor';
+import { BordersConfigEditor } from './BordersParamsEditor';
 import { BordersPresetPreview } from './BordersPresetPreview';
 
-export type BordersConfig = Required<BordersParams>;
-
-export const bordersScheme = (): Scheme<BordersConfig> => ({
+export const bordersScheme: Scheme<BordersParams> = {
   label: 'Borders',
-  atom: atomWithJSONStorage<BordersConfig | string | null>('scheme.borders', 'regular'),
+  valueAtom: atomWithJSONStorage<SchemeValue<BordersParams>>('scheme.borders', 'regular'),
   presets: [
     {
       id: 'horizontal',
-      value: {
+      params: {
         outside: false,
         belowHeaders: true,
         aboveFooters: true,
@@ -25,7 +23,8 @@ export const bordersScheme = (): Scheme<BordersConfig> => ({
     },
     {
       id: 'default',
-      value: {
+      isDefault: true,
+      params: {
         outside: true,
         belowHeaders: true,
         aboveFooters: true,
@@ -35,11 +34,10 @@ export const bordersScheme = (): Scheme<BordersConfig> => ({
         pinnedColumns: true,
         sidePanels: true,
       },
-      default: true,
     },
     {
       id: 'full',
-      value: {
+      params: {
         outside: true,
         belowHeaders: true,
         aboveFooters: true,
@@ -53,4 +51,4 @@ export const bordersScheme = (): Scheme<BordersConfig> => ({
   ],
   editorComponent: BordersConfigEditor,
   presetPreviewComponent: BordersPresetPreview,
-});
+};

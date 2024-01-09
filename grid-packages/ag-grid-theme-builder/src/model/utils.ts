@@ -50,6 +50,13 @@ export const logErrorMessage = (message: string, error?: unknown) => {
   }
 };
 
+const loggedMessages = new Set<string>();
+export const logErrorMessageOnce = (message: string) => {
+  if (loggedMessages.has(message)) return;
+  loggedMessages.add(message);
+  logErrorMessage(message);
+};
+
 export const assertNotNull = <T>(value: T | null | undefined): T => {
   if (value == null) throw new Error('Expected non-null value');
   return value;

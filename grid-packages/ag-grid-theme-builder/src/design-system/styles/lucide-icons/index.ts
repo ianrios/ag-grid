@@ -1,17 +1,31 @@
+import { applyDefaults } from 'design-system/design-system-utils';
+import { logErrorMessageOnce } from 'model/utils';
 import agIconNameToSvgFragment from './lucide-fragments';
 
 export type LucideIconsParams = {
-  color?: string;
+  color?: string | number;
   strokeWidth?: number;
   iconSize?: number;
 };
 
-export const lucideIcons = ({
-  color = '#000',
-  iconSize = 16,
-  strokeWidth = 1.5,
-}: LucideIconsParams): string => {
+export const lucideIconsParamsDefaults = (params: LucideIconsParams): Required<LucideIconsParams> =>
+  applyDefaults(params, {
+    color: '#000',
+    iconSize: 16,
+    strokeWidth: 1.5,
+  });
+
+export const lucideIcons = (params: LucideIconsParams = {}): string => {
+  let { iconSize, color, strokeWidth } = lucideIconsParamsDefaults(params);
   const cssParts = [iconCss(iconSize)];
+
+  if (typeof color === 'number') {
+    // TODO implement colours as numbers
+    logErrorMessageOnce(
+      'Colours as numbers are not implemented for lucide icons yet, using black instead',
+    );
+    color = '#000';
+  }
 
   if (/[<>&'"]/.test(color)) {
     // we're just testing for characters that will break the XML, not attempting to validate
@@ -30,7 +44,7 @@ export const lucideIcons = ({
     cssParts.push(`:ag-current-theme .ag-icon-${agName} {\n\tbackground-image: ${dataUri}\n}`);
   }
 
-  return cssParts.join('\n\n');
+  return cssParts.join('\n');
 };
 
 const iconCss = (size: number) => `:ag-current-theme .ag-icon {

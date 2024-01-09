@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
+import { BordersParams } from 'design-system/styles';
 import { titleCase } from 'model/utils';
 import { SchemePreset } from '../schemes-types';
-import { BordersConfig } from './borders-scheme';
 
-export const BordersPresetPreview = ({ id, value }: SchemePreset<BordersConfig>) => (
+export const BordersPresetPreview = ({ id, params: value }: SchemePreset<BordersParams>) => (
   <>
     <Grid style={showIf(value.outside)}>
       <Row style={showIf(value.outside || value.belowHeaders)} />
@@ -49,10 +49,5 @@ const Column = styled('span')`
   height: 13px;
   border-left: solid 1px;
 `;
-
-// const Grid = styled('div')`
-//   width: 16px;
-//   height: 16px;
-// `;
 
 const showIf = (value: boolean) => ({ color: value ? 'black' : 'transparent' });

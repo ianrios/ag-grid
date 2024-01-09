@@ -1,8 +1,8 @@
+import { LucideIconsParams } from 'design-system/styles';
 import { titleCase } from 'model/utils';
 import { SchemePreset } from '../schemes-types';
-import { LucideIconsConfig } from './lucide-icons-scheme';
 
-export const LucideIconsPresetPreview = (props: SchemePreset<LucideIconsConfig>) => (
+export const LucideIconsPresetPreview = (props: SchemePreset<LucideIconsParams>) => (
   <>
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,7 +11,7 @@ export const LucideIconsPresetPreview = (props: SchemePreset<LucideIconsConfig>)
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={(props.value.strokeWidth * 24) / 16}
+      strokeWidth={(props.params.strokeWidth * 24) / 16}
       strokeLinecap="round"
       strokeLinejoin="round"
     >
@@ -24,7 +24,7 @@ export const LucideIconsPresetPreview = (props: SchemePreset<LucideIconsConfig>)
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={(props.value.strokeWidth * 24) / 16}
+      strokeWidth={(props.params.strokeWidth * 24) / 16}
       strokeLinecap="round"
       strokeLinejoin="round"
     >

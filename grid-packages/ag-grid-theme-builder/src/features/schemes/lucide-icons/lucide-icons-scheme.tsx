@@ -1,32 +1,27 @@
-import { Scheme } from 'features/schemes/schemes-types';
+import { LucideIconsParams } from 'design-system/styles';
+import { Scheme, SchemeValue } from 'features/schemes/schemes-types';
 import { atomWithJSONStorage } from 'model/JSONStorage';
-import { LucideIconsConfigEditor } from './LucideIconsConfigEditor';
+import { LucideIconsParamsEditor } from './LucideIconsParamsEditor';
 import { LucideIconsPresetPreview } from './LucideIconsPresetPreview';
 
-export type LucideIconsConfig = {
-  strokeWidth: number;
-  color: string | number;
-  size: number;
-};
-
-export const lucideIconsScheme = (): Scheme<LucideIconsConfig> => ({
+export const lucideIconsScheme: Scheme<LucideIconsParams> = {
   label: 'Icons',
-  atom: atomWithJSONStorage<LucideIconsConfig | string | null>('scheme.lucide-icons', 'regular'),
+  valueAtom: atomWithJSONStorage<SchemeValue<LucideIconsParams>>('scheme.lucide-icons', 'regular'),
   presets: [
     {
       id: 'skinny',
-      value: { color: 0.9, strokeWidth: 1, size: 16 },
+      params: { color: 0.9, strokeWidth: 1, iconSize: 16 },
     },
     {
       id: 'regular',
-      value: { color: 0.9, strokeWidth: 1.5, size: 16 },
-      default: true,
+      isDefault: true,
+      params: { color: 0.9, strokeWidth: 1.5, iconSize: 16 },
     },
     {
       id: 'heavy',
-      value: { color: 0.9, strokeWidth: 2, size: 16 },
+      params: { color: 0.9, strokeWidth: 2, iconSize: 16 },
     },
   ],
-  editorComponent: LucideIconsConfigEditor,
+  editorComponent: LucideIconsParamsEditor,
   presetPreviewComponent: LucideIconsPresetPreview,
-});
+};
