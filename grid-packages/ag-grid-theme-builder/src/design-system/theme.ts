@@ -1,4 +1,4 @@
-import { borders, colorScheme, commonStructural, lucideIcons, reset } from './styles';
+import { borders, colorScheme, commonStructural, quartzIcons, reset } from './styles';
 
 export type Theme = {
   name: string;
@@ -15,7 +15,7 @@ export const installTheme = (theme: Theme) => {
   const themeCss = [
     reset(),
     colorScheme(),
-    lucideIcons({ color: '#000', iconSize: 16, strokeWidth: 1.5 }),
+    quartzIcons({ color: '#000', iconSize: 16, strokeWidth: 1.5 }),
     borders({
       belowHeaders: false,
     }),

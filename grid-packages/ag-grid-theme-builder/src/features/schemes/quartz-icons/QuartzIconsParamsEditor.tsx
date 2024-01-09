@@ -1,10 +1,10 @@
 import { ListItem, Slider } from '@mui/joy';
-import { LucideIconsParams, lucideIconsParamsDefaults } from 'design-system/styles';
+import { QuartzIconsParams, quartzIconsParamsDefaults } from 'design-system/styles';
 import { ColorEditor } from 'features/editors/ColorEditor';
 import { SchemeParamsEditor } from '../schemes-types';
 
-export const LucideIconsParamsEditor: SchemeParamsEditor<LucideIconsParams> = (props) => {
-  const { color, iconSize, strokeWidth } = lucideIconsParamsDefaults(props.value);
+export const QuartzIconsParamsEditor: SchemeParamsEditor<QuartzIconsParams> = (props) => {
+  const { color, iconSize, strokeWidth } = quartzIconsParamsDefaults(props.value);
   return (
     <>
       <ListItem>

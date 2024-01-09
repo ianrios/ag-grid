@@ -1,5 +1,5 @@
 import { bordersScheme } from './borders/borders-scheme';
-import { lucideIconsScheme } from './lucide-icons/lucide-icons-scheme';
+import { quartzIconsScheme } from './quartz-icons/quartz-icons-scheme';
 import { Scheme } from './schemes-types';
 
-export const allSchemes: Scheme<any>[] = [lucideIconsScheme, bordersScheme];
+export const allSchemes: Scheme<any>[] = [quartzIconsScheme, bordersScheme];

@@ -1,12 +1,12 @@
-import { BordersParams, LucideIconsParams, borders, lucideIcons } from '..';
+import { BordersParams, QuartzIconsParams, borders, quartzIcons } from '..';
 
 export type FromJsonParams = {
   borders?: BordersParams | boolean | null;
-  lucideIcons?: LucideIconsParams | boolean | null;
+  quartzIcons?: QuartzIconsParams | boolean | null;
 };
 
 export const fromJson = (params: FromJsonParams = {}): string =>
-  [delegate(params.borders, borders), delegate(params.lucideIcons, lucideIcons)]
+  [delegate(params.borders, borders), delegate(params.quartzIcons, quartzIcons)]
     .filter(Boolean)
     .join('\n');
 

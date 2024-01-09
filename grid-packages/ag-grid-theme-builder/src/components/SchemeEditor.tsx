@@ -1,4 +1,4 @@
-import { ChevronSort, Close, SettingsAdjust, TrashCan } from '@carbon/icons-react';
+import { ChevronSort, Close, Reset, SettingsAdjust } from '@carbon/icons-react';
 import { Dropdown, ListItemButton, Menu, MenuButton, MenuItem } from '@mui/joy';
 import { Scheme, getDefaultPreset } from 'features/schemes/schemes-types';
 import { useAtom } from 'jotai';
@@ -35,7 +35,7 @@ export const SchemeEditor = <C extends object>({ scheme }: SchemeEditorProps<C>)
               }
             />
             <ListItemButton onClick={() => setValue(getDefaultPreset(scheme).id)}>
-              <TrashCan /> Remove customisations
+              <Reset /> Reset to defaults
             </ListItemButton>
           </>
         ) : (

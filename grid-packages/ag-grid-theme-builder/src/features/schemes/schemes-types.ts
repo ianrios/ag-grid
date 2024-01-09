@@ -1,10 +1,11 @@
-import { PersistentAtom } from 'model/JSONStorage';
+import { PersistentAtom, atomWithJSONStorage } from 'model/JSONStorage';
 
 export type SchemeValue<TParams extends object> = TParams | string | null;
 
 export type Scheme<TParams extends object> = {
+  id: string;
   label: string;
-  valueAtom: PersistentAtom<TParams | string | null>;
+  valueAtom: PersistentAtom<SchemeValue<TParams>>;
   presets: SchemePreset<TParams>[];
   editorComponent: SchemeParamsEditor<TParams>;
   presetPreviewComponent: SchemePresetPreview<TParams>;
@@ -23,6 +24,15 @@ export type SchemePreset<T> = {
   id: string;
   isDefault?: boolean;
   params: Required<T>;
+};
+
+export const scheme = <T extends object>(args: Omit<Scheme<T>, 'valueAtom'>): Scheme<T> => {
+  const defaults = args.presets.filter((p) => p.isDefault);
+  if (defaults.length !== 1) throw new Error('Expected 1 default');
+  return {
+    ...args,
+    valueAtom: atomWithJSONStorage<SchemeValue<T>>(`scheme.${args.id}`, defaults[0].id),
+  };
 };
 
 export const getDefaultPreset = <T extends object>(scheme: Scheme<T>): SchemePreset<T> =>

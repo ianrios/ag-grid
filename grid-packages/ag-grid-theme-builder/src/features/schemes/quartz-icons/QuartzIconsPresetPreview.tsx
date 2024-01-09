@@ -1,8 +1,8 @@
-import { LucideIconsParams } from 'design-system/styles';
+import { QuartzIconsParams } from 'design-system/styles';
 import { titleCase } from 'model/utils';
 import { SchemePreset } from '../schemes-types';
 
-export const LucideIconsPresetPreview = (props: SchemePreset<LucideIconsParams>) => (
+export const QuartzIconsPresetPreview = (props: SchemePreset<QuartzIconsParams>) => (
   <>
     <svg
       xmlns="http://www.w3.org/2000/svg"

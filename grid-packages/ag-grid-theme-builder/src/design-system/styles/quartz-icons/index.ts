@@ -2,27 +2,29 @@ import { applyDefaults } from 'design-system/design-system-utils';
 import { logErrorMessageOnce } from 'model/utils';
 import agIconNameToSvgFragment from './lucide-fragments';
 
-export type LucideIconsParams = {
+export type QuartzIconsParams = {
   color?: string | number;
   strokeWidth?: number;
   iconSize?: number;
 };
 
-export const lucideIconsParamsDefaults = (params: LucideIconsParams): Required<LucideIconsParams> =>
+export const quartzIconsParamsDefaults = (
+  params: QuartzIconsParams = {},
+): Required<QuartzIconsParams> =>
   applyDefaults(params, {
     color: '#000',
     iconSize: 16,
     strokeWidth: 1.5,
   });
 
-export const lucideIcons = (params: LucideIconsParams = {}): string => {
-  let { iconSize, color, strokeWidth } = lucideIconsParamsDefaults(params);
+export const quartzIcons = (params: QuartzIconsParams = {}): string => {
+  let { iconSize, color, strokeWidth } = quartzIconsParamsDefaults(params);
   const cssParts = [iconCss(iconSize)];
 
   if (typeof color === 'number') {
     // TODO implement colours as numbers
     logErrorMessageOnce(
-      'Colours as numbers are not implemented for lucide icons yet, using black instead',
+      'Colours as numbers are not implemented for quartz icons yet, using black instead',
     );
     color = '#000';
   }

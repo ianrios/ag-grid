@@ -8,4 +8,4 @@ import colorSchemeCSS from './colour-scheme.css?inline';
 export const colorScheme = (): string => colorSchemeCSS;
 
 export * from './borders';
-export * from './lucide-icons';
+export * from './quartz-icons';
