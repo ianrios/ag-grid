@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { BordersParams } from 'design-system/parts';
 import { titleCase } from 'model/utils';
-import { SchemePreset } from '../schemes-types';
+import { PartPreset } from '../parts-types';
 
-export const BordersPresetPreview = ({ id, params: value }: SchemePreset<BordersParams>) => (
+export const BordersPresetPreview = ({ id, params: value }: PartPreset<BordersParams>) => (
   <>
     <Grid style={showIf(value.outside)}>
       <Row style={showIf(value.outside || value.belowHeaders)} />

@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { ColorsParams } from 'design-system/parts';
 import { titleCase } from 'model/utils';
-import { SchemePreset } from '../schemes-types';
+import { PartPreset } from '../parts-types';
 
-export const ColorsPresetPreview = (props: SchemePreset<ColorsParams>) => (
+export const ColorsPresetPreview = (props: PartPreset<ColorsParams>) => (
   <>
     <Background style={{ backgroundColor: props.params.background }}>
       <Foreground style={{ color: props.params.foreground }} />

@@ -1,9 +1,9 @@
 import { ThemePart } from 'design-system/design-system-types';
 import { combineThemeParts } from 'design-system/design-system-utils';
-import { SchemeParamsByName } from 'features/schemes/all-schemes';
+import { PartParamsByName } from 'features/parts/all-parts';
 import { borders, colors, quartzIcons } from '..';
 
-export type FromJsonParams = Partial<SchemeParamsByName>;
+export type FromJsonParams = Partial<PartParamsByName>;
 
 /**
  * fromJson is a theme part that accepts a JSON export from the AG Grid theme
@@ -24,10 +24,10 @@ export const fromJson = (params: FromJsonParams = {}): ThemePart =>
 
 const delegate = <T>(
   params: boolean | T | undefined | null,
-  scheme: (params?: T) => ThemePart,
+  part: (params?: T) => ThemePart,
 ): ThemePart | null => {
   if (params == null || params === false) return null;
-  if (params === true) return scheme();
-  const result = scheme(params);
-  return { ...result, css: `\n/* START OF PART ${scheme.name} */\n` + result.css };
+  if (params === true) return part();
+  const result = part(params);
+  return { ...result, css: `\n/* START OF PART ${part.name} */\n` + result.css };
 };

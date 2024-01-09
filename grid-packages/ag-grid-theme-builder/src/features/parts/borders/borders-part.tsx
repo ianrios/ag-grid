@@ -1,9 +1,9 @@
 import { bordersParamsDefaults } from 'design-system/parts';
-import { scheme as defineScheme } from 'features/schemes/schemes-types';
+import { definePart } from 'features/parts/parts-types';
 import { BordersConfigEditor } from './BordersParamsEditor';
 import { BordersPresetPreview } from './BordersPresetPreview';
 
-export const bordersScheme = defineScheme({
+export const bordersPart = definePart({
   id: 'borders',
   label: 'Borders',
   presets: [

@@ -1,9 +1,9 @@
 import { ListItem, Slider } from '@mui/joy';
 import { QuartzIconsParams, quartzIconsParamsDefaults } from 'design-system/parts';
 import { ColorEditor } from 'features/editors/ColorEditor';
-import { SchemeParamsEditor } from '../schemes-types';
+import { PartParamsEditor } from '../parts-types';
 
-export const QuartzIconsParamsEditor: SchemeParamsEditor<QuartzIconsParams> = (props) => {
+export const QuartzIconsParamsEditor: PartParamsEditor<QuartzIconsParams> = (props) => {
   const { color, iconSize, strokeWidth } = quartzIconsParamsDefaults(props.value);
   return (
     <>

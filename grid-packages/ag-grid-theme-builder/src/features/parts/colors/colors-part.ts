@@ -1,9 +1,9 @@
 import { colorsParamsDefaults } from 'design-system/parts';
-import { scheme } from 'features/schemes/schemes-types';
+import { definePart } from 'features/parts/parts-types';
 import { ColorsParamsEditor } from './ColorsParamsEditor';
 import { ColorsPresetPreview } from './ColorsPresetPreview';
 
-export const colorsScheme = scheme({
+export const colorsPart = definePart({
   id: 'colors-icons',
   label: 'Colours',
   presets: [

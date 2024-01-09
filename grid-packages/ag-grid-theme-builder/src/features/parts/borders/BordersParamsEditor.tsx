@@ -1,7 +1,7 @@
 import { Checkbox, ListItem } from '@mui/joy';
 import { BordersParams } from 'design-system/parts';
 import { titleCase } from 'model/utils';
-import { SchemeParamsEditor } from '../schemes-types';
+import { PartParamsEditor } from '../parts-types';
 
 const booleanFields = [
   'outside',
@@ -14,7 +14,7 @@ const booleanFields = [
   'sidePanels',
 ] as const;
 
-export const BordersConfigEditor: SchemeParamsEditor<BordersParams> = ({
+export const BordersConfigEditor: PartParamsEditor<BordersParams> = ({
   value,
   onPropertyChange,
 }) => (

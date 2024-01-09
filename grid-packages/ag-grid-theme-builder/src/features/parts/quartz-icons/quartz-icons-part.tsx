@@ -1,9 +1,9 @@
 import { quartzIconsParamsDefaults } from 'design-system/parts';
-import { scheme } from 'features/schemes/schemes-types';
+import { definePart } from 'features/parts/parts-types';
 import { QuartzIconsParamsEditor } from './QuartzIconsParamsEditor';
 import { QuartzIconsPresetPreview } from './QuartzIconsPresetPreview';
 
-export const quartzIconsScheme = scheme({
+export const quartzIconsPart = definePart({
   id: 'quartz-icons',
   label: 'Icons',
   presets: [

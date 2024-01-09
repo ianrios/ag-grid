@@ -1,14 +1,14 @@
 import { styled } from '@mui/joy';
-import { allSchemes } from 'features/schemes/all-schemes';
-import { SchemeEditor } from './SchemeEditor';
+import { allParts } from 'features/parts/all-parts';
+import { PartEditor } from './PartEditor';
 
-export const SchemesEditor = () => (
+export const PartsEditor = () => (
   <Container>
-    {allSchemes.map((scheme, i) => (
+    {allParts().map((part, i) => (
       <Row key={i}>
-        <LabelCell>{scheme.label}</LabelCell>
+        <LabelCell>{part.label}</LabelCell>
         <EditorCell>
-          <SchemeEditor scheme={scheme} />
+          <PartEditor part={part} />
         </EditorCell>
       </Row>
     ))}

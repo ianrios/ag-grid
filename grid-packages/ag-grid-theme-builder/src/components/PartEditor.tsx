@@ -1,18 +1,18 @@
 import { ChevronSort, Close, Reset, SettingsAdjust } from '@carbon/icons-react';
 import { Dropdown, ListItemButton, Menu, MenuButton, MenuItem } from '@mui/joy';
-import { Scheme, getDefaultPreset } from 'features/schemes/schemes-types';
+import { Part, getDefaultPreset } from 'features/parts/parts-types';
 import { useAtom } from 'jotai';
 
-type SchemeEditorProps<T extends object> = {
-  scheme: Scheme<T>;
+type PartEditorProps<T extends object> = {
+  part: Part<T>;
 };
 
-export const SchemeEditor = <C extends object>({ scheme }: SchemeEditorProps<C>) => {
-  const [value, setValue] = useAtom(scheme.valueAtom);
-  const selectedPreset = scheme.presets.find((p) => p.id === value);
+export const PartEditor = <C extends object>({ part }: PartEditorProps<C>) => {
+  const [value, setValue] = useAtom(part.valueAtom);
+  const selectedPreset = part.presets.find((p) => p.id === value);
   const customParams = typeof value === 'object' ? value : null;
-  const EditorComponent = scheme.paramsEditorComponent;
-  const PresetPreviewComponent = scheme.presetPreviewComponent;
+  const EditorComponent = part.paramsEditorComponent;
+  const PresetPreviewComponent = part.presetPreviewComponent;
   return (
     <Dropdown>
       <MenuButton sx={{ gap: 1 }}>
@@ -36,13 +36,13 @@ export const SchemeEditor = <C extends object>({ scheme }: SchemeEditorProps<C>)
                 setValue({ ...customParams, [property]: propertyValue })
               }
             />
-            <ListItemButton onClick={() => setValue(getDefaultPreset(scheme).id)}>
+            <ListItemButton onClick={() => setValue(getDefaultPreset(part).id)}>
               <Reset /> Reset to defaults
             </ListItemButton>
           </>
         ) : (
           <>
-            {scheme.presets.map((preset) => (
+            {part.presets.map((preset) => (
               <MenuItem
                 key={preset.id}
                 onClick={() => setValue(preset.id)}
@@ -52,7 +52,7 @@ export const SchemeEditor = <C extends object>({ scheme }: SchemeEditorProps<C>)
               </MenuItem>
             ))}
             <ListItemButton
-              onClick={() => setValue((selectedPreset || getDefaultPreset(scheme)).params)}
+              onClick={() => setValue((selectedPreset || getDefaultPreset(part)).params)}
             >
               {customFragment}
             </ListItemButton>

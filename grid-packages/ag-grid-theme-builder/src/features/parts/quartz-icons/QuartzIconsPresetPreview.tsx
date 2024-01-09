@@ -1,8 +1,8 @@
 import { QuartzIconsParams } from 'design-system/parts';
 import { titleCase } from 'model/utils';
-import { SchemePreset } from '../schemes-types';
+import { PartPreset } from '../parts-types';
 
-export const QuartzIconsPresetPreview = (props: SchemePreset<QuartzIconsParams>) => (
+export const QuartzIconsPresetPreview = (props: PartPreset<QuartzIconsParams>) => (
   <>
     <svg
       xmlns="http://www.w3.org/2000/svg"
