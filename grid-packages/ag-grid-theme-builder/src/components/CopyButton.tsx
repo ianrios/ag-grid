@@ -1,6 +1,5 @@
 import { Checkmark, Copy } from '@carbon/icons-react';
-import styled from '@emotion/styled';
-import { Button } from '@mui/joy';
+import { Button, styled } from '@mui/joy';
 import { logErrorMessage } from 'model/utils';
 import { useState } from 'react';
 

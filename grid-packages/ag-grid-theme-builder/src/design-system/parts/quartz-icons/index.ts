@@ -19,7 +19,6 @@ export const quartzIconsParamsDefaults = (
   });
 
 export const quartzIcons = (params: QuartzIconsParams = {}): ThemePart => {
-  console.log('QUARTZ RENDER', params);
   let { iconSize, color, strokeWidth } = quartzIconsParamsDefaults(params);
   const cssParts = [iconCss(iconSize)];
 

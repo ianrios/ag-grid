@@ -8,7 +8,7 @@ export const quartzIconsPart = definePart({
   label: 'Icons',
   presets: [
     {
-      id: 'skinny',
+      id: 'light',
       params: quartzIconsParamsDefaults({ strokeWidth: 1 }),
     },
     {
@@ -17,7 +17,7 @@ export const quartzIconsPart = definePart({
       params: quartzIconsParamsDefaults(),
     },
     {
-      id: 'heavy',
+      id: 'bold',
       params: quartzIconsParamsDefaults({ strokeWidth: 2 }),
     },
   ],

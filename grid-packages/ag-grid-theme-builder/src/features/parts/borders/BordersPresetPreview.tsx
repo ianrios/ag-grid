@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import { styled } from '@mui/joy';
 import { BordersParams } from 'design-system/parts';
 import { titleCase } from 'model/utils';
 import { PartPreset } from '../parts-types';

@@ -8,7 +8,7 @@ import { FiltersToolPanelModule } from '@ag-grid-enterprise/filter-tool-panel';
 import { MenuModule } from '@ag-grid-enterprise/menu';
 import { RangeSelectionModule } from '@ag-grid-enterprise/range-selection';
 import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
-import styled from '@emotion/styled';
+import { styled } from '@mui/joy';
 import { withErrorBoundary } from 'components/ErrorBoundary';
 import { installTheme } from 'design-system/theme';
 import { useAtomValue } from 'jotai';
