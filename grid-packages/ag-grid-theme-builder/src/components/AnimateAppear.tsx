@@ -1,73 +1,72 @@
 import { styled } from '@mui/joy';
-import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
+import { MutableRefObject, ReactElement, useLayoutEffect, useRef, useState } from 'react';
 
 export type AnimateAppearProps = {
   children: ReactElement | null | false;
 };
 
-let counter = 0;
-
-export const AnimateAppear = ({ children }: AnimateAppearProps) => {
-  const id = useMemo(() => ++counter, []);
-  const [lastPresentChildren, setLastPresentChildren] = useState(children);
-  const [mounted, setMounted] = useState(!!children);
-  const [open, setOpen] = useState(!!children);
+export const AnimateAppear = ({ children: childrenFromProps }: AnimateAppearProps) => {
+  const [renderedChildren, setRenderedChildren] = useState(childrenFromProps);
+  const hasRenderedChildren = !!renderedChildren;
   const containerRef = useRef<HTMLDivElement>(null);
-  const currentTimeout = useRef<Timeout>();
-  useEffect(() => {
-    console.log({ children: !!children });
-    if (children) {
-      setLastPresentChildren(children);
-      setMounted(true);
+  const timeoutRef = useRef<Timeout>();
+  useLayoutEffect(() => {
+    const container = containerRef.current;
+    const childrenAlreadyRendered = !!container;
+    if (childrenFromProps) {
+      setRenderedChildren(childrenFromProps);
+      if (childrenAlreadyRendered) {
+        // children updated, animate from current height to full
+        animateOpenOrClosed(container, timeoutRef, true);
+      }
     } else {
-      setOpen(false);
+      // children removed, animate from current height to zero
+      animateOpenOrClosed(container, timeoutRef, false, () => setRenderedChildren(null));
     }
-  }, [children]);
-  useEffect(() => {
-    console.log({ mounted });
-    if (mounted) {
-      const container = containerRef.current;
-      if (container) {
-        container.style.transition = 'none';
-        container.style.height = '0';
-        const contentHeight = container.scrollHeight;
-        requestAnimationFrame(() => {
-          container.style.transition = '';
-          container.style.height = contentHeight + 'px';
-          clearTimeout(currentTimeout.current);
-          currentTimeout.current = setTimeout(() => {
-            container.style.height = '';
-          }, ANIMATION_MS);
-        });
-      }
-      setOpen(true);
+  }, [childrenFromProps]);
+
+  // TODO try as layout effect
+  useLayoutEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    if (hasRenderedChildren) {
+      // children initially added, animate from zero height to full
+      container.style.height = '0';
+      animateOpenOrClosed(container, timeoutRef, true);
     }
-  }, [mounted]);
-  useEffect(() => {
-    console.log({ open });
-    if (!open) {
-      const container = containerRef.current;
-      if (container) {
-        // container.style.transition = 'none';
-        // container.style.height = '0';
-        container.style.height = container.scrollHeight + 'px';
-        requestAnimationFrame(() => {
-          container.style.transition = '';
-          container.style.height = '0';
-          clearTimeout(currentTimeout.current);
-          currentTimeout.current = setTimeout(() => {
-            container.style.height = '';
-            setMounted(false);
-          }, ANIMATION_MS);
-        });
-      }
-    }
-  }, [open]);
-  console.log('rendering', { id, mounted, open });
-  return <Container ref={containerRef}>{mounted && lastPresentChildren}</Container>;
+  }, [hasRenderedChildren]);
+  return <>{renderedChildren && <Container ref={containerRef}>{renderedChildren}</Container>}</>;
 };
 
-const ANIMATION_MS = 2000;
+const animateOpenOrClosed = (
+  container: HTMLDivElement | null,
+  timeoutRef: MutableRefObject<Timeout | undefined>,
+  open: boolean,
+  onComplete?: () => void,
+) => {
+  if (!container) return;
+  const currentHeight = container.offsetHeight;
+  container.style.transition = 'none';
+  let targetHeight = 0;
+  if (open) {
+    container.style.height = '0';
+    targetHeight = open ? container.scrollHeight : 0;
+  }
+  container.style.height = currentHeight + 'px';
+  requestAnimationFrame(() => {
+    container.style.transition = '';
+    container.style.height = targetHeight + 'px';
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      if (open) {
+        container.style.height = '';
+      }
+      onComplete?.();
+    }, ANIMATION_MS);
+  });
+};
+
+const ANIMATION_MS = 400;
 
 const Container = styled('div')`
   transition: height ${ANIMATION_MS}ms ease-in-out;
