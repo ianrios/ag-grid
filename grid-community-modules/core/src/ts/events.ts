@@ -254,6 +254,10 @@ export interface GridSizeChangedEvent<TData = any, TContext = any> extends AgGri
     clientHeight: number;
 }
 
+export interface PivotLimitExceededEvent<TData = any, TContext = any> extends AgGridEvent<TData, TContext> {
+    message: string;
+}
+
 export interface RowDragEvent<TData = any, TContext = any> extends AgGridEvent<TData, TContext> {
     /** Event identifier: One of rowDragEnter, rowDragMove, rowDragEnd, rowDragLeave */
     type: string;

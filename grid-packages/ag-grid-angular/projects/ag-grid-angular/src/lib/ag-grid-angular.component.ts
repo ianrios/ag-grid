@@ -125,6 +125,7 @@ import {
     PasteEndEvent,
     PasteStartEvent,
     PinnedRowDataChangedEvent,
+    PivotLimitExceededEvent,
     PostProcessPopupParams,
     PostSortRowsParams,
     ProcessCellForExportParams,
@@ -1738,6 +1739,9 @@ export class AgGridAngular<TData = any, TColDef extends ColDef<TData> = ColDef<a
     /** Fired when calling either of the API methods `expandAll()` or `collapseAll()`.
          */
     @Output() public expandOrCollapseAll: EventEmitter<ExpandCollapseAllEvent<TData>> = new EventEmitter<ExpandCollapseAllEvent<TData>>();
+    /** Exceeded the `pivotMaximumGeneratedColumns` limit when generating columns.
+         */
+    @Output() public pivotLimitExceeded: EventEmitter<PivotLimitExceededEvent<TData>> = new EventEmitter<PivotLimitExceededEvent<TData>>();
     /** The client has set new pinned row data into the grid.
          */
     @Output() public pinnedRowDataChanged: EventEmitter<PinnedRowDataChangedEvent<TData>> = new EventEmitter<PinnedRowDataChangedEvent<TData>>();

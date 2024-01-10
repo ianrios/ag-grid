@@ -125,6 +125,7 @@ import {
     PasteEndEvent,
     PasteStartEvent,
     PinnedRowDataChangedEvent,
+    PivotLimitExceededEvent,
     PostProcessPopupParams,
     PostSortRowsParams,
     ProcessCellForExportParams,
@@ -859,6 +860,11 @@ export class AgGridAngular<TData = any, TColDef extends ColDef<TData> = ColDef<a
          * @initial
          */
     @Input() public pivotPanelShow: 'always' | 'onlyWhenPivoting' | 'never' | undefined = undefined;
+    /** The maximum number of generated columns before the grid halts execution. Upon reaching this number, the grid halts generation of columns
+         * and triggers a `pivotLimitExceeded` event. `-1` for no limit.
+         * @default -1
+         */
+    @Input() public pivotMaximumGeneratedColumns: number | undefined = undefined;
     /** If pivoting, set to the number of column group levels to expand by default, e.g. `0` for none, `1` for first level only, etc. Set to `-1` to expand everything.
          * @default 0
          */
@@ -1738,6 +1744,9 @@ export class AgGridAngular<TData = any, TColDef extends ColDef<TData> = ColDef<a
     /** Fired when calling either of the API methods `expandAll()` or `collapseAll()`.
          */
     @Output() public expandOrCollapseAll: EventEmitter<ExpandCollapseAllEvent<TData>> = new EventEmitter<ExpandCollapseAllEvent<TData>>();
+    /** Exceeded the `pivotMaximumGeneratedColumns` limit when generating columns.
+         */
+    @Output() public pivotLimitExceeded: EventEmitter<PivotLimitExceededEvent<TData>> = new EventEmitter<PivotLimitExceededEvent<TData>>();
     /** The client has set new pinned row data into the grid.
          */
     @Output() public pinnedRowDataChanged: EventEmitter<PinnedRowDataChangedEvent<TData>> = new EventEmitter<PinnedRowDataChangedEvent<TData>>();

@@ -200,6 +200,7 @@ export const GRID_OPTION_DEFAULTS = {
     suppressGroupMaintainValueType: false,
     functionsPassive: false,
     groupLockGroupColumns: 0,
+    pivotMaximumGeneratedColumns: -1,
 } as const;
 /**
  * Used simply to type check the default grid options.
