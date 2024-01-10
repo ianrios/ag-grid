@@ -11,6 +11,21 @@ const theme = extendTheme({
         gap: 2,
       },
     },
+    JoyMenuButton: {
+      defaultProps: {
+        sx: { gap: 1 },
+      },
+    },
+    JoyTooltip: {
+      defaultProps: {
+        slotProps: {
+          root: {
+            sx: { maxWidth: '350px' },
+          } as any,
+        },
+        arrow: true,
+      },
+    },
   },
 });
 

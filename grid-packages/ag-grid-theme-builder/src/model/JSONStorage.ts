@@ -1,15 +1,11 @@
 import { atomWithStorage } from 'jotai/utils';
 import { logErrorMessage } from 'model/utils';
 
-interface SyncStorage<Value> {
-  getItem: (key: string, initialValue: Value) => Value;
-  setItem: (key: string, newValue: Value) => void;
-  removeItem: (key: string) => void;
-}
+export const STORAGE_KEY_PREFIX = 'theme-builder.theme-state.';
 
-const storageKey = (key: string) => `theme-builder.theme-state.${key}`;
+const storageKey = (key: string) => STORAGE_KEY_PREFIX + key;
 
-class JSONStorage<T> implements SyncStorage<T> {
+class JSONStorage<T> {
   getItem(key: string, initialValue: T): T {
     const storedString = localStorage.getItem(storageKey(key));
     if (storedString == null) {
@@ -37,13 +33,9 @@ class JSONStorage<T> implements SyncStorage<T> {
   }
 }
 
-export const atomWithJSONStorage = <T>(key: string, initialValue: T) =>
-  atomWithStorage(
-    key,
-    initialValue,
-    // need to cast JSONStorage to undefined because a bug in jotai's typings
-    // doesn't recognise SyncStorage and thinks it's an AsyncStorage
-    new JSONStorage() as unknown as undefined,
-  );
+export const atomWithJSONStorage = <T>(key: string, initialValue: T) => {
+  const storage = new JSONStorage<T>();
+  return atomWithStorage(key, storage.getItem(key, initialValue), storage);
+};
 
 export type PersistentAtom<T> = ReturnType<typeof atomWithJSONStorage<T>>;

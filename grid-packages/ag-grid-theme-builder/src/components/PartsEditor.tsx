@@ -1,5 +1,6 @@
 import { Add, ChevronSort, Reset, SettingsAdjust, TrashCan } from '@carbon/icons-react';
 import {
+  Card,
   Dropdown,
   IconButton,
   ListItemButton,
@@ -12,8 +13,9 @@ import {
 import { allParts } from 'features/parts/all-parts';
 import { Part, getDefaultPreset } from 'features/parts/parts-types';
 import { useAtom } from 'jotai';
-import { FC, ReactNode, memo, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import { AnimateAppear } from './AnimateAppear';
+import { memoWithSameType } from './component-utils';
 
 export const PartsEditor = () => (
   <PartsTable>
@@ -40,9 +42,8 @@ const PartEditor = <T extends object>({ part }: PartEditorProps<T>) => {
       <EditorCell>
         {selectedPreset ? (
           <Dropdown>
-            <MenuButton sx={{ gap: 1 }}>
+            <MenuButton endDecorator={<ChevronSort />}>
               <PresetPreviewComponent {...selectedPreset} />
-              <ChevronSort />
             </MenuButton>
             <Menu placement="top-start">
               {part.presets.map((preset) => (
@@ -55,7 +56,10 @@ const PartEditor = <T extends object>({ part }: PartEditorProps<T>) => {
                 </MenuItem>
               ))}
               <ListItemButton
-                onClick={() => setValue((selectedPreset || getDefaultPreset(part)).params)}
+                onClick={() => {
+                  setValue((selectedPreset || getDefaultPreset(part)).params);
+                  setShowEditor(true);
+                }}
               >
                 <SettingsAdjust /> Customise
               </ListItemButton>
@@ -69,6 +73,7 @@ const PartEditor = <T extends object>({ part }: PartEditorProps<T>) => {
             label="custom"
             icon={<SettingsAdjust />}
             onClick={() => setShowEditor(!showEditor)}
+            active={showEditor}
           />
         ) : (
           <StateAndIconButton
@@ -94,27 +99,31 @@ const PartsTable = styled('div')`
 const LabelCell = styled('div')`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 `;
 
 const EditorCell = styled('div')`
   min-height: 36px;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 `;
 
 const FullWidthCell = styled('div')`
   grid-column-end: span 2;
+  margin-bottom: 10px;
 `;
 
-const StateAndIconButton: FC<{ label: string; icon: ReactNode; onClick: () => void }> = (props) => (
+const StateAndIconButton: FC<{
+  label: string;
+  icon: ReactNode;
+  onClick: () => void;
+  active?: boolean;
+}> = (props) => (
   <Stack>
     <Stack direction="row" alignItems="center" fontStyle="italic">
       {props.label}
       <IconButton
         size="sm"
-        variant="outlined"
+        variant={props.active ? 'solid' : 'outlined'}
         sx={{
           '--IconButton-size': '20px',
         }}
@@ -131,26 +140,27 @@ type PartParamsEditorProps<T extends object> = {
   part: Part<T>;
 };
 
-let PartParamsEditor = <T extends object>({ part, show }: PartParamsEditorProps<T>) => {
-  const [value, setValue] = useAtom(part.valueAtom);
-  const customParams = typeof value === 'object' ? value : null;
-  const EditorComponent = part.paramsEditorComponent;
-  return (
-    <AnimateAppear>
-      {show && customParams && (
-        <>
-          <EditorComponent
-            value={customParams}
-            onPropertyChange={(property, propertyValue) =>
-              setValue({ ...customParams, [property]: propertyValue })
-            }
-          />
-          <ListItemButton onClick={() => setValue(getDefaultPreset(part).id)}>
-            <Reset /> Reset to defaults
-          </ListItemButton>
-        </>
-      )}
-    </AnimateAppear>
-  );
-};
-PartParamsEditor = memo(PartParamsEditor) as any;
+const PartParamsEditor = memoWithSameType(
+  <T extends object>({ part, show }: PartParamsEditorProps<T>) => {
+    const [value, setValue] = useAtom(part.valueAtom);
+    const customParams = typeof value === 'object' ? value : null;
+    const EditorComponent = part.paramsEditorComponent;
+    return (
+      <AnimateAppear>
+        {show && customParams && (
+          <Card>
+            <EditorComponent
+              value={customParams}
+              onPropertyChange={(property, propertyValue) =>
+                setValue({ ...customParams, [property]: propertyValue })
+              }
+            />
+            <ListItemButton onClick={() => setValue(getDefaultPreset(part).id)}>
+              <Reset /> Reset to defaults
+            </ListItemButton>
+          </Card>
+        )}
+      </AnimateAppear>
+    );
+  },
+);

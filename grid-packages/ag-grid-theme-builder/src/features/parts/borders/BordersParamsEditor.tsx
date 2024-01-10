@@ -21,7 +21,7 @@ export const BordersConfigEditor: PartParamsEditor<BordersParams> = ({
   <>
     {booleanFields.map((field) => (
       <ListItem key={field}>
-        <CheckboxPropertyEditor<BordersParams>
+        <CheckboxPropertyEditor
           value={value}
           property={field}
           onPropertyChange={onPropertyChange}

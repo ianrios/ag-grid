@@ -11,10 +11,11 @@ import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 import { styled } from '@mui/joy';
 import { withErrorBoundary } from 'components/ErrorBoundary';
 import { installTheme } from 'design-system/theme';
+import { gridConfigAtom } from 'features/grid-options/grid-config-atom';
 import { useAtomValue } from 'jotai';
-import { GridConfig, buildGridOptions } from 'model/grid-options';
+import { buildGridOptions } from 'model/grid-options';
 import { renderedThemeAtom } from 'model/rendered-theme';
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 
 ModuleRegistry.registerModules([
   ClientSideRowModelModule,
@@ -27,19 +28,14 @@ ModuleRegistry.registerModules([
   RowGroupingModule,
 ]);
 
-const gridConfig: GridConfig = {
-  advancedFilter: false,
-  filtersToolPanel: true,
-  columnsToolPanel: true,
-  columnGroups: true,
-  rowGrouping: true,
-  columnResizing: true,
-  rowDrag: true,
-  rowSelection: true,
-};
-
 const GridPreview = () => {
-  const options = useMemo(() => buildGridOptions(gridConfig), []);
+  const gridConfig = useAtomValue(gridConfigAtom);
+  const options = useMemo(() => buildGridOptions(gridConfig), [gridConfig]);
+  const [internalState] = useState({ id: 1, prevConfig: gridConfig });
+
+  if (gridConfig !== internalState.prevConfig) {
+    internalState.id += 1;
+  }
 
   const renderedTheme = useAtomValue(renderedThemeAtom);
 
@@ -49,7 +45,7 @@ const GridPreview = () => {
 
   return (
     <Wrapper className="ag-theme-custom">
-      <AgGridReact {...options} />
+      <AgGridReact key={internalState.id} {...options} />
     </Wrapper>
   );
 };

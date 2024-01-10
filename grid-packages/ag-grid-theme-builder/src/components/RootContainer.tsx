@@ -1,6 +1,7 @@
-import { TrashCan } from '@carbon/icons-react';
-import { Button, styled } from '@mui/joy';
+import { styled } from '@mui/joy';
 import { memo } from 'react';
+import { GridOptionsDropdown } from '../features/grid-options/GridOptionsDropdown';
+import { DiscardChangesButton } from './DiscardChangesButton';
 import { GridPreview } from './GridPreview';
 import { PartsEditor } from './PartsEditor';
 
@@ -9,17 +10,8 @@ export const RootContainer = memo(() => {
     <>
       <Container>
         <Header>
-          <Button
-            startDecorator={<TrashCan />}
-            onClick={() => {
-              if (confirm('Discard all of your theme customisations?')) {
-                localStorage.clear();
-                location.reload();
-              }
-            }}
-          >
-            Discard changes
-          </Button>
+          <GridOptionsDropdown />
+          <DiscardChangesButton />
         </Header>
         <Menu>
           <PartsEditor />

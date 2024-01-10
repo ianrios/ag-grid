@@ -1,16 +1,22 @@
 import { ColDef, ColGroupDef, GridOptions } from '@ag-grid-community/core';
 
+export const gridConfigBooleanFields = [
+  'advancedFilter',
+  'filtersToolPanel',
+  'columnsToolPanel',
+  'columnGroups',
+  'columnHover',
+  'rowGrouping',
+  'columnResizing',
+  'rowDrag',
+  'rowSelection',
+  'integratedCharts',
+] as const;
+
+type GridConfigBooleanField = (typeof gridConfigBooleanFields)[number];
+
 export type GridConfig = {
-  advancedFilter?: boolean;
-  filtersToolPanel?: boolean;
-  columnsToolPanel?: boolean;
-  columnGroups?: boolean;
-  columnHover?: boolean;
-  rowGrouping?: boolean;
-  columnResizing?: boolean;
-  rowDrag?: boolean;
-  rowSelection?: boolean;
-  integratedCharts?: boolean;
+  [K in GridConfigBooleanField]?: boolean;
 };
 
 export const buildGridOptions = (config: GridConfig): GridOptions => {
