@@ -5,7 +5,7 @@ import { gridConfigBooleanFields } from 'model/grid-options';
 import { titleCase } from 'model/utils';
 import { gridConfigAtom } from './grid-config-atom';
 
-export const GridOptionsDropdown = () => {
+export const GridConfigDropdown = () => {
   const [gridConfig, setGridConfig] = useAtom(gridConfigAtom);
   const filtersConflict = gridConfig.advancedFilter && gridConfig.filtersToolPanel;
   return (
@@ -21,12 +21,14 @@ export const GridOptionsDropdown = () => {
               checked={!!gridConfig[property]}
               onChange={() => setGridConfig({ ...gridConfig, [property]: !gridConfig[property] })}
               label={titleCase(String(property))}
-              sx={{
-                opacity: filtersConflict && property === 'filtersToolPanel' ? 0.5 : undefined,
-              }}
+              sx={
+                {
+                  // opacity: filtersConflict && property === 'filtersToolPanel' ? 0.5 : undefined,
+                }
+              }
             />
           );
-          return filtersConflict && property === 'filtersToolPanel' ? (
+          return false && filtersConflict && property === 'filtersToolPanel' ? (
             <Tooltip
               key={property}
               title={

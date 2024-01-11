@@ -1,6 +1,6 @@
 import { styled } from '@mui/joy';
 import { memo } from 'react';
-import { GridOptionsDropdown } from '../features/grid-options/GridOptionsDropdown';
+import { GridConfigDropdown } from '../features/grid-options/GridConfigDropdown';
 import { DiscardChangesButton } from './DiscardChangesButton';
 import { GridPreview } from './GridPreview';
 import { PartsEditor } from './PartsEditor';
@@ -10,7 +10,7 @@ export const RootContainer = memo(() => {
     <>
       <Container>
         <Header>
-          <GridOptionsDropdown />
+          <GridConfigDropdown />
           <DiscardChangesButton />
         </Header>
         <Menu>
