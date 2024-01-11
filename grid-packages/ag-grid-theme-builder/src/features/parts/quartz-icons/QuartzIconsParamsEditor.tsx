@@ -36,6 +36,7 @@ export const QuartzIconsParamsEditor: PartParamsEditor<QuartzIconsParams> = (pro
         />
       </ListItem>
       <ListItem>
+        Color:
         <ColorEditor value={color} onChange={(v) => props.onPropertyChange('color', v)} />
       </ListItem>
     </>
