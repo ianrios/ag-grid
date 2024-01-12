@@ -1,6 +1,7 @@
 import { styled } from '@mui/joy';
+import { TabbedColorEditor } from 'features/editors/color/TabbedColorEditor';
 import { memo, useState } from 'react';
-import { GridConfigDropdown } from '../features/grid-options/GridConfigDropdown';
+import { GridConfigDropdownButton } from '../features/grid-options/GridConfigDropdown';
 import { DiscardChangesButton } from './DiscardChangesButton';
 import { GridPreview } from './GridPreview';
 import { PartsEditor } from './PartsEditor';
@@ -11,11 +12,12 @@ export const RootContainer = memo(() => {
     <>
       <Container>
         <Header>
-          <GridConfigDropdown />
+          <GridConfigDropdownButton />
           <DiscardChangesButton />
         </Header>
         <Menu>
           <PartsEditor />
+          <TabbedColorEditor initialValue={color} onChange={setColor} />
         </Menu>
         <Main>
           <GridPreview />

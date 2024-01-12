@@ -1,44 +1,48 @@
+import { ClickAwayListener, Popper } from '@mui/base';
 import { Button, Card, styled } from '@mui/joy';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 
 export type WidgetDropdownProps = {
-  renderUI: () => ReactNode;
+  dropdownContent: ReactNode;
   children: ReactNode;
   startDecorator?: React.ReactNode;
   endDecorator?: React.ReactNode;
 };
 
+let idCounter = 0;
 /**
  * A version of MUI's menu component that can contain interactive UI in the dropdown. It doesn't close until you click outside the dropdown.
  */
 export const UIDropdownButton = (props: WidgetDropdownProps) => {
-  const [open, setOpen] = useState(false);
+  const [popperId] = useState(() => String(++idCounter));
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const open = !!anchorEl;
   const buttonRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    // Close dropdown when clicking outside
-    const listener = (e: MouseEvent) => {
-      if (!clickContainedBy(e, buttonRef.current) && !clickContainedBy(e, dropdownRef.current)) {
-        setOpen(false);
-      }
-    };
-    document.body.addEventListener('click', listener, true);
-    return () => document.body.removeEventListener('click', listener, true);
-  });
   return (
-    <Container>
-      <DropdownTriggerButton
-        ref={buttonRef}
-        variant="outlined"
-        color="neutral"
-        onClick={() => setOpen(!open)}
-        startDecorator={props.startDecorator}
-        endDecorator={props.endDecorator}
-      >
-        {props.children}
-      </DropdownTriggerButton>
-      {open && <DropdownArea ref={dropdownRef}>{props.renderUI()}</DropdownArea>}
-    </Container>
+    <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+      <Container>
+        <DropdownTriggerButton
+          ref={buttonRef}
+          variant="outlined"
+          color="neutral"
+          onClick={() => {
+            setAnchorEl(open ? null : buttonRef.current);
+          }}
+          startDecorator={props.startDecorator}
+          endDecorator={props.endDecorator}
+        >
+          {props.children}
+        </DropdownTriggerButton>
+        <StyledPopper id={popperId} open={open} anchorEl={anchorEl} placement="bottom-start">
+          {open && (
+            <DropdownArea ref={dropdownRef} sx={{ boxShadow: 10 }}>
+              {props.dropdownContent}
+            </DropdownArea>
+          )}
+        </StyledPopper>
+      </Container>
+    </ClickAwayListener>
   );
 };
 
@@ -51,13 +55,11 @@ const DropdownTriggerButton = styled(Button)`
   gap: 8px;
 `;
 
-const DropdownArea = styled(Card)`
-  pointer-events: all;
-  position: absolute;
+const StyledPopper = styled(Popper)`
   z-index: 1;
-  margin-top: 4px;
-  box-shadow: var(--joy-shadow-lg);
 `;
 
-const clickContainedBy = (e: MouseEvent, el: HTMLElement | null) =>
-  el && e.target instanceof Node && el.contains(e.target);
+const DropdownArea = styled(Card)`
+  pointer-events: all;
+  margin-top: 4px;
+`;

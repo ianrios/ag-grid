@@ -15,6 +15,7 @@ import { Part, getDefaultPreset } from 'features/parts/parts-types';
 import { useAtom } from 'jotai';
 import { FC, ReactNode, useState } from 'react';
 import { AnimateAppear } from './AnimateAppear';
+import { Cell } from './Table';
 import { memoWithSameType } from './component-utils';
 
 export const PartsEditor = () => (
@@ -38,8 +39,8 @@ const PartEditor = <T extends object>({ part }: PartEditorProps<T>) => {
 
   return (
     <>
-      <LabelCell>{part.label}</LabelCell>
-      <EditorCell>
+      <Cell>{part.label}</Cell>
+      <Cell>
         {selectedPreset ? (
           <Dropdown>
             <MenuButton endDecorator={<ChevronSort />}>
@@ -82,10 +83,8 @@ const PartEditor = <T extends object>({ part }: PartEditorProps<T>) => {
             onClick={() => setValue(getDefaultPreset(part).id)}
           />
         )}
-      </EditorCell>
-      <FullWidthCell>
-        <PartParamsEditor part={part} show={showEditor} />
-      </FullWidthCell>
+      </Cell>
+      <PartParamsEditor part={part} show={showEditor} />
     </>
   );
 };
@@ -96,42 +95,24 @@ const PartsTable = styled('div')`
   grid-column-gap: 20px;
 `;
 
-const LabelCell = styled('div')`
-  display: flex;
-  align-items: center;
-`;
-
-const EditorCell = styled('div')`
-  min-height: 36px;
-  display: flex;
-  align-items: center;
-`;
-
-const FullWidthCell = styled('div')`
-  grid-column-end: span 2;
-  margin-bottom: 10px;
-`;
-
 const StateAndIconButton: FC<{
   label: string;
   icon: ReactNode;
   onClick: () => void;
   active?: boolean;
 }> = (props) => (
-  <Stack>
-    <Stack direction="row" alignItems="center" fontStyle="italic">
-      {props.label}
-      <IconButton
-        size="sm"
-        variant={props.active ? 'solid' : 'outlined'}
-        sx={{
-          '--IconButton-size': '20px',
-        }}
-        onClick={props.onClick}
-      >
-        {props.icon}
-      </IconButton>
-    </Stack>
+  <Stack minHeight={36} direction="row" alignItems="center" fontStyle="italic">
+    {props.label}
+    <IconButton
+      size="sm"
+      variant={props.active ? 'solid' : 'outlined'}
+      sx={{
+        '--IconButton-size': '20px',
+      }}
+      onClick={props.onClick}
+    >
+      {props.icon}
+    </IconButton>
   </Stack>
 );
 
@@ -146,21 +127,28 @@ const PartParamsEditor = memoWithSameType(
     const customParams = typeof value === 'object' ? value : null;
     const EditorComponent = part.paramsEditorComponent;
     return (
-      <AnimateAppear>
-        {show && customParams && (
-          <Card>
-            <EditorComponent
-              value={customParams}
-              onPropertyChange={(property, propertyValue) =>
-                setValue({ ...customParams, [property]: propertyValue })
-              }
-            />
-            <ListItemButton onClick={() => setValue(getDefaultPreset(part).id)}>
-              <Reset /> Reset to defaults
-            </ListItemButton>
-          </Card>
-        )}
-      </AnimateAppear>
+      <PartParamsEditorCell>
+        <AnimateAppear>
+          {show && customParams && (
+            <Card>
+              <EditorComponent
+                value={customParams}
+                onPropertyChange={(property, propertyValue) =>
+                  setValue({ ...customParams, [property]: propertyValue })
+                }
+              />
+              <ListItemButton onClick={() => setValue(getDefaultPreset(part).id)}>
+                <Reset /> Reset to defaults
+              </ListItemButton>
+            </Card>
+          )}
+        </AnimateAppear>
+      </PartParamsEditorCell>
     );
   },
 );
+
+export const PartParamsEditorCell = styled('div')`
+  grid-column-end: span 2;
+  margin-bottom: 10px;
+`;

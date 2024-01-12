@@ -61,3 +61,6 @@ export const assertNotNull = <T>(value: T | null | undefined): T => {
   if (value == null) throw new Error('Expected non-null value');
   return value;
 };
+
+export const singleOrFirst = <T>(items: T | readonly T[]): T =>
+  Array.isArray(items) ? items[0] : items;

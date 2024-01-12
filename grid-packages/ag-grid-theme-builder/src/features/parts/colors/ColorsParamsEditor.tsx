@@ -1,6 +1,6 @@
 import { ListItem } from '@mui/joy';
 import { ColorsParams, colorsParamsDefaults } from 'design-system/parts';
-import { ColorEditor } from 'features/editors/ColorEditor';
+import { ColorEditor } from 'features/editors/color/ColorEditor';
 import { PartParamsEditor } from '../parts-types';
 
 export const ColorsParamsEditor: PartParamsEditor<ColorsParams> = (props) => {
