@@ -24,7 +24,9 @@ export const InputColorEditor = ({ initialValue, onChange }: UncontrolledColorEd
     const newParts = { ...colorParts, [part]: newValue };
     const editorColorMode = getColorMode(editorValue);
     let newEditorValue: string;
-    if ('rgb'.includes(part) || (part === 'a' && editorColorMode === 'rgb')) {
+    if (part === 'a' && newValue === 0) {
+      newEditorValue = 'transparent';
+    } else if ('rgb'.includes(part) || (part === 'a' && editorColorMode === 'rgb')) {
       newEditorValue = colorPartsToRGB(newParts);
       const { h, s, l } = rgbaToHsla(newParts);
       newParts.h = h;
