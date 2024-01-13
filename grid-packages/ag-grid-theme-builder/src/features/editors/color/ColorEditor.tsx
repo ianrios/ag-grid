@@ -2,7 +2,11 @@ import { styled } from '@mui/system';
 import { UIDropdownButton } from 'components/UIDropdownButton';
 import { ColorSwatch } from './ColorSwatch';
 import { TabbedColorEditor } from './TabbedColorEditor';
-import { colorValueToCssExpression, parseCssColorAsRGBA, rgbaToHex } from './color-editor-utils';
+import {
+  colorValueToCssExpression,
+  reinterpretCssColorExpression,
+  rgbaToHex,
+} from './color-editor-utils';
 
 export type ColorEditorProps = {
   value: string | number;
@@ -11,7 +15,7 @@ export type ColorEditorProps = {
 
 export const ColorEditor = ({ value, onChange }: ColorEditorProps) => {
   const cssValue = colorValueToCssExpression(value);
-  const rgba = parseCssColorAsRGBA(cssValue);
+  const rgba = reinterpretCssColorExpression(cssValue);
 
   let label: string;
   if (rgba == null) {

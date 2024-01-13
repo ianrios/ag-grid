@@ -148,7 +148,7 @@ const PartParamsEditor = memoWithSameType(
   },
 );
 
-export const PartParamsEditorCell = styled('div')`
+const PartParamsEditorCell = styled('div')`
   grid-column-end: span 2;
   margin-bottom: 10px;
 `;
