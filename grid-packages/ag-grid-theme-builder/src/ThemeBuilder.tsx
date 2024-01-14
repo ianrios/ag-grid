@@ -27,6 +27,10 @@ const theme = extendTheme({
       },
     },
   },
+  fontFamily: {
+    display: 'IBM Plex Sans', // applies to `h1`–`h4`
+    body: 'IBM Plex Sans', // applies to `title-*` and `body-*`
+  },
 });
 
 export const ThemeBuilder = () => {

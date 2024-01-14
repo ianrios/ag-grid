@@ -7,23 +7,21 @@ import { GridPreview } from './GridPreview';
 import { PartsEditor } from './PartsEditor';
 
 export const RootContainer = memo(() => {
-  const [color, setColor] = useState<string | number>('#8c4a');
+  const [color, setColor] = useState<string | number>(0.35);
   return (
-    <>
-      <Container>
-        <Header>
-          <GridConfigDropdownButton />
-          <DiscardChangesButton />
-        </Header>
-        <Menu>
-          <PartsEditor />
-          <TabbedColorEditor initialValue={color} onChange={setColor} />
-        </Menu>
-        <Main>
-          <GridPreview />
-        </Main>
-      </Container>
-    </>
+    <Container>
+      <Header>
+        <GridConfigDropdownButton />
+        <DiscardChangesButton />
+      </Header>
+      <Menu>
+        <PartsEditor />
+        <TabbedColorEditor initialValue={color} onChange={setColor} />
+      </Menu>
+      <Main>
+        <GridPreview />
+      </Main>
+    </Container>
   );
 });
 
@@ -36,6 +34,8 @@ const Container = styled('div')`
   grid-template-columns: 300px auto;
   grid-template-rows: min-content auto;
   gap: 20px;
+
+  font-family: 'IBM Plex Sans', sans-serif;
 
   .tooltip {
     max-width: 400px;

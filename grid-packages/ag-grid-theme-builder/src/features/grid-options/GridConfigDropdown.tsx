@@ -38,9 +38,7 @@ const GridConfigDropdown = () => {
         return showFiltersWarning ? (
           <Tooltip
             key={property}
-            title={
-              'Advanced Filter does not work with Filters Tool Panel. Filters Tool Panel has been disabled.'
-            }
+            title="Advanced Filter does not work with Filters Tool Panel. Filters Tool Panel has been disabled."
           >
             {item}
           </Tooltip>

@@ -18,7 +18,7 @@ export type HSLAColor = {
 
 export type UncontrolledColorEditorProps = {
   initialValue: string | number;
-  onChange: (value: string) => void;
+  onChange: (value: string | number) => void;
 };
 
 export const colorValueToCssExpression = (value: string | number) =>
