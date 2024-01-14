@@ -1,5 +1,6 @@
 import { styled } from '@mui/joy';
 import { TabbedColorEditor } from 'features/editors/color/TabbedColorEditor';
+import { cssInterpretationElementId } from 'features/editors/color/color-editor-utils';
 import { memo, useState } from 'react';
 import { GridConfigDropdownButton } from '../features/grid-options/GridConfigDropdown';
 import { DiscardChangesButton } from './DiscardChangesButton';
@@ -9,23 +10,35 @@ import { PartsEditor } from './PartsEditor';
 export const RootContainer = memo(() => {
   const [color, setColor] = useState<string | number>(0.35);
   return (
-    <Container>
-      <Header>
-        <GridConfigDropdownButton />
-        <DiscardChangesButton />
-      </Header>
-      <Menu>
-        <PartsEditor />
-        <TabbedColorEditor initialValue={color} onChange={setColor} />
-      </Menu>
-      <Main>
-        <GridPreview />
-      </Main>
+    <Container className="ag-theme-custom">
+      <Grid>
+        <Header>
+          <GridConfigDropdownButton />
+          <DiscardChangesButton />
+        </Header>
+        <Menu>
+          <PartsEditor />
+          <TabbedColorEditor initialValue={color} onChange={setColor} />
+        </Menu>
+        <Main>
+          <GridPreview />
+        </Main>
+      </Grid>
+      <ReinterpretationElement id={cssInterpretationElementId} />
     </Container>
   );
 });
 
 const Container = styled('div')`
+  height: 100%;
+`;
+
+const ReinterpretationElement = styled('span')`
+  position: absolute;
+  left: -10000px;
+`;
+
+const Grid = styled('div')`
   height: 100%;
   display: grid;
   grid-template-areas:

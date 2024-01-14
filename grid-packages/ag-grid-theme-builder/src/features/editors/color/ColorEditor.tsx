@@ -10,10 +10,11 @@ import {
 
 export type ColorEditorProps = {
   value: string | number;
-  onChange: (value: string) => void;
+  onChange: (value: string | number) => void;
+  preventNumericColours?: boolean;
 };
 
-export const ColorEditor = ({ value, onChange }: ColorEditorProps) => {
+export const ColorEditor = ({ value, onChange, preventNumericColours }: ColorEditorProps) => {
   const cssValue = colorValueToCssExpression(value);
   const rgba = reinterpretCssColorExpression(cssValue);
 
@@ -32,7 +33,13 @@ export const ColorEditor = ({ value, onChange }: ColorEditorProps) => {
 
   return (
     <UIDropdownButton
-      dropdownContent={<TabbedColorEditor initialValue={value} onChange={onChange} />}
+      dropdownContent={
+        <TabbedColorEditor
+          initialValue={value}
+          onChange={onChange}
+          preventNumericColours={preventNumericColours}
+        />
+      }
     >
       <SmallColorSwatch color={cssValue} />
       {label}

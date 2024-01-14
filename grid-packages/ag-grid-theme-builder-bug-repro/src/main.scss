@@ -1,0 +1,15 @@
+@use 'sass:meta';
+
+html {
+  color-scheme: light;
+}
+
+html[data-dark-mode='true'] {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-dark-mode='false']) {
+    color-scheme: dark;
+  }
+}

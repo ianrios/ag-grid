@@ -1,18 +1,19 @@
 import { InformationFilled } from '@carbon/icons-react';
 import { Slider, Stack, Tooltip } from '@mui/joy';
+import { useChangeHandler } from 'components/component-utils';
 import { singleOrFirst } from 'model/utils';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { ColorSwatch } from './ColorSwatch';
-import { UncontrolledColorEditorProps, colorValueToCssExpression } from './color-editor-utils';
+import {
+  UncontrolledColorEditorProps,
+  colorValueToCssExpression,
+  formatProportionAsPercentPoint5,
+} from './color-editor-utils';
 
 export const PercentColorEditor = ({ initialValue, onChange }: UncontrolledColorEditorProps) => {
   const [value, setValue] = useState(typeof initialValue === 'number' ? initialValue : 1);
-  const onChangeRef = useRef(onChange);
-  onChangeRef.current = onChange;
 
-  useEffect(() => {
-    onChangeRef.current(value);
-  }, [value]);
+  useChangeHandler(value, onChange);
 
   return (
     <Stack>
@@ -37,5 +38,3 @@ export const PercentColorEditor = ({ initialValue, onChange }: UncontrolledColor
     </Stack>
   );
 };
-
-const formatProportionAsPercentPoint5 = (n: number) => `${(Math.round(n * 200) / 2).toFixed(1)}%`;

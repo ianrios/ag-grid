@@ -23,13 +23,18 @@ export type UncontrolledColorEditorProps = {
 
 export const colorValueToCssExpression = (value: string | number) =>
   typeof value === 'number'
-    ? `color-mix(in srgb, transparent, var(--ag-foreground-color) ${clamp(value, 0, 1)})`
+    ? `color-mix(in srgb, transparent, var(--ag-foreground-color) ${formatProportionAsPercentPoint5(
+        value,
+      )})`
     : value;
 
-let colorEl: HTMLElement | undefined;
+export const cssInterpretationElementId = 'theme-builder-interpretation-element';
 export const reinterpretCssColorExpression = (value: string | number): RGBAColor | null => {
+  const colorEl = document.getElementById(cssInterpretationElementId);
   if (!colorEl) {
-    document.body.appendChild((colorEl = document.createElement('span')));
+    throw new Error(
+      `${reinterpretCssColorExpression.name} called before ${cssInterpretationElementId} created`,
+    );
   }
   // We get the browser to do the heavy lifting by using the provided expression
   // in a color-mix(in srgb) and reading back the computed srgb colour. This allows
@@ -114,3 +119,18 @@ export const rgbaToHsla = ({ r, g, b, a }: RGBAColor): HSLAColor => {
   h /= 6;
   return { h, s, l, a };
 };
+
+export const formatProportionAsPercentPoint5 = (n: number) =>
+  `${(Math.round(clamp(n, 0, 1) * 200) / 2).toFixed(1)}%`;
+
+const int = (n: number, max: number) => clamp(Math.floor(n * max * 1), 0, max);
+
+export const formatCssRGBAExpression = ({ r, g, b, a }: RGBAColor): string =>
+  a === 1
+    ? `rgb(${int(r, 255)}, ${int(g, 255)}, ${int(b, 255)})`
+    : `rgba(${int(r, 255)}, ${int(g, 255)}, ${int(b, 255)}, ${a})`;
+
+export const formatCssHSLAExpression = ({ h, s, l, a }: HSLAColor): string =>
+  a === 1
+    ? `hsl(${int(h, 360)}, ${int(s, 100)}%, ${int(l, 100)}%)`
+    : `hsla(${int(h, 360)}, ${int(s, 100)}%, ${int(l, 100)}%, ${a})`;
