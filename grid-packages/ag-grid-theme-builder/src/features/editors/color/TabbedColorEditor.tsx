@@ -1,6 +1,7 @@
 import { Eyedropper, Percentage, SettingsAdjust, Sigma } from '@carbon/icons-react';
 import { Tab, TabList, TabPanel, Tabs } from '@mui/joy';
 import { useState } from 'react';
+import { EyedropperColorEditor } from './EyedropperColorEditor';
 import { InputColorEditor } from './InputColorEditor';
 import { PercentColorEditor } from './PercentColorEditor';
 import { UncontrolledColorEditorProps } from './color-editor-utils';
@@ -34,7 +35,9 @@ export const TabbedColorEditor = (props: TabbedColorEditorProps) => {
         <PercentColorEditor {...props} />
       </TabPanel>
       <TabPanel value="mix">Mix panel</TabPanel>
-      <TabPanel value="eyedropper">Eyedropper</TabPanel>
+      <TabPanel value="eyedropper">
+        <EyedropperColorEditor {...props} />
+      </TabPanel>
     </Tabs>
   );
 };
