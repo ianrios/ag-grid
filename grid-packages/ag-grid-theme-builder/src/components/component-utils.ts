@@ -16,7 +16,6 @@ export const useChangeHandler = <T>(value: T, handler: (value: T) => void, suppr
 
   useEffect(() => {
     if (lastValueRef.current !== value && lastValueRef.current !== notCalled && !suppress) {
-      console.log('change from', lastValueRef.current, 'to', value);
       handlerRef.current(value);
     }
     lastValueRef.current = value;

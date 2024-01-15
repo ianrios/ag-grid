@@ -9,6 +9,12 @@ export type RGBAColor = {
   a: number;
 };
 
+export type VarColor = {
+  bProportion: number;
+  varA: string | null;
+  varB: string;
+};
+
 export type HSLAColor = {
   h: number;
   s: number;
@@ -29,6 +35,11 @@ export const colorValueToCssExpression = (value: string | number) =>
     : value;
 
 export const cssInterpretationElementId = 'theme-builder-interpretation-element';
+
+/**
+ * Given any CSS expression, including var() and color-mix(), get the browser to
+ * transform it to a RGBA colour.
+ */
 export const reinterpretCssColorExpression = (value: string | number): RGBAColor | null => {
   const colorEl = document.getElementById(cssInterpretationElementId);
   if (!colorEl) {
@@ -36,9 +47,6 @@ export const reinterpretCssColorExpression = (value: string | number): RGBAColor
       `${reinterpretCssColorExpression.name} called before ${cssInterpretationElementId} created`,
     );
   }
-  // We get the browser to do the heavy lifting by using the provided expression
-  // in a color-mix(in srgb) and reading back the computed srgb colour. This allows
-  // users to specify colours using color functions and variables.
   const css = colorValueToCssExpression(value);
   colorEl.style.backgroundColor = '';
   colorEl.style.backgroundColor = `color-mix(in srgb, transparent, ${css} 100%)`;
@@ -55,6 +63,22 @@ export const reinterpretCssColorExpression = (value: string | number): RGBAColor
 };
 
 export const parseRgbCssColor = (css: string): RGBAColor | null => {
+  const numbers = Array.from(css.matchAll(/[\d.%-]+/g)).map(([m]) =>
+    m.endsWith('%') ? parseFloat(m) / 100 : parseFloat(m),
+  );
+  if (numbers.find(isNaN)) return null;
+  if (/^color\(srgb/i.test(css)) {
+    const [r, g, b, a = 1] = numbers;
+    return { r, g, b, a };
+  }
+  if (/^rgba?\(/i.test(css)) {
+    const [r, g, b, a = 1] = numbers;
+    return { r: r / 255, g: g / 255, b: b / 255, a };
+  }
+  return null;
+};
+
+export const parseVarCssColor = (css: string): VarColor | null => {
   const numbers = Array.from(css.matchAll(/[\d.%-]+/g)).map(([m]) =>
     m.endsWith('%') ? parseFloat(m) / 100 : parseFloat(m),
   );

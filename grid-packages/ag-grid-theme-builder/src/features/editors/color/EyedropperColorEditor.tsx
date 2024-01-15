@@ -8,7 +8,6 @@ import { UncontrolledColorEditorProps, colorValueToCssExpression } from './color
 export const EyedropperColorEditor = ({ initialValue, onChange }: UncontrolledColorEditorProps) => {
   const [value, setValue] = useState(() => colorValueToCssExpression(initialValue));
   const [open, setOpen] = useState(false);
-  const [error, setError] = useState(false);
 
   useChangeHandler(value, onChange);
 
@@ -35,12 +34,8 @@ export const EyedropperColorEditor = ({ initialValue, onChange }: UncontrolledCo
         variant="soft"
         startDecorator={<Eyedropper />}
         onClick={() => {
-          setError(false);
           setOpen(true);
-          new EyeDropper()
-            .open()
-            .then(({ sRGBHex }) => setValue(sRGBHex))
-            .catch(() => setError(true));
+          void new EyeDropper().open().then(({ sRGBHex }) => setValue(sRGBHex));
         }}
       >
         pick color
@@ -49,7 +44,7 @@ export const EyedropperColorEditor = ({ initialValue, onChange }: UncontrolledCo
       <Typography level="body-sm">
         {open
           ? 'Click anywhere on your screen to select that colour, or hit ESC to cancel'
-          : 'Use this tool to pick colours from your website or design.'}
+          : 'Open your website or design in another window and pick colours from it.'}
       </Typography>
     </Stack>
   );
