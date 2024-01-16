@@ -4,55 +4,56 @@ import { useChangeHandler } from 'components/component-utils';
 import { logErrorMessage, singleOrFirst } from 'model/utils';
 import { useEffect, useRef, useState } from 'react';
 import { ColorSwatch } from './ColorSwatch';
+import { HSLAColor } from './HSLAColor';
+import { RGBAColor } from './RGBAColor';
 import {
   UncontrolledColorEditorProps,
   colorValueToCssExpression,
-  formatCssHSLAExpression,
-  formatCssRGBAExpression,
-  reinterpretCssColorExpression,
-  rgbaToHex,
-  rgbaToHsla,
+  format3dp,
+  formatProportionAs3dpPercent,
+  formatProportionAsDegrees,
+  formatProportionAsPercent,
 } from './color-editor-utils';
 
 export const InputColorEditor = ({ initialValue, onChange }: UncontrolledColorEditorProps) => {
   const [value, setValue] = useState(() => colorValueToCssExpression(initialValue));
   const [editorValue, setEditorValue] = useState(() => getInitialEditorValue(value));
   const [valid, setValid] = useState(!!editorValue);
-  const [sliderValues, setColorParts] = useState(() => getColorParts(value));
+  const [sliderValues, setSliderValues] = useState(() => getInitialSliderValues(value));
   const lastManuallyEnteredValue = useRef('');
-  const suppressChangeEvents = useRef(true);
+  const enableChangeEvents = useChangeHandler(value, onChange, true);
 
-  const handleColorPartChange = (newValue: number, part: keyof ColorParts) => {
+  const handleColorPartChange = (newValue: number, part: keyof SliderValues) => {
     const newValues = { ...sliderValues, [part]: newValue };
     const editorColorMode = getColorMode(editorValue);
     let newEditorValue: string;
     if ('rgb'.includes(part) || (part === 'a' && editorColorMode === 'rgb')) {
-      newEditorValue = formatCssRGBAExpression(newValues);
-      const { h, s, l } = rgbaToHsla(newValues);
+      newEditorValue = RGBAColor.fromRGBA(newValues).toCSSFunction();
+      const { h, s, l } = HSLAColor.fromRGBA(newValues);
       newValues.h = h;
       newValues.s = s;
       newValues.l = l;
     } else if ('hsl'.includes(part) || (part === 'a' && editorColorMode === 'hsl')) {
-      newEditorValue = formatCssHSLAExpression(newValues);
-      const { r, g, b } = getColorParts(newEditorValue);
+      newEditorValue = HSLAColor.fromHSLA(newValues).toCSSFunction();
+      const { r, g, b } = getInitialSliderValues(newEditorValue);
       newValues.r = r;
       newValues.g = g;
       newValues.b = b;
     } else if (part === 'a') {
-      newEditorValue = rgbaToHex(newValues);
+      newEditorValue = RGBAColor.fromRGBA(newValues).toCSSHex();
     } else {
       logErrorMessage(`Unexpected color part "${part}"`);
       return;
     }
-    setColorParts(newValues);
+    setSliderValues(newValues);
     setEditorValue(newEditorValue);
-    suppressChangeEvents.current = false;
+    enableChangeEvents();
   };
 
   const handleEditorValueChange = (newValue: string) => {
     lastManuallyEnteredValue.current = newValue;
     setEditorValue(newValue);
-    suppressChangeEvents.current = false;
+    enableChangeEvents();
   };
 
   useEffect(() => {
@@ -60,17 +61,17 @@ export const InputColorEditor = ({ initialValue, onChange }: UncontrolledColorEd
     if (/^[0-9a-e]+$/i.test(enteredValue)) {
       enteredValue = '#' + enteredValue; // allow user to enter hex values without hash
     }
-    const color = enteredValue ? reinterpretCssColorExpression(enteredValue) : null;
+    const color = RGBAColor.reinterpretCss(enteredValue);
     if (color) {
       if (editableColorRegex.test(enteredValue)) {
         setValue(enteredValue);
       } else {
-        setValue(rgbaToHex(color));
+        setValue(color.toCSSHex());
       }
       if (enteredValue === lastManuallyEnteredValue.current) {
         // if the value was typed into the editor, update all sliders
-        const newColorParts = getColorParts(enteredValue);
-        setColorParts(newColorParts);
+        const newColorParts = getInitialSliderValues(enteredValue);
+        setSliderValues(newColorParts);
       }
       setValid(true);
     } else {
@@ -78,11 +79,9 @@ export const InputColorEditor = ({ initialValue, onChange }: UncontrolledColorEd
     }
   }, [editorValue]);
 
-  useChangeHandler(value, onChange, suppressChangeEvents.current);
-
   return (
     <Stack gap={2}>
-      <ColorSwatch color={value} height={60} />
+      <ColorSwatch color={value} />
       <TwoColumnTable>
         <Cell>CSS</Cell>
         <Input
@@ -100,7 +99,7 @@ export const InputColorEditor = ({ initialValue, onChange }: UncontrolledColorEd
           value={sliderValues}
           onChange={handleColorPartChange}
           part="a"
-          valueLabelFormat={format3dp}
+          valueLabelFormat={formatProportionAs3dpPercent}
         />
         <SpanningDivider />
         <Cell>R</Cell>
@@ -155,10 +154,10 @@ const editableColorRegex = /(^rgba?\()|(^hsla?\()|(^[a-z]+$)/;
 
 const getInitialEditorValue = (value: string): string => {
   if (editableColorRegex.test(value)) return value;
-  const rgba = reinterpretCssColorExpression(value);
+  const rgba = RGBAColor.reinterpretCss(value);
   if (!rgba) return '';
   if (rgba.a === 0) return 'transparent';
-  return rgbaToHex(rgba);
+  return rgba.toCSSHex();
 };
 
 const getColorMode = (css: string): 'rgb' | 'hsl' | null => {
@@ -172,7 +171,7 @@ const SpanningDivider = styled(Divider)`
   margin: 8px 0;
 `;
 
-type ColorParts = {
+type SliderValues = {
   r: number;
   g: number;
   b: number;
@@ -182,13 +181,12 @@ type ColorParts = {
   a: number;
 };
 
-const getColorParts = (color: string): ColorParts => {
-  const rgba = reinterpretCssColorExpression(color);
+const getInitialSliderValues = (color: string): SliderValues => {
+  const rgba = RGBAColor.reinterpretCss(color);
   if (!rgba) return { r: 0, g: 0, b: 0, a: 1, h: 0, s: 0, l: 0 };
-  return {
-    ...rgbaToHsla(rgba),
-    ...rgba,
-  };
+  const { r, g, b, a } = rgba;
+  const { h, s, l } = HSLAColor.fromRGBA(rgba);
+  return { r, g, b, a, h, s, l };
 };
 
 const ColorPartSlider = ({
@@ -197,9 +195,9 @@ const ColorPartSlider = ({
   onChange,
   valueLabelFormat,
 }: {
-  value: ColorParts;
-  onChange: (newValue: number, part: keyof ColorParts) => void;
-  part: keyof ColorParts;
+  value: SliderValues;
+  onChange: (newValue: number, part: keyof SliderValues) => void;
+  part: keyof SliderValues;
   valueLabelFormat?: (n: number) => string;
 }) => (
   <Slider
@@ -214,7 +212,3 @@ const ColorPartSlider = ({
     valueLabelFormat={valueLabelFormat}
   />
 );
-
-const formatProportionAsPercent = (n: number) => `${Math.round(n * 100)}%`;
-const formatProportionAsDegrees = (n: number) => `${Math.round(n * 360)}°`;
-const format3dp = (n: number) => String(Math.round(n * 1000) / 1000);

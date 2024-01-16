@@ -1,29 +1,46 @@
 import { styled } from '@mui/joy';
+import { installTheme } from 'design-system/theme';
 import { TabbedColorEditor } from 'features/editors/color/TabbedColorEditor';
 import { cssInterpretationElementId } from 'features/editors/color/color-editor-utils';
-import { memo, useState } from 'react';
+import { useAtomValue } from 'jotai';
+import { renderedThemeAtom } from 'model/rendered-theme';
+import { memo, useLayoutEffect, useState } from 'react';
 import { GridConfigDropdownButton } from '../features/grid-options/GridConfigDropdown';
 import { DiscardChangesButton } from './DiscardChangesButton';
 import { GridPreview } from './GridPreview';
 import { PartsEditor } from './PartsEditor';
 
 export const RootContainer = memo(() => {
-  const [color, setColor] = useState<string | number>(0.35);
+  const [color, setColor] = useState<string | number>(
+    'color-mix(in srgb, transparent, var(--ag-foreground-color) 42%)',
+    // 'hsla(0, 35%, 70%, 0.5)',
+  );
+
+  const renderedTheme = useAtomValue(renderedThemeAtom);
+
+  const [canRenderApp, setCanRenderApp] = useState(false);
+  useLayoutEffect(() => {
+    installTheme('custom', [renderedTheme]);
+    setCanRenderApp(true);
+  }, [renderedTheme]);
+
   return (
     <Container className="ag-theme-custom">
-      <Grid>
-        <Header>
-          <GridConfigDropdownButton />
-          <DiscardChangesButton />
-        </Header>
-        <Menu>
-          <PartsEditor />
-          <TabbedColorEditor initialValue={color} onChange={setColor} />
-        </Menu>
-        <Main>
-          <GridPreview />
-        </Main>
-      </Grid>
+      {canRenderApp && (
+        <Grid>
+          <Header>
+            <GridConfigDropdownButton />
+            <DiscardChangesButton />
+          </Header>
+          <Menu>
+            <PartsEditor />
+            <TabbedColorEditor initialValue={color} onChange={setColor} />
+          </Menu>
+          <Main>
+            <GridPreview />
+          </Main>
+        </Grid>
+      )}
       <ReinterpretationElement id={cssInterpretationElementId} />
     </Container>
   );

@@ -1,23 +1,16 @@
 import { Card, styled } from '@mui/joy';
+import { colorValueToCssExpression } from './color-editor-utils';
 
 export type ColorSwatchProps = {
-  color: string;
-  width?: number;
-  height?: number;
+  color: string | number;
+  className?: string;
 };
 
-export const ColorSwatch = (props: ColorSwatchProps) => (
-  <ColorSwatchCard
-    sx={{
-      backgroundColor: props.color,
-      width: props.width,
-      height: props.height,
-      borderRadius: props.width != null && props.width < 50 ? 3 : undefined,
-    }}
-  >
+export const ColorSwatch = ({ color, className }: ColorSwatchProps) => (
+  <ColorSwatchCard className={className}>
     <Color
       sx={{
-        backgroundColor: props.color,
+        backgroundColor: colorValueToCssExpression(color),
       }}
     />
   </ColorSwatchCard>
@@ -29,6 +22,7 @@ const Color = styled('div')`
 `;
 
 const ColorSwatchCard = styled(Card)`
+  height: 60px;
   padding: 0;
   border-width: 2px;
   overflow: hidden;

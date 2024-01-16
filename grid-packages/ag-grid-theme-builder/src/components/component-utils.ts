@@ -6,18 +6,38 @@ import { ReactNode, memo, useEffect, useRef } from 'react';
 export const memoWithSameType = <T extends (...args: any[]) => ReactNode>(c: T): T =>
   memo(c) as any;
 
+/**
+ * A version of React.useEffect that bypasses ESLint's
+ * react-hooks/exhaustive-deps rule, because sometimes you don't an effect
+ * that uses a variable but doesn't need to fire when those variables change
+ *
+ * One could use an eslint-disable comment, but this seems more intentional
+ */
+export const useEffectWithCustomDependencies = useEffect;
+
 const notCalled: unique symbol = Symbol('notCalled');
 type NotCalled = typeof notCalled;
 
-export const useChangeHandler = <T>(value: T, handler: (value: T) => void, suppress?: boolean) => {
-  const handlerRef = useRef(handler);
-  handlerRef.current = handler;
+export const useChangeHandler = <T>(
+  value: T,
+  handler: (value: T) => void,
+  suppressInitially?: boolean,
+) => {
   const lastValueRef = useRef<T | NotCalled>(notCalled);
+  const suppressRef = useRef(!!suppressInitially);
 
-  useEffect(() => {
-    if (lastValueRef.current !== value && lastValueRef.current !== notCalled && !suppress) {
-      handlerRef.current(value);
+  useEffectWithCustomDependencies(() => {
+    if (
+      lastValueRef.current !== value &&
+      lastValueRef.current !== notCalled &&
+      !suppressRef.current
+    ) {
+      handler(value);
     }
     lastValueRef.current = value;
   }, [value]);
+
+  return () => {
+    suppressRef.current = false;
+  };
 };

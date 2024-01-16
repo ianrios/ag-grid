@@ -13,7 +13,7 @@ export const ColorsParamsEditor: PartParamsEditor<ColorsParams> = (props) => {
         <ColorEditor
           value={background}
           onChange={(v) => props.onPropertyChange('background', colorValueToCssExpression(v))}
-          preventNumericColours
+          preventTransparency
         />
       </ListItem>
       <ListItem>
@@ -21,7 +21,7 @@ export const ColorsParamsEditor: PartParamsEditor<ColorsParams> = (props) => {
         <ColorEditor
           value={foreground}
           onChange={(v) => props.onPropertyChange('foreground', colorValueToCssExpression(v))}
-          preventNumericColours
+          preventTransparency
         />
       </ListItem>
     </>

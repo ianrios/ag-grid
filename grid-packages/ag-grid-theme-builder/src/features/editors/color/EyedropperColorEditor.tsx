@@ -29,7 +29,7 @@ export const EyedropperColorEditor = ({ initialValue, onChange }: UncontrolledCo
 
   return (
     <Stack>
-      <ColorSwatch color={colorValueToCssExpression(value)} height={60} />
+      <ColorSwatch color={value} />
       <Button
         variant="soft"
         startDecorator={<Eyedropper />}

@@ -2,14 +2,9 @@ import { ThemePart } from './design-system-types';
 import { combineThemeParts } from './design-system-utils';
 import { commonStructural, reset } from './parts';
 
-export type Theme = {
-  name: string;
-};
-
-export const installTheme = (theme: Theme, parts: ThemePart[]) => {
+export const installTheme = (themeName: string, parts: ThemePart[]) => {
   addOrUpdateStyle('common', commonStructural());
 
-  const themeName = theme.name;
   if (/^(\.|ag-)/.test(themeName) || !/^\w+(-\w+)*$/.test(themeName)) {
     throw new Error('Invalid theme name, use kebab-case and do not include the `ag-theme` prefix');
   }

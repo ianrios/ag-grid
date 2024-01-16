@@ -1,22 +1,19 @@
 import { styled } from '@mui/system';
 import { UIDropdownButton } from 'components/UIDropdownButton';
 import { ColorSwatch } from './ColorSwatch';
+import { RGBAColor } from './RGBAColor';
 import { TabbedColorEditor } from './TabbedColorEditor';
-import {
-  colorValueToCssExpression,
-  reinterpretCssColorExpression,
-  rgbaToHex,
-} from './color-editor-utils';
+import { colorValueToCssExpression } from './color-editor-utils';
 
 export type ColorEditorProps = {
   value: string | number;
   onChange: (value: string | number) => void;
-  preventNumericColours?: boolean;
+  preventTransparency?: boolean;
 };
 
-export const ColorEditor = ({ value, onChange, preventNumericColours }: ColorEditorProps) => {
+export const ColorEditor = ({ value, onChange, preventTransparency }: ColorEditorProps) => {
   const cssValue = colorValueToCssExpression(value);
-  const rgba = reinterpretCssColorExpression(cssValue);
+  const rgba = RGBAColor.reinterpretCss(cssValue);
 
   let label: string;
   if (rgba == null) {
@@ -26,9 +23,9 @@ export const ColorEditor = ({ value, onChange, preventNumericColours }: ColorEdi
   } else if (typeof value === 'number') {
     label = Math.round(value * 100) + '% foreground';
   } else if (rgba.a < 1) {
-    label = rgbaToHex({ ...rgba, a: 1 }) + ` / ${Math.round(rgba.a * 100)}%`;
+    label = rgba.withAlpha(1).toCSSHex() + ` / ${Math.round(rgba.a * 100)}%`;
   } else {
-    label = rgbaToHex(rgba);
+    label = rgba.toCSSHex();
   }
 
   return (
@@ -37,7 +34,7 @@ export const ColorEditor = ({ value, onChange, preventNumericColours }: ColorEdi
         <TabbedColorEditor
           initialValue={value}
           onChange={onChange}
-          preventNumericColours={preventNumericColours}
+          preventTransparency={preventTransparency}
         />
       }
     >
@@ -50,4 +47,5 @@ export const ColorEditor = ({ value, onChange, preventNumericColours }: ColorEdi
 const SmallColorSwatch = styled(ColorSwatch)`
   width: 20px;
   height: 20px;
+  border-radius: 4px;
 `;
