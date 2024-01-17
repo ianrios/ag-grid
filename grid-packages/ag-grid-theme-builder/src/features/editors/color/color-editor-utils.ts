@@ -3,6 +3,7 @@ import { clamp } from 'model/utils';
 export type UncontrolledColorEditorProps = {
   initialValue: string | number;
   onChange: (value: string | number) => void;
+  preventTransparency: boolean;
 };
 
 export const colorValueToCssExpression = (value: string | number) => {

@@ -14,9 +14,13 @@ export const renderedThemeAtom = atom((get) => {
   };
   const rendered = fromJson(params);
 
+  // TODO this atom should install the theme and set the theme class on the
+  // document body, at which point we can remove the reinterpretation element
+  // and reinterpretCssWithoutVariables (use reinterpretCss instead)
   const rgba = RGBAColor.reinterpretCssWithoutVariables(
     rendered.variables['--ag-background-color'],
   );
+  document.body.className = 'ag-theme-custom';
 
   return {
     ...rendered,

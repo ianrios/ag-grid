@@ -33,7 +33,11 @@ export const QuartzIconsParamsEditor: PartParamsEditor<QuartzIconsParams> = (pro
         valueLabelFormat={(v) => `${v}px`}
       />
       <Cell>Color:</Cell>
-      <ColorEditor value={color} onChange={(v) => props.onPropertyChange('color', v)} />
+      <ColorEditor
+        value={color}
+        onChange={(v) => props.onPropertyChange('color', v)}
+        preventTransparency={false}
+      />
     </TwoColumnTable>
   );
 };

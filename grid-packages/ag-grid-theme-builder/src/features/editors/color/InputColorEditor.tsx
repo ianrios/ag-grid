@@ -81,7 +81,7 @@ export const InputColorEditor = ({ initialValue, onChange }: UncontrolledColorEd
 
   return (
     <Stack gap={2}>
-      <ColorSwatch color={value} />
+      <ColorSwatch color={value} splitBackground />
       <TwoColumnTable>
         <Cell>CSS</Cell>
         <Input

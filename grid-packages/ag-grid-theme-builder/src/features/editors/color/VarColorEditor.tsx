@@ -64,7 +64,7 @@ export const VarColorEditor = ({ initialValue, onChange }: UncontrolledColorEdit
 
   return (
     <Stack>
-      <ColorSwatch color={value} />
+      <ColorSwatch color={value} splitBackground />
       <Box>
         {feedback}
         <InfoTooltip />
@@ -139,7 +139,7 @@ const formatVariable = (variable: string) =>
 
 const VariableOption = ({ variable }: { variable: string }) => {
   return (
-    <Stack direction="row" alignItems="center" className="ag-theme-custom">
+    <Stack direction="row" alignItems="center">
       <VarColorSwatch color={`var(${variable})`} />
       <Stack gap={0}>
         {formatVariable(variable)}

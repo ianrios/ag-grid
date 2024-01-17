@@ -8,7 +8,7 @@ import { colorValueToCssExpression } from './color-editor-utils';
 export type ColorEditorProps = {
   value: string | number;
   onChange: (value: string | number) => void;
-  preventTransparency?: boolean;
+  preventTransparency: boolean;
 };
 
 export const ColorEditor = ({ value, onChange, preventTransparency }: ColorEditorProps) => {

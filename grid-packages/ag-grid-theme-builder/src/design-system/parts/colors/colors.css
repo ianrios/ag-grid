@@ -8,4 +8,9 @@
     background-color: var(--ag-background-color);
     color: var(--ag-foreground-color);
   }
+
+  .ag-header,
+  .ag-advanced-filter-header {
+    background-color: var(--ag-chrome-background-color);
+  }
 }

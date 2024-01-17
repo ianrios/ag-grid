@@ -48,7 +48,7 @@ export const ColorsParamsEditor: PartParamsEditor<ColorsParams> = (props) => {
             <ColorEditor
               value={params[property]}
               onChange={(v) => props.onPropertyChange(property, v)}
-              preventTransparency={preventTransparency}
+              preventTransparency={!!preventTransparency}
             />
           </Cell>
         </Fragment>

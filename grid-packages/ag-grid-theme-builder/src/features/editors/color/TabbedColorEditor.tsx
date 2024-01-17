@@ -7,9 +7,7 @@ import { VarColor } from './VarColor';
 import { VarColorEditor } from './VarColorEditor';
 import { UncontrolledColorEditorProps } from './color-editor-utils';
 
-type TabbedColorEditorProps = UncontrolledColorEditorProps & { preventTransparency?: boolean };
-
-export const TabbedColorEditor = (props: TabbedColorEditorProps) => {
+export const TabbedColorEditor = (props: UncontrolledColorEditorProps) => {
   const [tab, setTab] = useState<string | number | null>(() =>
     VarColor.parseCss(props.initialValue) ? 'var' : 'input',
   );

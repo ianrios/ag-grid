@@ -41,5 +41,4 @@ export const colorParamToCss = (value: string | number) => {
   return `color-mix(in srgb, transparent, var(--ag-foreground-color) ${percent}%)`;
 };
 
-export const kebabCase = (str: string) =>
-  str.replace(/(?<![a-z])[A-Z]/g, (m) => `-${m}`).toLowerCase();
+export const kebabCase = (str: string) => str.replace(/[A-Z]/g, (m) => `-${m}`).toLowerCase();

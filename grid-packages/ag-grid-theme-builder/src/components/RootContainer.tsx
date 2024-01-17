@@ -19,7 +19,7 @@ export const RootContainer = memo(() => {
   }, [renderedTheme]);
 
   return (
-    <Container className="ag-theme-custom">
+    <Container>
       {canRenderApp && (
         <Grid>
           <Header>
