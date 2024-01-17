@@ -15,7 +15,11 @@ import {
   formatProportionAsPercent,
 } from './color-editor-utils';
 
-export const InputColorEditor = ({ initialValue, onChange }: UncontrolledColorEditorProps) => {
+export const InputColorEditor = ({
+  initialValue,
+  onChange,
+  preventTransparency,
+}: UncontrolledColorEditorProps) => {
   const [value, setValue] = useState(() => colorValueToCssExpression(initialValue));
   const [editorValue, setEditorValue] = useState(() => getInitialEditorValue(value));
   const [valid, setValid] = useState(!!editorValue);
@@ -94,14 +98,20 @@ export const InputColorEditor = ({ initialValue, onChange }: UncontrolledColorEd
           error={!valid}
         />
         <SpanningDivider />
-        <Cell>Alpha</Cell>
-        <ColorPartSlider
-          value={sliderValues}
-          onChange={handleColorPartChange}
-          part="a"
-          valueLabelFormat={formatProportionAs3dpPercent}
-        />
-        <SpanningDivider />
+
+        {!preventTransparency && (
+          <>
+            <Cell>Alpha</Cell>
+            <ColorPartSlider
+              value={sliderValues}
+              onChange={handleColorPartChange}
+              part="a"
+              valueLabelFormat={formatProportionAs3dpPercent}
+            />
+            <SpanningDivider />
+          </>
+        )}
+
         <Cell>R</Cell>
         <ColorPartSlider
           value={sliderValues}

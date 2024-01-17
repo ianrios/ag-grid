@@ -12,15 +12,19 @@ export const TabbedColorEditor = (props: UncontrolledColorEditorProps) => {
     VarColor.parseCss(props.initialValue) ? 'var' : 'input',
   );
 
+  const allowVar = !props.preventTransparency;
+
   return (
     <Container variant="outlined" value={tab} onChange={(_, newTab) => setTab(newTab)}>
       <TabList>
         <Tab value="input">
           <SettingsAdjust />
         </Tab>
-        <Tab value="var">
-          <Percentage />
-        </Tab>
+        {allowVar && (
+          <Tab value="var">
+            <Percentage />
+          </Tab>
+        )}
         <Tab value="eyedropper">
           <Eyedropper />
         </Tab>
@@ -28,9 +32,11 @@ export const TabbedColorEditor = (props: UncontrolledColorEditorProps) => {
       <TabPanel value="input">
         <InputColorEditor {...props} />
       </TabPanel>
-      <TabPanel value="var">
-        <VarColorEditor {...props} />
-      </TabPanel>
+      {allowVar && (
+        <TabPanel value="var">
+          <VarColorEditor {...props} />
+        </TabPanel>
+      )}
       <TabPanel value="eyedropper">
         <EyedropperColorEditor {...props} />
       </TabPanel>
