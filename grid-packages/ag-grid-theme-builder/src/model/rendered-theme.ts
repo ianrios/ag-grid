@@ -1,4 +1,5 @@
 import { FromJsonParams, fromJson } from 'design-system/parts/from-json';
+import { RGBAColor } from 'features/editors/color/RGBAColor';
 import { bordersPart } from 'features/parts/borders/borders-part';
 import { colorsPart } from 'features/parts/colors/colors-part';
 import { getParamsForValue } from 'features/parts/parts-types';
@@ -11,5 +12,14 @@ export const renderedThemeAtom = atom((get) => {
     borders: getParamsForValue(bordersPart, get(bordersPart.valueAtom)),
     quartzIcons: getParamsForValue(quartzIconsPart, get(quartzIconsPart.valueAtom)),
   };
-  return fromJson(params);
+  const rendered = fromJson(params);
+
+  const rgba = RGBAColor.reinterpretCssWithoutVariables(
+    rendered.variables['--ag-background-color'],
+  );
+
+  return {
+    ...rendered,
+    isDark: rgba ? rgba.grayscale() < 0.5 : true,
+  };
 });

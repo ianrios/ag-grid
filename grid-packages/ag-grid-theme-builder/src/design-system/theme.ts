@@ -18,12 +18,6 @@ export const installTheme = (themeName: string, parts: ThemePart[]) => {
       .join('\n') +
     '\n}';
 
-  console.log(
-    Object.entries(variables)
-      .map(([name, value]) => `\t${name}: ${value};`)
-      .join('\n'),
-  );
-
   css = css
     // RTLCSS adds .ag-rtl selectors as ancestors of the theme selector, but it needs to be a descendent
     .replaceAll('.ag-ltr :ag-current-theme', ':ag-current-theme .ag-ltr')

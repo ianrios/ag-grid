@@ -1,6 +1,7 @@
 import { CssBaseline, CssVarsProvider, extendTheme } from '@mui/joy';
 import { App } from 'components/App';
-import { Provider, createStore } from 'jotai';
+import { Provider, createStore, useAtomValue } from 'jotai';
+import { renderedThemeAtom } from 'model/rendered-theme';
 import { useMemo } from 'react';
 
 const theme = extendTheme({
@@ -35,9 +36,10 @@ const theme = extendTheme({
 
 export const ThemeBuilder = () => {
   const store = useMemo(createStore, []);
+  const { isDark } = useAtomValue(renderedThemeAtom);
   return (
     <Provider store={store}>
-      <CssVarsProvider theme={theme}>
+      <CssVarsProvider theme={theme} defaultMode={isDark ? 'dark' : 'light'}>
         <CssBaseline />
         <App />
       </CssVarsProvider>

@@ -33,6 +33,10 @@ export class RGBAColor {
     return new RGBAColor(this.r, this.g, this.b, a);
   }
 
+  grayscale() {
+    return (this.r + this.g + this.b) / 3;
+  }
+
   static fromRGBA({ r, g, b, a }: { r: number; g: number; b: number; a: number }) {
     return new RGBAColor(r, g, b, a);
   }
@@ -57,22 +61,40 @@ export class RGBAColor {
    * Given any CSS expression, including var() and color-mix(), get the browser to
    * transform it to a RGBA colour.
    */
-  static reinterpretCss = (value: string | number): RGBAColor | null => {
+  static reinterpretCss(value: string | number): RGBAColor | null {
     const colorEl = document.getElementById(cssInterpretationElementId);
     if (!colorEl) {
       throw new Error(`reinterpretCss called before ${cssInterpretationElementId} created`);
     }
-    const css = colorValueToCssExpression(value);
-    colorEl.style.backgroundColor = '';
-    colorEl.style.backgroundColor = `color-mix(in srgb, transparent, ${css} 100%)`;
-    if (!colorEl.style.backgroundColor) return null;
-    const srgbColor = getComputedStyle(colorEl).backgroundColor;
-    const parsed = RGBAColor.parseCss(srgbColor);
-    if (parsed) return parsed;
-    const valueJSON = JSON.stringify(value);
-    logErrorMessageOnce(
-      `The color ${valueJSON} is valid CSS but converts to "${srgbColor}" which isn't an rgb color expression`,
-    );
-    return null;
-  };
+    return reinterpretCss(value, colorEl);
+  }
+
+  /**
+   * Like reinterpretCss, but uses a temporary element and can therefore be used
+   * before the app is initialised
+   */
+  static reinterpretCssWithoutVariables(value: string | number): RGBAColor | null {
+    const colorEl = document.createElement('span');
+    document.body.appendChild(colorEl);
+    try {
+      return reinterpretCss(value, colorEl);
+    } finally {
+      document.body.removeChild(colorEl);
+    }
+  }
 }
+
+const reinterpretCss = (value: string | number, colorEl: HTMLElement): RGBAColor | null => {
+  const css = colorValueToCssExpression(value);
+  colorEl.style.backgroundColor = '';
+  colorEl.style.backgroundColor = `color-mix(in srgb, transparent, ${css} 100%)`;
+  if (!colorEl.style.backgroundColor) return null;
+  const srgbColor = getComputedStyle(colorEl).backgroundColor;
+  const parsed = RGBAColor.parseCss(srgbColor);
+  if (parsed) return parsed;
+  const valueJSON = JSON.stringify(value);
+  logErrorMessageOnce(
+    `The color ${valueJSON} is valid CSS but converts to "${srgbColor}" which isn't an rgb color expression`,
+  );
+  return null;
+};
