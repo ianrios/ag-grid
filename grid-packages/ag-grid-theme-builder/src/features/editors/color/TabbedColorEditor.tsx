@@ -1,5 +1,5 @@
 import { Eyedropper, Percentage, SettingsAdjust } from '@carbon/icons-react';
-import { Tab, TabList, TabPanel, Tabs } from '@mui/joy';
+import { Tab, TabList, TabPanel, Tabs, styled } from '@mui/joy';
 import { useState } from 'react';
 import { EyedropperColorEditor } from './EyedropperColorEditor';
 import { InputColorEditor } from './InputColorEditor';
@@ -15,7 +15,7 @@ export const TabbedColorEditor = (props: TabbedColorEditorProps) => {
   );
 
   return (
-    <Tabs sx={{ width: '350px' }} value={tab} onChange={(_, newTab) => setTab(newTab)}>
+    <Container variant="outlined" value={tab} onChange={(_, newTab) => setTab(newTab)}>
       <TabList>
         <Tab value="input">
           <SettingsAdjust />
@@ -36,6 +36,12 @@ export const TabbedColorEditor = (props: TabbedColorEditorProps) => {
       <TabPanel value="eyedropper">
         <EyedropperColorEditor {...props} />
       </TabPanel>
-    </Tabs>
+    </Container>
   );
 };
+
+const Container = styled(Tabs)`
+  width: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+`;

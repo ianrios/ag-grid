@@ -1,5 +1,5 @@
 import { ThemePart } from 'design-system/design-system-types';
-import { applyDefaults } from 'design-system/design-system-utils';
+import { applyDefaults, colorParamToCss, kebabCase } from 'design-system/design-system-utils';
 import colorsCSS from './colors.css?inline';
 
 export type ColorsParams = {
@@ -67,11 +67,13 @@ export const colorsParamsDefaults = (params: ColorsParams = {}): Required<Colors
  */
 export const colors = (params: ColorsParams = {}): ThemePart => {
   const withDefaults = colorsParamsDefaults(params);
+  const variables: Record<string, string> = {};
+  for (const [property, value] of Object.entries(withDefaults)) {
+    const variable = `--ag-${kebabCase(property)}-color`;
+    variables[variable] = colorParamToCss(value);
+  }
   return {
     css: colorsCSS,
-    variables: {
-      '--ag-background-color': withDefaults.background,
-      '--ag-foreground-color': withDefaults.foreground,
-    },
+    variables,
   };
 };

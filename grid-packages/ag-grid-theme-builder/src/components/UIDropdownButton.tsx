@@ -1,5 +1,5 @@
 import { ClickAwayListener, Popper } from '@mui/base';
-import { Button, Card, styled } from '@mui/joy';
+import { Button, styled } from '@mui/joy';
 import { ReactNode, useRef, useState } from 'react';
 
 export type WidgetDropdownProps = {
@@ -31,12 +31,12 @@ export const UIDropdownButton = (props: WidgetDropdownProps) => {
           onClick={() => {
             setAnchorEl(open ? null : buttonRef.current);
           }}
-          startDecorator={props.startDecorator}
-          endDecorator={props.endDecorator}
         >
+          {props.startDecorator}
           {props.children}
+          {props.endDecorator}
         </DropdownTriggerButton>
-        <StyledPopper id={popperId} open={open} anchorEl={anchorEl} placement="bottom-start">
+        <StyledPopper id={popperId} open={open} anchorEl={anchorEl} placement="auto-end">
           {open && (
             <DropdownArea ref={dropdownRef} sx={{ boxShadow: 10 }}>
               {props.dropdownContent}
@@ -53,6 +53,7 @@ const Container = styled('div')`
 `;
 
 const DropdownTriggerButton = styled(Button)`
+  font-weight: 500;
   pointer-events: all;
   gap: 8px;
 `;
@@ -61,7 +62,7 @@ const StyledPopper = styled(Popper)`
   z-index: 1;
 `;
 
-const DropdownArea = styled(Card)`
+const DropdownArea = styled('div')`
   pointer-events: all;
-  margin-top: 4px;
+  margin-left: 4px;
 `;

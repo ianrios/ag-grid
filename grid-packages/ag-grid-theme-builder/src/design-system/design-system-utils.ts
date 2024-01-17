@@ -34,3 +34,12 @@ export const combineThemeParts = (
 export const recordEntries = <K extends string | number | symbol, V>(
   record: Record<K, V>,
 ): [K, V][] => Object.entries(record) as [K, V][];
+
+export const colorParamToCss = (value: string | number) => {
+  if (typeof value === 'string') return value;
+  const percent = Math.round(value * 1000) / 10;
+  return `color-mix(in srgb, transparent, var(--ag-foreground-color) ${percent}%)`;
+};
+
+export const kebabCase = (str: string) =>
+  str.replace(/(?<![a-z])[A-Z]/g, (m) => `-${m}`).toLowerCase();

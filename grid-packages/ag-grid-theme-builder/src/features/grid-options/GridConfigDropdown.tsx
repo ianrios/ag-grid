@@ -1,5 +1,5 @@
-import { TableAlias, WarningAltFilled } from '@carbon/icons-react';
-import { Checkbox, ListItem, Tooltip } from '@mui/joy';
+import { ChevronRight, TableAlias, WarningAltFilled } from '@carbon/icons-react';
+import { Card, Checkbox, ListItem, Tooltip, styled } from '@mui/joy';
 import { UIDropdownButton } from 'components/UIDropdownButton';
 import { useAtom } from 'jotai';
 import { gridConfigBooleanFields } from 'model/grid-options';
@@ -8,7 +8,7 @@ import { gridConfigAtom } from './grid-config-atom';
 
 export const GridConfigDropdownButton = () => {
   return (
-    <UIDropdownButton dropdownContent={<GridConfigDropdown />}>
+    <UIDropdownButton dropdownContent={<GridConfigDropdown />} endDecorator={<DropdownIcon />}>
       <TableAlias /> Grid setup
     </UIDropdownButton>
   );
@@ -19,7 +19,7 @@ const GridConfigDropdown = () => {
   const filtersConflict = gridConfig.advancedFilter && gridConfig.filtersToolPanel;
 
   return (
-    <>
+    <Card>
       {gridConfigBooleanFields.map((property) => {
         const showFiltersWarning = filtersConflict && property === 'filtersToolPanel';
         const item = (
@@ -46,6 +46,10 @@ const GridConfigDropdown = () => {
           item
         );
       })}
-    </>
+    </Card>
   );
 };
+
+const DropdownIcon = styled(ChevronRight)`
+  zoom: 80%;
+`;

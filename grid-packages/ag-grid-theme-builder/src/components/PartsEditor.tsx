@@ -44,9 +44,9 @@ const PartEditor = <T extends object>({ part }: PartEditorProps<T>) => {
       <Cell>
         {selectedPreset ? (
           <Dropdown>
-            <MenuButton size="sm" endDecorator={<ChevronDown />}>
+            <PartsMenuButton size="sm" endDecorator={<DropdownIcon />}>
               <PresetPreviewComponent {...selectedPreset} />
-            </MenuButton>
+            </PartsMenuButton>
             <Menu placement="top-start">
               {part.presets.map((preset) => (
                 <MenuItem
@@ -89,6 +89,10 @@ const PartEditor = <T extends object>({ part }: PartEditorProps<T>) => {
     </>
   );
 };
+
+const DropdownIcon = styled(ChevronDown)`
+  zoom: 80%;
+`;
 
 const PartsTable = styled('div')`
   display: grid;
@@ -162,4 +166,8 @@ const PartParamsEditor = memoWithSameType(
 const PartParamsEditorCell = styled('div')`
   grid-column-end: span 2;
   margin-bottom: 10px;
+`;
+
+const PartsMenuButton = styled(MenuButton)`
+  font-weight: 500;
 `;

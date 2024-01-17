@@ -1,4 +1,4 @@
-import { ChevronDown } from '@carbon/icons-react';
+import { ChevronRight } from '@carbon/icons-react';
 import { styled } from '@mui/system';
 import { UIDropdownButton } from 'components/UIDropdownButton';
 import { ColorSwatch } from './ColorSwatch';
@@ -31,7 +31,7 @@ export const ColorEditor = ({ value, onChange, preventTransparency }: ColorEdito
 };
 
 const SmallColorSwatch = styled(ColorSwatch)`
-  width: 32px;
+  width: 48px;
   height: 32px;
   border-radius: 0;
   border: none;
@@ -43,11 +43,12 @@ const SwatchButton = styled(UIDropdownButton)`
   min-height: 32px;
   overflow: hidden;
   display: flex;
-  width: 64px;
+  width: 80px;
   gap: 0;
   justify-content: space-between;
 `;
 
-const DropdownIcon = styled(ChevronDown)`
+const DropdownIcon = styled(ChevronRight)`
   margin-right: 8px;
+  zoom: 80%;
 `;
