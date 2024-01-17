@@ -7,6 +7,7 @@ export type WidgetDropdownProps = {
   children: ReactNode;
   startDecorator?: React.ReactNode;
   endDecorator?: React.ReactNode;
+  className?: string;
 };
 
 let idCounter = 0;
@@ -23,6 +24,7 @@ export const UIDropdownButton = (props: WidgetDropdownProps) => {
     <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
       <Container>
         <DropdownTriggerButton
+          className={props.className}
           ref={buttonRef}
           variant="outlined"
           color="neutral"

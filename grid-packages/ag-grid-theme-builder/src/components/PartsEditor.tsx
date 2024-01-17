@@ -1,8 +1,9 @@
-import { Add, ChevronSort, Reset, SettingsAdjust, TrashCan } from '@carbon/icons-react';
+import { Add, ChevronDown, Reset, SettingsAdjust, TrashCan } from '@carbon/icons-react';
 import {
   Card,
   Dropdown,
   IconButton,
+  Link,
   ListItemButton,
   Menu,
   MenuButton,
@@ -43,7 +44,7 @@ const PartEditor = <T extends object>({ part }: PartEditorProps<T>) => {
       <Cell>
         {selectedPreset ? (
           <Dropdown>
-            <MenuButton endDecorator={<ChevronSort />}>
+            <MenuButton size="sm" endDecorator={<ChevronDown />}>
               <PresetPreviewComponent {...selectedPreset} />
             </MenuButton>
             <Menu placement="top-start">
@@ -130,16 +131,26 @@ const PartParamsEditor = memoWithSameType(
       <PartParamsEditorCell>
         <AnimateAppear>
           {show && customParams && (
-            <Card>
+            <Card sx={{ gap: 1, padding: 1.5, paddingBottom: 1 }}>
               <EditorComponent
                 value={customParams}
                 onPropertyChange={(property, propertyValue) =>
                   setValue({ ...customParams, [property]: propertyValue })
                 }
               />
-              <ListItemButton onClick={() => setValue(getDefaultPreset(part).id)}>
+              <Link
+                component="button"
+                variant="plain"
+                color="danger"
+                onClick={() => {
+                  if (confirm(`Reset ${part.label.toLowerCase()} to default values?`)) {
+                    setValue(getDefaultPreset(part).id);
+                  }
+                }}
+                sx={{ borderRadius: '4px', gap: 1 }}
+              >
                 <Reset /> Reset to defaults
-              </ListItemButton>
+              </Link>
             </Card>
           )}
         </AnimateAppear>

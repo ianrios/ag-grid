@@ -1,6 +1,5 @@
 import { styled } from '@mui/joy';
 import { installTheme } from 'design-system/theme';
-import { TabbedColorEditor } from 'features/editors/color/TabbedColorEditor';
 import { cssInterpretationElementId } from 'features/editors/color/color-editor-utils';
 import { useAtomValue } from 'jotai';
 import { renderedThemeAtom } from 'model/rendered-theme';
@@ -11,11 +10,6 @@ import { GridPreview } from './GridPreview';
 import { PartsEditor } from './PartsEditor';
 
 export const RootContainer = memo(() => {
-  const [color, setColor] = useState<string | number>(
-    'color-mix(in srgb, transparent, var(--ag-foreground-color) 42%)',
-    // 'hsla(0, 35%, 70%, 0.5)',
-  );
-
   const renderedTheme = useAtomValue(renderedThemeAtom);
 
   const [canRenderApp, setCanRenderApp] = useState(false);
@@ -34,7 +28,6 @@ export const RootContainer = memo(() => {
           </Header>
           <Menu>
             <PartsEditor />
-            <TabbedColorEditor initialValue={color} onChange={setColor} />
           </Menu>
           <Main>
             <GridPreview />

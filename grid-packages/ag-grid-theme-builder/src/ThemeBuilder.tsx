@@ -8,7 +8,7 @@ const theme = extendTheme({
     JoyStack: {
       defaultProps: {
         useFlexGap: true,
-        gap: 2,
+        gap: 1,
       },
     },
     JoyMenuButton: {

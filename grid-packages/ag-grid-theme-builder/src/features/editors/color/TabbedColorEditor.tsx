@@ -15,7 +15,7 @@ export const TabbedColorEditor = (props: TabbedColorEditorProps) => {
   );
 
   return (
-    <Tabs value={tab} onChange={(_, newTab) => setTab(newTab)}>
+    <Tabs sx={{ width: '350px' }} value={tab} onChange={(_, newTab) => setTab(newTab)}>
       <TabList>
         <Tab value="input">
           <SettingsAdjust />

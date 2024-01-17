@@ -69,7 +69,7 @@ export const VarColorEditor = ({ initialValue, onChange }: UncontrolledColorEdit
         {feedback}
         <InfoTooltip />
       </Box>
-      <TwoColumnTable rowSpacing={1}>
+      <TwoColumnTable rowGap={1}>
         <Cell>Color</Cell>
         <Autocomplete
           options={allVariableInfos}
