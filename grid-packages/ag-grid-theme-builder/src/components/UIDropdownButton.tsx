@@ -28,6 +28,7 @@ export const UIDropdownButton = (props: WidgetDropdownProps) => {
           ref={buttonRef}
           variant="outlined"
           color="neutral"
+          size="sm"
           onClick={() => {
             setAnchorEl(open ? null : buttonRef.current);
           }}

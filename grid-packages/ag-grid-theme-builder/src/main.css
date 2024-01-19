@@ -1,5 +1,15 @@
 @use 'sass:meta';
 
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
 html {
   color-scheme: light;
 }

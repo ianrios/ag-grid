@@ -40,7 +40,8 @@ export const RootContainer = memo(() => {
 });
 
 const Container = styled('div')`
-  height: 100%;
+  position: absolute;
+  inset: 12px;
 `;
 
 const ReinterpretationElement = styled('span')`
