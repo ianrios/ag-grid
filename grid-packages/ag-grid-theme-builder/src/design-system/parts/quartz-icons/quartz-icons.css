@@ -5,7 +5,6 @@
   .ag-icon {
     width: var(--ag-icon-size);
     height: var(--ag-icon-size);
-    border: solid 3px red !important;
   }
 
   .ag-quartz-icon-svg {

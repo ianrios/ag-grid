@@ -75,7 +75,7 @@ export const buildGridOptions = (config: GridConfig): GridOptions => {
     };
   }
 
-  if (false && config.inlineIcons) {
+  if (config.inlineIcons) {
     options.icons = {
       columnGroupOpened: svg('expanded'),
       columnGroupClosed: svg('contracted'),
