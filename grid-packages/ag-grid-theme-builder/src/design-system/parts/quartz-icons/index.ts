@@ -1,7 +1,8 @@
 import { ThemePart } from 'design-system/design-system-types';
 import { applyDefaults } from 'design-system/design-system-utils';
 import { logErrorMessageOnce } from 'model/utils';
-import agIconNameToSvgFragment from './lucide-fragments';
+import { agIconNameToSvgFragment } from './lucide-fragments';
+import quartzIconsCSS from './quartz-icons.css?inline';
 
 export type QuartzIconsParams = {
   color?: string | number;
@@ -36,10 +37,9 @@ export const quartzIcons = (params: QuartzIconsParams = {}): ThemePart => {
     throw new Error(`Expected icon color to be a valid CSS color, got ${JSON.stringify(color)}`);
   }
 
-  // prevent the stroke width from changing as a result of scaling the icon image
   const scaledStrokeWidth = (strokeWidth * 24) / iconSize;
 
-  const svgPrefix = `<svg xmlns="http://www.w3.org/2000/svg" width="${iconSize}" height="${iconSize}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="${scaledStrokeWidth}" stroke-linecap="round" stroke-linejoin="round">`;
+  const svgPrefix = `<svg xmlns="http://www.w3.org/2000/svg" width="${iconSize}" height="${iconSize}" viewBox="0 0 24 24" stroke-width="${scaledStrokeWidth}" stroke-linecap="round" stroke-linejoin="round">`;
   const svgSuffix = '</svg>';
   for (const [agName, svgFragment] of Object.entries(agIconNameToSvgFragment)) {
     const svg = svgPrefix + svgFragment + svgSuffix;
@@ -48,8 +48,11 @@ export const quartzIcons = (params: QuartzIconsParams = {}): ThemePart => {
   }
 
   return {
-    css: cssParts.join('\n'),
-    variables: {},
+    css: quartzIconsCSS,
+    variables: {
+      '--ag-icon-size': `${iconSize}px`,
+      '--ag-icon-stroke-width': `${scaledStrokeWidth}px`,
+    },
   };
 };
 

@@ -12,8 +12,6 @@ export const colorValueToCssExpression = (value: string | number) => {
   return `color-mix(in srgb, transparent, var(--ag-foreground-color) ${percent})`;
 };
 
-export const cssInterpretationElementId = 'theme-builder-interpretation-element';
-
 export const proportionToHex2 = (f: number) => numberToHex2(Math.floor(f * 256));
 
 export const numberToHex2 = (n: number) =>

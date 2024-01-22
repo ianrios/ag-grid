@@ -1,6 +1,4 @@
 import { styled } from '@mui/joy';
-import { installTheme } from 'design-system/theme';
-import { cssInterpretationElementId } from 'features/editors/color/color-editor-utils';
 import { useAtomValue } from 'jotai';
 import { renderedThemeAtom } from 'model/rendered-theme';
 import { memo, useLayoutEffect, useState } from 'react';
@@ -14,7 +12,6 @@ export const RootContainer = memo(() => {
 
   const [canRenderApp, setCanRenderApp] = useState(false);
   useLayoutEffect(() => {
-    installTheme('custom', [renderedTheme]);
     setCanRenderApp(true);
   }, [renderedTheme]);
 
@@ -34,7 +31,6 @@ export const RootContainer = memo(() => {
           </Main>
         </Grid>
       )}
-      <ReinterpretationElement id={cssInterpretationElementId} />
     </Container>
   );
 });
@@ -42,11 +38,6 @@ export const RootContainer = memo(() => {
 const Container = styled('div')`
   position: absolute;
   inset: 12px;
-`;
-
-const ReinterpretationElement = styled('span')`
-  position: absolute;
-  left: -10000px;
 `;
 
 const Grid = styled('div')`

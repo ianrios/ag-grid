@@ -53,7 +53,7 @@ const agNameToLucideName = {
 
 const lucide = require('lucide');
 
-let result = 'export default {\n';
+let result = 'export const agIconNameToSvgFragment: Record<string, string | undefined> = {\n';
 for (const [agName, lucideName] of Object.entries(agNameToLucideName)) {
   const lucideNameTitleCase = lucideName.replaceAll(/(^\w|-\w)/g, (s) =>
     s.replace('-', '').toUpperCase(),

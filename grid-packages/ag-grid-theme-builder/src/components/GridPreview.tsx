@@ -24,6 +24,7 @@ ModuleRegistry.registerModules([
   MenuModule,
   RangeSelectionModule,
   RowGroupingModule,
+  // GridChartsModule,
 ]);
 
 const GridPreview = () => {

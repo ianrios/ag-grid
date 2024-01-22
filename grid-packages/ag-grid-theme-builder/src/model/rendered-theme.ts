@@ -1,4 +1,5 @@
 import { FromJsonParams, fromJson } from 'design-system/parts/from-json';
+import { installTheme } from 'design-system/theme';
 import { RGBAColor } from 'features/editors/color/RGBAColor';
 import { bordersPart } from 'features/parts/borders/borders-part';
 import { colorsPart } from 'features/parts/colors/colors-part';
@@ -14,13 +15,11 @@ export const renderedThemeAtom = atom((get) => {
   };
   const rendered = fromJson(params);
 
-  // TODO this atom should install the theme and set the theme class on the
-  // document body, at which point we can remove the reinterpretation element
-  // and reinterpretCssWithoutVariables (use reinterpretCss instead)
-  const rgba = RGBAColor.reinterpretCssWithoutVariables(
-    rendered.variables['--ag-background-color'],
-  );
+  // TODO is this only called when the theme changes? Do we need to dedupe?
+  installTheme('custom', [rendered]);
   document.body.className = 'ag-theme-custom';
+
+  const rgba = RGBAColor.reinterpretCss(rendered.variables['--ag-background-color']);
 
   return {
     ...rendered,

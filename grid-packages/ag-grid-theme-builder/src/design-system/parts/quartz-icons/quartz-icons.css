@@ -1,0 +1,20 @@
+:ag-current-theme {
+  --ag-icon-size: 16px;
+  --ag-icon-stroke-width: 1.5px;
+
+  .ag-icon {
+    width: var(--ag-icon-size);
+    height: var(--ag-icon-size);
+    border: solid 3px red !important;
+  }
+
+  .ag-quartz-icon-svg {
+    width: var(--ag-icon-size);
+    height: var(--ag-icon-size);
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: currentColor;
+    stroke-width: var(--ag-icon-stroke-width);
+  }
+}

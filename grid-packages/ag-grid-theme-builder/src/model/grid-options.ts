@@ -1,4 +1,5 @@
 import { ColDef, ColGroupDef, GridOptions } from '@ag-grid-community/core';
+import { agIconNameToSvgFragment } from 'design-system/parts/quartz-icons/lucide-fragments';
 
 export const gridConfigBooleanFields = [
   'advancedFilter',
@@ -11,6 +12,7 @@ export const gridConfigBooleanFields = [
   'rowDrag',
   'rowSelection',
   'integratedCharts',
+  'inlineIcons',
 ] as const;
 
 type GridConfigBooleanField = (typeof gridConfigBooleanFields)[number];
@@ -73,7 +75,85 @@ export const buildGridOptions = (config: GridConfig): GridOptions => {
     };
   }
 
+  if (false && config.inlineIcons) {
+    options.icons = {
+      columnGroupOpened: svg('expanded'),
+      columnGroupClosed: svg('contracted'),
+      columnSelectClosed: svg('tree-closed'),
+      columnSelectOpen: svg('tree-open'),
+      columnSelectIndeterminate: svg('tree-indeterminate'),
+      columnMovePin: svg('pin'),
+      columnMoveHide: svg('eye-slash'),
+      columnMoveMove: svg('arrows'),
+      columnMoveLeft: svg('left'),
+      columnMoveRight: svg('right'),
+      columnMoveGroup: svg('group'),
+      columnMoveValue: svg('aggregation'),
+      columnMovePivot: svg('pivot'),
+      dropNotAllowed: svg('not-allowed'),
+      groupContracted: svg('tree-closed'),
+      groupExpanded: svg('tree-open'),
+      setFilterGroupClosed: svg('tree-closed'),
+      setFilterGroupOpen: svg('tree-open'),
+      setFilterGroupIndeterminate: svg('tree-indeterminate'),
+      chart: svg('chart'),
+      close: svg('cross'),
+      cancel: svg('cancel'),
+      check: svg('tick'),
+      first: svg('first'),
+      previous: svg('previous'),
+      next: svg('next'),
+      last: svg('last'),
+      linked: svg('linked'),
+      unlinked: svg('unlinked'),
+      colorPicker: svg('color-picker'),
+      groupLoading: svg('loading'),
+      menu: svg('menu'),
+      filter: svg('filter'),
+      columns: svg('columns'),
+      maximize: svg('maximize'),
+      minimize: svg('minimize'),
+      menuPin: svg('pin'),
+      menuValue: svg('aggregation'),
+      menuAddRowGroup: svg('group'),
+      menuRemoveRowGroup: svg('group'),
+      clipboardCopy: svg('copy'),
+      clipboardCut: svg('cut'),
+      clipboardPaste: svg('paste'),
+      pivotPanel: svg('pivot'),
+      rowGroupPanel: svg('group'),
+      valuePanel: svg('aggregation'),
+      columnDrag: svg('grip'),
+      rowDrag: svg('grip'),
+      save: svg('save'),
+      csvExport: svg('csv'),
+      excelExport: svg('excel'),
+      smallDown: svg('small-down'),
+      smallLeft: svg('small-left'),
+      smallRight: svg('small-right'),
+      smallUp: svg('small-up'),
+      sortAscending: svg('asc'),
+      sortDescending: svg('desc'),
+      sortUnSort: svg('none'),
+      advancedFilterBuilder: svg('group'),
+      advancedFilterBuilderDrag: svg('grip'),
+      advancedFilterBuilderInvalid: svg('not-allowed'),
+      advancedFilterBuilderMoveUp: svg('up'),
+      advancedFilterBuilderMoveDown: svg('down'),
+      advancedFilterBuilderAdd: svg('plus'),
+      advancedFilterBuilderRemove: svg('minus'),
+    };
+  }
+
   return options;
+};
+
+const svg = (name: string): string => {
+  const svgFragment = agIconNameToSvgFragment[name];
+  if (!svgFragment) {
+    throw new Error(`Invalid icon name ${JSON.stringify(name)}`);
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" class="ag-quartz-icon-svg" viewBox="0 0 24 24">${svgFragment}</svg>`;
 };
 
 const buildSimpleColumnDefs = (): ColDef[] => [
