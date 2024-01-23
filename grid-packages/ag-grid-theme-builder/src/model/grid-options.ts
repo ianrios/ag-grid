@@ -153,7 +153,7 @@ const svg = (name: string): string => {
   if (!svgFragment) {
     throw new Error(`Invalid icon name ${JSON.stringify(name)}`);
   }
-  return `<svg xmlns="http://www.w3.org/2000/svg" class="ag-quartz-icon-svg" viewBox="0 0 24 24">${svgFragment}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" class="ag-icon ag-icon-${name}" viewBox="0 0 24 24">${svgFragment}</svg>`;
 };
 
 const buildSimpleColumnDefs = (): ColDef[] => [

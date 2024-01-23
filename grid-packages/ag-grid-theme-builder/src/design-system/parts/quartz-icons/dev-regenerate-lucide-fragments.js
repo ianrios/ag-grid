@@ -19,7 +19,6 @@ const agNameToLucideName = {
   eye: 'eye',
   filter: 'list-filter',
   first: 'chevron-first',
-  grip: 'grip',
   group: 'list-start',
   last: 'chevron-last',
   left: 'arrow-left',
@@ -49,6 +48,10 @@ const agNameToLucideName = {
   'tree-open': 'chevron-down',
   unlinked: 'link-2-off',
   up: 'arrow-up',
+};
+
+const agNameToSvgContent = {
+  grip: '<circle cx="5" cy="8" r="0.5"/><circle cx="12" cy="8" r="0.5"/><circle cx="19" cy="8" r="0.5"/><circle cx="5" cy="16" r="0.5"/><circle cx="12" cy="16" r="0.5"/><circle cx="19" cy="16" r="0.5"/>',
 };
 
 const lucide = require('lucide');
@@ -83,6 +86,9 @@ for (const [agName, lucideName] of Object.entries(agNameToLucideName)) {
     svg += `/>`;
   }
   result += `  "${agName}": ${JSON.stringify(svg)},\n`;
+}
+for (const [agName, svgContent] of Object.entries(agNameToSvgContent)) {
+  result += `  "${agName}": ${JSON.stringify(svgContent)},\n`;
 }
 result += '}\n';
 

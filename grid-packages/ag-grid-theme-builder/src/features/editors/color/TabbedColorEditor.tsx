@@ -12,7 +12,7 @@ export const TabbedColorEditor = (props: UncontrolledColorEditorProps) => {
     VarColor.parseCss(props.initialValue) ? 'var' : 'input',
   );
 
-  const allowVar = !props.preventTransparency;
+  const showVarTab = !props.preventTransparency && !props.preventVariables;
 
   return (
     <Container variant="outlined" value={tab} onChange={(_, newTab) => setTab(newTab)}>
@@ -20,7 +20,7 @@ export const TabbedColorEditor = (props: UncontrolledColorEditorProps) => {
         <Tab value="input">
           <SettingsAdjust />
         </Tab>
-        {allowVar && (
+        {showVarTab && (
           <Tab value="var">
             <Percentage />
           </Tab>
@@ -32,7 +32,7 @@ export const TabbedColorEditor = (props: UncontrolledColorEditorProps) => {
       <TabPanel value="input">
         <InputColorEditor {...props} />
       </TabPanel>
-      {allowVar && (
+      {showVarTab && (
         <TabPanel value="var">
           <VarColorEditor {...props} />
         </TabPanel>

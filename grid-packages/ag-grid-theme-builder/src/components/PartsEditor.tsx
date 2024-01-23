@@ -65,9 +65,11 @@ const PartEditor = <T extends object>({ part }: PartEditorProps<T>) => {
               >
                 <SettingsAdjust /> Customise
               </ListItemButton>
-              <MenuItem onClick={() => setValue(null)} selected={value == null}>
-                <TrashCan /> Remove
-              </MenuItem>
+              {!part.preventRemoval && (
+                <MenuItem onClick={() => setValue(null)} selected={value == null}>
+                  <TrashCan /> Remove
+                </MenuItem>
+              )}
             </Menu>
           </Dropdown>
         ) : customParams ? (

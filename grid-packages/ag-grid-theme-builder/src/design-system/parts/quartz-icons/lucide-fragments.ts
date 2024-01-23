@@ -19,7 +19,6 @@ export const agIconNameToSvgFragment: Record<string, string | undefined> = {
   "eye": "<path d=\"M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>",
   "filter": "<path d=\"M3 6h18\"/><path d=\"M7 12h10\"/><path d=\"M10 18h4\"/>",
   "first": "<path d=\"m17 18-6-6 6-6\"/><path d=\"M7 6v12\"/>",
-  "grip": "<circle cx=\"12\" cy=\"5\" r=\"1\"/><circle cx=\"19\" cy=\"5\" r=\"1\"/><circle cx=\"5\" cy=\"5\" r=\"1\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/><circle cx=\"5\" cy=\"12\" r=\"1\"/><circle cx=\"12\" cy=\"19\" r=\"1\"/><circle cx=\"19\" cy=\"19\" r=\"1\"/><circle cx=\"5\" cy=\"19\" r=\"1\"/>",
   "group": "<path d=\"M16 12H3\"/><path d=\"M16 18H3\"/><path d=\"M10 6H3\"/><path d=\"M21 18V8a2 2 0 0 0-2-2h-5\"/><path d=\"m16 8-2-2 2-2\"/>",
   "last": "<path d=\"m7 18 6-6-6-6\"/><path d=\"M17 6v12\"/>",
   "left": "<path d=\"m12 19-7-7 7-7\"/><path d=\"M19 12H5\"/>",
@@ -49,4 +48,5 @@ export const agIconNameToSvgFragment: Record<string, string | undefined> = {
   "tree-open": "<path d=\"m6 9 6 6 6-6\"/>",
   "unlinked": "<path d=\"M9 17H7A5 5 0 0 1 7 7\"/><path d=\"M15 7h2a5 5 0 0 1 4 8\"/><line x1=\"8\" x2=\"12\" y1=\"12\" y2=\"12\"/><line x1=\"2\" x2=\"22\" y1=\"2\" y2=\"22\"/>",
   "up": "<path d=\"m5 12 7-7 7 7\"/><path d=\"M12 19V5\"/>",
+  "grip": "<circle cx=\"5\" cy=\"8\" r=\"0.5\"/><circle cx=\"12\" cy=\"8\" r=\"0.5\"/><circle cx=\"19\" cy=\"8\" r=\"0.5\"/><circle cx=\"5\" cy=\"16\" r=\"0.5\"/><circle cx=\"12\" cy=\"16\" r=\"0.5\"/><circle cx=\"19\" cy=\"16\" r=\"0.5\"/>",
 }

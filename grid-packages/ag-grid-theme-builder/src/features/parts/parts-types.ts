@@ -9,6 +9,7 @@ export type Part<TParams extends object> = {
   presets: PartPreset<TParams>[];
   paramsEditorComponent: PartParamsEditor<TParams>;
   presetPreviewComponent: PartPresetPreview<TParams>;
+  preventRemoval?: boolean;
 };
 
 export type PartParamsEditorProps<T extends object> = {

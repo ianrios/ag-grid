@@ -7,7 +7,7 @@
     height: var(--ag-icon-size);
   }
 
-  .ag-quartz-icon-svg {
+  .ag-icon {
     width: var(--ag-icon-size);
     height: var(--ag-icon-size);
     fill: none;
@@ -15,5 +15,13 @@
     stroke-linejoin: round;
     stroke: currentColor;
     stroke-width: var(--ag-icon-stroke-width);
+
+    > * {
+      vector-effect: non-scaling-stroke;
+    }
+  }
+
+  .ag-icon-grip {
+    fill: currentColor;
   }
 }

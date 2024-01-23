@@ -1,9 +1,17 @@
 import { clamp } from 'model/utils';
 
-export type UncontrolledColorEditorProps = {
-  initialValue: string | number;
+export type ColorEditorProps = {
   onChange: (value: string | number) => void;
   preventTransparency: boolean;
+  preventVariables: boolean;
+};
+
+export type ControlledColorEditorProps = ColorEditorProps & {
+  value: string | number;
+};
+
+export type UncontrolledColorEditorProps = ColorEditorProps & {
+  initialValue: string | number;
 };
 
 export const colorValueToCssExpression = (value: string | number) => {

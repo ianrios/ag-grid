@@ -19,4 +19,5 @@ export const colorsPart = definePart({
   ],
   paramsEditorComponent: ColorsParamsEditor,
   presetPreviewComponent: ColorsPresetPreview,
+  preventRemoval: true,
 });
